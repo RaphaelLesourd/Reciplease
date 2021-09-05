@@ -10,7 +10,7 @@ import UIKit
 class RecipeTableViewController: UITableViewController {
 
     // MARK: - Properties
-    private let cellIndentifier = RecipeTableViewCell.identifier
+    private let cellIndentifier = RecipeTableViewCell.reuseIdentifier
     private var recipeListType: RecipeListType
     private let recipeListEmptyStateView = RecipeTableViewEmptyStateView()
 
@@ -27,6 +27,7 @@ class RecipeTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .secondarySystemBackground
+        addKeyboardDismissGesture()
         configureTableView()
         configureSearchController()
      //   setEmptyStateViewConstraints()
@@ -42,7 +43,8 @@ class RecipeTableViewController: UITableViewController {
     private func configureSearchController() {
         let searchController = UISearchController(searchResultsController: nil)
         searchController.searchResultsUpdater = self
-        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.obscuresBackgroundDuringPresentation = true
+        searchController.automaticallyShowsSearchResultsController = true
         searchController.searchBar.placeholder = "Search recipe"
         self.navigationItem.searchController = searchController
         self.definesPresentationContext = true
@@ -71,32 +73,13 @@ class RecipeTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let recipeDetailVC = RecipeDetailViewController()
-        show(recipeDetailVC, sender: self)
+        navigationController?.pushViewController(recipeDetailVC, animated: true)
     }
 }
 
-// MARK: - Searchc result updater
+// MARK: - Search result updater
 extension RecipeTableViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
 
-    }
-}
-
-// MARK: - Constraints
-extension RecipeTableViewController {
-
-    private func setEmptyStateViewConstraints() {
-        recipeListEmptyStateView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(recipeListEmptyStateView)
-        NSLayoutConstraint.activate([
-            recipeListEmptyStateView.topAnchor.constraint(equalTo: self.tableView.topAnchor, constant: 100),
-            recipeListEmptyStateView.centerXAnchor.constraint(equalTo: self.tableView.centerXAnchor),
-            recipeListEmptyStateView.heightAnchor.constraint(equalToConstant: 150),
-            recipeListEmptyStateView.widthAnchor.constraint(equalToConstant: 150)
-        ])
-    }
-
-    func displayEmptyStateView(_ state: Bool) {
-        self.tableView.backgroundView = state ? recipeListEmptyStateView : nil
     }
 }

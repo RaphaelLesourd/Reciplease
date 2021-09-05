@@ -9,7 +9,7 @@ import UIKit
 
 class RecipeTableViewCell: UITableViewCell {
 
-    static let identifier = "recipeCell"
+    static let reuseIdentifier = "recipeCell"
 
     // MARK: - Initializers
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -63,19 +63,27 @@ class RecipeTableViewCell: UITableViewCell {
 
     let recipeInfoView = RecipeCellInfoView()
 
+    override func layoutSubviews() {
+        setRecipeImageContraints()
+        addGradient(to: contentView)
+        setTitleStackViewConstraints()
+        setRecipeInfoViewConstraints()
+    }
+
+    override func prepareForReuse() {
+        recipeNameLabel.text = nil
+        recipeIngredientsLabel .text  = nil
+        recipeInfoView.ratingLabel.text = nil
+        recipeInfoView.recipeTimeLabel.text = nil
+        imageView?.image = nil
+    }
+
     // MARK: - Configuration
     func configure() {
         recipeNameLabel.text = "Green curry"
         recipeIngredientsLabel .text  = "Toffu, Thaï aubergines, green curry paste"
         recipeInfoView.ratingLabel.text = "2,5K"
         recipeInfoView.recipeTimeLabel.text = "345'"
-    }
-
-    override func layoutSubviews() {
-        setRecipeImageContraints()
-        addGradient(to: contentView)
-        setTitleStackViewConstraints()
-        setRecipeInfoViewConstraints()
     }
 }
 // MARK: - Constraints

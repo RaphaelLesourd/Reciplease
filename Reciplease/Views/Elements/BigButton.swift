@@ -13,7 +13,7 @@ class BigButton: UIButton {
         super.init(frame: .zero)
         self.setTitleColor(.white, for: .normal)
         self.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .medium)
-        self.roundCorners()
+        self.roundCorners(radius: 11)
     }
 
     convenience init(color: UIColor = .systemGreen, title: String) {

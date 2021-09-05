@@ -31,11 +31,12 @@ class RecipeCellInfoView: UIView {
         return label
     }
 
-    private func infoStackView() -> UIStackView {
+    private func stackView(spacing: CGFloat = 5,
+                           distribution: UIStackView.Distribution = .fill) -> UIStackView {
         let stack = UIStackView()
         stack.axis = .horizontal
-        stack.spacing = 5
-        stack.distribution = .fill
+        stack.spacing = spacing
+        stack.distribution = distribution
         stack.alignment = .fill
         return stack
     }
@@ -53,21 +54,13 @@ class RecipeCellInfoView: UIView {
     // Initialise views
     lazy var ratingLabel = infoLabel()
     private lazy var ratingIcon = infoIconView(systemImageName: "star.fill")
-    private lazy var ratingStackView = infoStackView()
+    private lazy var ratingStackView = stackView()
 
     lazy var  recipeTimeLabel = infoLabel()
     private lazy var recipeTimeIcon = infoIconView(systemImageName: "timer")
-    private lazy var recipeTimeStackView = infoStackView()
+    private lazy var recipeTimeStackView = stackView()
 
-    private let mainStackView: UIStackView = {
-        let stack = UIStackView()
-        stack.axis = .horizontal
-        stack.spacing = 20
-        stack.distribution = .fill
-        stack.alignment = .fill
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        return stack
-    }()
+    private lazy var mainStackView = stackView(spacing: 20, distribution: .fillProportionally)
 
     override func layoutSubviews() {
         roundCorners(radius: 7)
@@ -91,6 +84,7 @@ extension RecipeCellInfoView {
     }
 
     private func setMainStackView() {
+        mainStackView.translatesAutoresizingMaskIntoConstraints = false
         mainStackView.addArrangedSubview(ratingStackView)
         mainStackView.addArrangedSubview(recipeTimeStackView)
         addSubview(mainStackView)

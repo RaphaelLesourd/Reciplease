@@ -6,3 +6,8 @@
 //
 
 import Foundation
+
+enum RecipeListType {
+    case favorite
+    case search
+}

@@ -17,7 +17,6 @@ class TabBarViewController: UITabBarController {
 
     /// Set up the tabBar appearance with standard darkmode compatible colors.
     private func configureTabBar() {
-        view.backgroundColor = .systemBackground
         UITabBar.appearance().barTintColor = .systemBackground
         tabBar.tintColor = .label
     }
@@ -29,9 +28,11 @@ class TabBarViewController: UITabBarController {
                                                   image: searchIconImage)
 
         let favoriteIconImage = UIImage(systemName: "star")!
-        let recipeTableViewController = createController(for: RecipeTableViewController(),
-                                                    title: "Favorite",
-                                                    image: favoriteIconImage)
+        let recipeTableViewController = createController(
+            for: RecipeTableViewController(recipeListType: .favorite),
+
+            title: "Favorite",
+            image: favoriteIconImage)
 
         self.viewControllers = [searchViewController, recipeTableViewController]
     }

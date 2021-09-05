@@ -5,6 +5,7 @@
 //  Created by Birkyboy on 04/09/2021.
 //
 
+import Foundation
 import UIKit
 
 class SearchViewController: UIViewController, IngredientsDelegate {
@@ -24,7 +25,7 @@ class SearchViewController: UIViewController, IngredientsDelegate {
 
     override func loadView() {
         view = searchView
-        view.backgroundColor = .tertiarySystemGroupedBackground
+        view.backgroundColor = .secondarySystemGroupedBackground
     }
 
     override func viewDidLoad() {
@@ -54,18 +55,26 @@ class SearchViewController: UIViewController, IngredientsDelegate {
     // MARK: - Target
     @objc private func navigateToRecipeList() {
         let recipeListVC = RecipeTableViewController(recipeListType: .search)
-        show(recipeListVC, sender: self)
+        navigationController?.pushViewController(recipeListVC, animated: true)
     }
 
     @objc private func addIngredient() {
         if let ingredient = searchView.addIngredientView.textField.text, !ingredient.isEmpty {
             ingredientManager.addIngredient(for: ingredient)
             searchView.addIngredientView.textField.text = nil
+        } else {
+            presentErrorAlert(with: "You forgot to enter an ingredient name.")
         }
     }
 
     @objc private func clearIngredients() {
-        ingredientManager.clearIngredientList()
+        let alert = presentUserQueryAlert(title: "Clearing the ingredient list.",
+                                          message: "Are you sure you want to clear the entire list?",
+                                          okBtnTitle: "Yes",
+                                          style: .destructive) { [weak self] in
+            self?.ingredientManager.clearIngredientList()
+        }
+        present(alert, animated: true, completion: nil)
     }
 }
 // MARK: - TableView datasource
@@ -76,12 +85,14 @@ extension SearchViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        searchView.emptyStateView.isHidden = !ingredients.isEmpty
         return ingredients.count
     }
 
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
+        cell.backgroundColor = .quaternarySystemFill
         cell.textLabel?.text = ingredients[indexPath.row]
         return cell
     }

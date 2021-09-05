@@ -1,21 +1,38 @@
 //
-//  UIViewController.swift
-//  Le Baluchon
+//  UIView+Extension.swift
+//  Reciplease
 //
-//  Created by Birkyboy on 07/08/2021.
+//  Created by Birkyboy on 05/09/2021.
 //
-
 import Foundation
 import UIKit
 
 extension UIViewController {
 
-    // MARK: - Alert
+    // MARK: - Alerts
     func presentErrorAlert(with message: String) {
-        let alert = UIAlertController(title: "Erreur", message: message, preferredStyle: .alert)
-        let dismissAction = UIAlertAction(title: "Fermer", style: .default, handler: nil)
+        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        let dismissAction = UIAlertAction(title: "Dismiss", style: .default, handler: nil)
         alert.addAction(dismissAction)
         present(alert, animated: true, completion: nil)
+    }
+
+    func presentUserQueryAlert(title: String,
+                               message: String?,
+                               okBtnTitle: String,
+                               style: UIAlertAction.Style,
+                               completion: (() -> Void)?) -> UIAlertController {
+
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let actionOK = UIAlertAction(title: okBtnTitle, style: style) { _ in
+            guard let completion = completion else { return }
+            completion()
+        }
+        alert.addAction(actionOK)
+        alert.view.tintColor = .label
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        alert.addAction(cancel)
+        return alert
     }
 
     // MARK: - ActivtyIndicator
@@ -31,9 +48,9 @@ extension UIViewController {
 
     // MARK: - Keyboard
     func addKeyboardDismissGesture() {
-        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        tap.cancelsTouchesInView = false
-        view.addGestureRecognizer(tap)
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tapGesture.cancelsTouchesInView = false
+        view.addGestureRecognizer(tapGesture)
     }
 
     @objc func dismissKeyboard() {
