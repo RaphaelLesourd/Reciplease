@@ -1,0 +1,22 @@
+{
+  "images" : [
+    {
+      "filename" : "ddp-CTtnaHiLvIA-unsplash.jpg",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "ddp-CTtnaHiLvIA-unsplash-1.jpg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
