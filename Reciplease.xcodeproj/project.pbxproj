@@ -25,6 +25,7 @@
 		8134684026E4858300A2DDCA /* BigButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8134683F26E4858300A2DDCA /* BigButton.swift */; };
 		8134684326E4873500A2DDCA /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8134684226E4873500A2DDCA /* SearchView.swift */; };
 		8134684526E496B900A2DDCA /* Recipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8134684426E496B900A2DDCA /* Recipe.swift */; };
+		8134684726E4ACCB00A2DDCA /* RecipeCellInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8134684626E4ACCB00A2DDCA /* RecipeCellInfoView.swift */; };
 		AE13AEB475EF063792C24C27 /* Pods_Reciplease.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD1F4DEE8121F25939D8D587 /* Pods_Reciplease.framework */; };
 /* End PBXBuildFile section */
 
@@ -74,6 +75,7 @@
 		8134683F26E4858300A2DDCA /* BigButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigButton.swift; sourceTree = "<group>"; };
 		8134684226E4873500A2DDCA /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		8134684426E496B900A2DDCA /* Recipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recipe.swift; sourceTree = "<group>"; };
+		8134684626E4ACCB00A2DDCA /* RecipeCellInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeCellInfoView.swift; sourceTree = "<group>"; };
 		9866449E2E8CD30EAE52567A /* Pods-Reciplease-RecipleaseUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Reciplease-RecipleaseUITests.debug.xcconfig"; path = "Target Support Files/Pods-Reciplease-RecipleaseUITests/Pods-Reciplease-RecipleaseUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		CD1F4DEE8121F25939D8D587 /* Pods_Reciplease.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Reciplease.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC16C1B37C03473E2905A3F7 /* Pods-Reciplease.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Reciplease.debug.xcconfig"; path = "Target Support Files/Pods-Reciplease/Pods-Reciplease.debug.xcconfig"; sourceTree = "<group>"; };
@@ -189,6 +191,7 @@
 			isa = PBXGroup;
 			children = (
 				8134683F26E4858300A2DDCA /* BigButton.swift */,
+				8134684626E4ACCB00A2DDCA /* RecipeCellInfoView.swift */,
 			);
 			path = Elements;
 			sourceTree = "<group>";
@@ -517,6 +520,7 @@
 				8134684526E496B900A2DDCA /* Recipe.swift in Sources */,
 				8134683E26E4846F00A2DDCA /* UIView+Extension.swift in Sources */,
 				8127E87326E3E8E5004B1684 /* SearchViewController.swift in Sources */,
+				8134684726E4ACCB00A2DDCA /* RecipeCellInfoView.swift in Sources */,
 				8127E86F26E3E8E5004B1684 /* AppDelegate.swift in Sources */,
 				8134684026E4858300A2DDCA /* BigButton.swift in Sources */,
 				8134683526E47A5F00A2DDCA /* TabBarViewController.swift in Sources */,

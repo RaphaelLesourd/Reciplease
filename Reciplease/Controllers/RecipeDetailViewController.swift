@@ -11,6 +11,6 @@ class RecipeDetailViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Reciplease"
+        view.backgroundColor = .red
     }
 }
