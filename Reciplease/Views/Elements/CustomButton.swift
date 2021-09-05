@@ -7,7 +7,7 @@
 
 import UIKit
 
-class BigButton: UIButton {
+class CustomButton: UIButton {
 
     override init(frame: CGRect) {
         super.init(frame: .zero)

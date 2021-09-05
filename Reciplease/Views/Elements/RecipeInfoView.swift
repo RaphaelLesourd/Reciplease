@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class RecipeCellInfoView: UIView {
+class RecipeInfoView: UIView {
 
     // MARK: - Initializers
     override init(frame: CGRect) {
@@ -24,6 +24,7 @@ class RecipeCellInfoView: UIView {
     // Create common views
     private func infoLabel() -> UILabel {
         let label = UILabel()
+        label.text = "--"
         label.textColor = .white
         label.font = UIFont.systemFont(ofSize: 14, weight: .medium)
         label.numberOfLines = 1

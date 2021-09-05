@@ -10,16 +10,20 @@ import UIKit
 class RecipeDetailViewController: UIViewController {
 
     // MARK: - Properties
-
+    private let recipeView = RecipeDetailView()
     private let unFavoriteIcon = UIImage(systemName: "star")
     private let favoriteIcon = UIImage(systemName: "star.fill")
     private var isFavorite = true
     private var addToFavoriteButton: UIBarButtonItem?
 
     // MARK: - Lifecycle
+    override func loadView() {
+        view = recipeView
+        view.backgroundColor = .secondarySystemBackground
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .secondarySystemBackground
         configureNavigationItem()
     }
 
