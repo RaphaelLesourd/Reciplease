@@ -75,6 +75,35 @@ class RecipeTableViewController: UITableViewController {
         let recipeDetailVC = RecipeDetailViewController()
         navigationController?.pushViewController(recipeDetailVC, animated: true)
     }
+
+    // ContextMenu
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let addAction = self.addToFavoriteAction(forRowAtIndexPath: indexPath)
+        let removeAction = self.removeFromFavoriteAction(forRowAtIndexPath: indexPath)
+        let action = recipeListType == .favorite ? removeAction : addAction
+        let swipeConfig = UISwipeActionsConfiguration(actions: [action])
+        return swipeConfig
+    }
+
+    private func addToFavoriteAction(forRowAtIndexPath indexPath: IndexPath) -> UIContextualAction {
+        let action = UIContextualAction(style: .destructive, title: "Add favorite") { (_, _, completion) in
+
+            completion(true)
+        }
+        action.backgroundColor = .systemOrange
+        action.image = UIImage(systemName: "star.fill")
+        return action
+    }
+
+    private func removeFromFavoriteAction(forRowAtIndexPath indexPath: IndexPath) -> UIContextualAction {
+        let action = UIContextualAction(style: .destructive, title: "Delete favorite") { (_, _, completion) in
+            self.tableView.deleteRows(at: [indexPath], with: .automatic)
+            completion(true)
+        }
+        action.backgroundColor = .systemRed
+        action.image = UIImage(systemName: "trash.fill")
+        return action
+    }
 }
 
 // MARK: - Search result updater

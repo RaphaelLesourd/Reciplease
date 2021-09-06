@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class SearchViewController: UIViewController {
+class SearchViewController: UIViewController, ErrorDelegate {
 
     // MARK: - Properties
     private let searchView = SearchView()
@@ -30,7 +30,7 @@ class SearchViewController: UIViewController {
 
     // MARK: - Setup
     private func setDelegates() {
-        // ingredientManager.ingredientDelegate = self
+        ingredientDataSource.errorDelegate = self
         searchView.addIngredientView.textField.delegate = self
         searchView.tableView.delegate = self
         searchView.tableView.dataSource = self
@@ -52,11 +52,10 @@ class SearchViewController: UIViewController {
     }
 
     @objc private func addIngredientToList() {
-        if let ingredient = searchView.addIngredientView.textField.text, !ingredient.isEmpty {
+        if let ingredient = searchView.addIngredientView.textField.text {
             ingredientDataSource.addIngredient(for: ingredient)
             searchView.addIngredientView.textField.text = nil
-        } else {
-            presentErrorAlert(with: "You forgot to enter an ingredient name.")
+            searchView.tableView.reloadData()
         }
     }
 
@@ -65,7 +64,9 @@ class SearchViewController: UIViewController {
                                           message: "Are you sure you want to clear the entire list?",
                                           okBtnTitle: "Yes",
                                           style: .destructive) { [weak self] in
-            self?.ingredientDataSource.clearIngredientList()
+            guard let self = self else {return}
+            self.ingredientDataSource.clearIngredientList()
+            self.searchView.tableView.reloadData()
         }
         present(alert, animated: true, completion: nil)
     }

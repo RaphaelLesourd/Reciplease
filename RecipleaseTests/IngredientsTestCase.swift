@@ -21,13 +21,14 @@ class IngredientsTestCase: XCTestCase {
         sut = nil
     }
 
+    // MARK: - Success
     func test_givenStringOfIngredientsSeparatedByComma_WhenAdding_ThenArrayOfIngredients() {
         // Given
         let string = "lemon,carrots,onions,cheese"
         // When
         sut?.addIngredient(for: string)
         // Then
-        XCTAssertEqual(sut?.ingredients, ["carrots", "cheese", "lemon", "onions"])
+        XCTAssertEqual(sut?.ingredients, ["Carrots", "Cheese", "Lemon", "Onions"])
     }
 
     func test_givenStringOfIngredientsSeparatedByComma_WhenAddingWithEmptySpaces_ThenEmptySpacesDropped() {
@@ -36,7 +37,7 @@ class IngredientsTestCase: XCTestCase {
         // When
         sut?.addIngredient(for: string)
         // Then
-        XCTAssertEqual(sut?.ingredients, ["carrots", "cheese", "lemon", "onions"])
+        XCTAssertEqual(sut?.ingredients, ["Carrots", "Cheese", "Lemon", "Onions"])
     }
 
     func test_givenArrayOfIngredients_WhenDeletedAnIngredientByName_ThenIngredientRemoved() {

@@ -26,6 +26,7 @@ class RecipeDetailView: UIView {
         let table = UITableView(frame: .zero, style: .insetGrouped)
         table.backgroundColor = .clear
         table.separatorStyle = .none
+        table.allowsSelection = false
         table.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         table.register(RecipeDetailHeaderView.self,
                        forHeaderFooterViewReuseIdentifier: RecipeDetailHeaderView.reuseIdentifier)
