@@ -13,7 +13,20 @@ class RecipeTableViewController: UITableViewController {
     private let cellIndentifier = RecipeTableViewCell.reuseIdentifier
     private var recipeListType: RecipeListType
     private let recipeListEmptyStateView = RecipeTableViewEmptyStateView()
+    private let recipeDataSource = RecipeDataSource()
+    private var recipes: [RecipeClass] = [] {
+        didSet {
+            filteredRecipes = recipes
+        }
+    }
+    private var filteredRecipes: [RecipeClass] = [] {
+        didSet {
+            tableView.reloadData()
+        }
+    }
+    let emptyStateView = RecipeTableViewEmptyStateView()
 
+    // MARK: - Initializers
     init(recipeListType: RecipeListType) {
         self.recipeListType = recipeListType
         super.init(nibName: nil, bundle: nil)
@@ -30,7 +43,7 @@ class RecipeTableViewController: UITableViewController {
         addKeyboardDismissGesture()
         configureTableView()
         configureSearchController()
-     //   setEmptyStateViewConstraints()
+        setEmptyStateViewConstraints()
     }
 
     // MARK: - Setup
@@ -44,40 +57,41 @@ class RecipeTableViewController: UITableViewController {
         let searchController = UISearchController(searchResultsController: nil)
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = true
-        searchController.automaticallyShowsSearchResultsController = true
-        searchController.searchBar.placeholder = "Search recipe"
+        searchController.searchBar.placeholder = "Search for recipes"
         self.navigationItem.searchController = searchController
         self.definesPresentationContext = true
     }
 
-    // MARK: - TableView
+    // MARK: - TableView Datasource
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-     //   displayEmptyStateView(false)
-        return recipeListType == .favorite ? 10 : 3
+        emptyStateView.isHidden = !filteredRecipes.isEmpty
+        return filteredRecipes.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(
-                withIdentifier: cellIndentifier,
-                for: indexPath
+            withIdentifier: cellIndentifier,
+            for: indexPath
         ) as? RecipeTableViewCell else {
             return UITableViewCell()
         }
-        cell.configure()
+        let recipes = filteredRecipes[indexPath.row]
+        cell.configure(with: recipes)
         return cell
     }
 
+    // MARK: - TableView Delegate
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let recipeDetailVC = RecipeDetailViewController()
         navigationController?.pushViewController(recipeDetailVC, animated: true)
     }
 
     // ContextMenu
-    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration {
         let addAction = self.addToFavoriteAction(forRowAtIndexPath: indexPath)
         let removeAction = self.removeFromFavoriteAction(forRowAtIndexPath: indexPath)
         let action = recipeListType == .favorite ? removeAction : addAction
@@ -97,7 +111,8 @@ class RecipeTableViewController: UITableViewController {
 
     private func removeFromFavoriteAction(forRowAtIndexPath indexPath: IndexPath) -> UIContextualAction {
         let action = UIContextualAction(style: .destructive, title: "Delete favorite") { (_, _, completion) in
-            self.tableView.deleteRows(at: [indexPath], with: .automatic)
+            self.recipes.remove(at: indexPath.row)
+            self.tableView.deleteRows(at: [indexPath], with: .fade)
             completion(true)
         }
         action.backgroundColor = .systemRed
@@ -108,7 +123,29 @@ class RecipeTableViewController: UITableViewController {
 
 // MARK: - Search result updater
 extension RecipeTableViewController: UISearchResultsUpdating {
-    func updateSearchResults(for searchController: UISearchController) {
 
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let searchText = searchController.searchBar.text else {return}
+        if searchText.isEmpty {
+            filteredRecipes = recipes
+        } else {
+            filteredRecipes = recipes.filter({
+                guard let recipeName = $0.label else { return false }
+                return recipeName.contains(searchText)
+            })
+        }
+    }
+}
+// MARK: - Constraints
+extension RecipeTableViewController {
+
+    private func setEmptyStateViewConstraints() {
+        emptyStateView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(emptyStateView)
+        NSLayoutConstraint.activate([
+            emptyStateView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 100),
+            emptyStateView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            emptyStateView.heightAnchor.constraint(equalToConstant: 150)
+        ])
     }
 }

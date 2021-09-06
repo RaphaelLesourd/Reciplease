@@ -59,7 +59,6 @@ class IngredientsFromFridgeView: UIView {
         textField.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         textField.textAlignment = .left
         textField.textColor = .label
-        textField.textColor = .secondaryLabel
         textField.autocorrectionType = .yes
         textField.keyboardType = .default
         textField.returnKeyType = .continue

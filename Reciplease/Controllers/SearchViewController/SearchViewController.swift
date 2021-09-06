@@ -95,6 +95,10 @@ extension SearchViewController: UITableViewDataSource {
 // MARK: - TableView Delegate
 extension SearchViewController: UITableViewDelegate {
 
+    func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
+        return false
+    }
+
     func tableView(_ tableView: UITableView,
                    viewForHeaderInSection section: Int) -> UIView? {
         guard let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: SectionHeaderView.reuseIdentifier)

@@ -31,7 +31,7 @@ class RecipeTableViewCell: UITableViewCell {
         gradientLayer.colors = [UIColor.black.withAlphaComponent(0).cgColor,
                                 UIColor.black.withAlphaComponent(0.5).cgColor]
         gradientLayer.locations = [0.2, 1.1]
-        gradientLayer.frame = recipeCardView.recipeImage.bounds
+        gradientLayer.frame = contentView.bounds
         recipeCardView.recipeImage.layer.addSublayer(gradientLayer)
     }
 
@@ -48,11 +48,19 @@ class RecipeTableViewCell: UITableViewCell {
     }
 
     // MARK: - Configuration
-    func configure() {
-        recipeCardView.recipeNameLabel.text = "Green curry"
-        recipeCardView.recipeIngredientsLabel .text  = "Toffu, Thaï aubergines, green curry paste"
-        recipeCardView.recipeInfoView.ratingLabel.text = "2,5K"
-        recipeCardView.recipeInfoView.recipeTimeLabel.text = "345'"
+    func configure(with recipe: RecipeClass?) {
+        guard let recipe = recipe else {return}
+        recipeCardView.recipeNameLabel.text = recipe.label
+        if let rating = recipe.yield {
+            recipeCardView.recipeInfoView.ratingLabel.text = "\(rating)"
+        }
+        if let cookingTime = recipe.totalTime {
+            recipeCardView.recipeInfoView.recipeTimeLabel.text = "\(cookingTime)"
+        }
+        let ingredients = recipe.ingredients?.compactMap({
+            $0.text
+        }).joined(separator: ", ")
+        recipeCardView.recipeIngredientsLabel.text = ingredients
     }
 }
 // MARK: - Constraints
@@ -62,8 +70,8 @@ extension RecipeTableViewCell {
         recipeCardView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(recipeCardView)
         NSLayoutConstraint.activate([
-            recipeCardView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 2),
-            recipeCardView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            recipeCardView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            recipeCardView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -2),
             recipeCardView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             recipeCardView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
         ])

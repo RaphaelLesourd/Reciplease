@@ -69,7 +69,7 @@ extension RecipeDetailViewController: UITableViewDataSource {
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
         cell.backgroundColor = .clear
-        cell.textLabel?.text = "Ingredients"
+        cell.textLabel?.text = "Ingredient \(indexPath.row + 1)"
         return cell
     }
 }
@@ -90,6 +90,6 @@ extension RecipeDetailViewController: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return view.bounds.width * 0.7
+        return view.bounds.width * 0.9
     }
 }
