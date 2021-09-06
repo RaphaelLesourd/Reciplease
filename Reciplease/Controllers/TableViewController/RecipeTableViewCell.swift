@@ -14,7 +14,6 @@ class RecipeTableViewCell: UITableViewCell {
     // MARK: - Initializers
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-
     }
 
     required init?(coder: NSCoder) {
@@ -22,101 +21,51 @@ class RecipeTableViewCell: UITableViewCell {
     }
 
     // MARK: - Subview
-    private let recipeImage: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFill
-        imageView.layer.masksToBounds = true
-        imageView.image = UIImage(named: "EmptyStateCellImage")
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        return imageView
-    }()
+    private let recipeCardView = RecipeCardView()
 
-    private let recipeNameLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .white
-        label.font = UIFont.systemFont(ofSize: 21, weight: .bold)
-        label.numberOfLines = 2
-        label.minimumScaleFactor = 0.5
-        label.textAlignment = .left
-        return label
-    }()
-
-    private let recipeIngredientsLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .white
-        label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        label.minimumScaleFactor = 0.5
-        label.numberOfLines = 2
-        label.textAlignment = .left
-        return label
-    }()
-
-    private let titleStackView: UIStackView = {
-        let stack = UIStackView()
-        stack.axis = .vertical
-        stack.spacing = 5
-        stack.distribution = .fill
-        stack.alignment = .fill
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        return stack
-    }()
-
-    let recipeInfoView = RecipeCellInfoView()
+    private func addFadeGradientToRecipeImage() {
+        let gradientLayer = CAGradientLayer()
+        recipeCardView.recipeImage.layer.sublayers?.removeAll()
+        gradientLayer.removeFromSuperlayer()
+        gradientLayer.type = .axial
+        gradientLayer.colors = [UIColor.black.withAlphaComponent(0).cgColor,
+                                UIColor.black.withAlphaComponent(0.5).cgColor]
+        gradientLayer.locations = [0.2, 1.1]
+        gradientLayer.frame = recipeCardView.recipeImage.bounds
+        recipeCardView.recipeImage.layer.addSublayer(gradientLayer)
+    }
 
     override func layoutSubviews() {
         setRecipeImageContraints()
-        addGradient(to: contentView)
-        setTitleStackViewConstraints()
-        setRecipeInfoViewConstraints()
+        addFadeGradientToRecipeImage()
     }
 
     override func prepareForReuse() {
-        recipeNameLabel.text = nil
-        recipeIngredientsLabel .text  = nil
-        recipeInfoView.ratingLabel.text = nil
-        recipeInfoView.recipeTimeLabel.text = nil
-        imageView?.image = nil
+        recipeCardView.recipeNameLabel.text = nil
+        recipeCardView.recipeIngredientsLabel .text  = nil
+        recipeCardView.recipeInfoView.ratingLabel.text = nil
+        recipeCardView.recipeInfoView.recipeTimeLabel.text = nil
     }
 
     // MARK: - Configuration
     func configure() {
-        recipeNameLabel.text = "Green curry"
-        recipeIngredientsLabel .text  = "Toffu, Thaï aubergines, green curry paste"
-        recipeInfoView.ratingLabel.text = "2,5K"
-        recipeInfoView.recipeTimeLabel.text = "345'"
+        recipeCardView.recipeNameLabel.text = "Green curry"
+        recipeCardView.recipeIngredientsLabel .text  = "Toffu, Thaï aubergines, green curry paste"
+        recipeCardView.recipeInfoView.ratingLabel.text = "2,5K"
+        recipeCardView.recipeInfoView.recipeTimeLabel.text = "345'"
     }
 }
 // MARK: - Constraints
 extension RecipeTableViewCell {
 
     private func setRecipeImageContraints() {
-        contentView.addSubview(recipeImage)
+        recipeCardView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(recipeCardView)
         NSLayoutConstraint.activate([
-            recipeImage.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 2),
-            recipeImage.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            recipeImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            recipeImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
-        ])
-    }
-
-    private func setTitleStackViewConstraints() {
-        contentView.addSubview(titleStackView)
-        titleStackView.addArrangedSubview(recipeNameLabel)
-        titleStackView.addArrangedSubview(recipeIngredientsLabel)
-        NSLayoutConstraint.activate([
-            titleStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
-            titleStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            titleStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16)
-        ])
-    }
-
-    private func setRecipeInfoViewConstraints() {
-        recipeInfoView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(recipeInfoView)
-        NSLayoutConstraint.activate([
-            recipeInfoView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
-            recipeInfoView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            recipeInfoView.heightAnchor.constraint(equalToConstant: 30)
+            recipeCardView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 2),
+            recipeCardView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            recipeCardView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            recipeCardView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
         ])
     }
 }

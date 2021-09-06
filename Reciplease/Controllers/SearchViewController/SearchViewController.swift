@@ -8,19 +8,12 @@
 import Foundation
 import UIKit
 
-class SearchViewController: UIViewController, IngredientsDelegate {
+class SearchViewController: UIViewController {
 
     // MARK: - Properties
     private let searchView = SearchView()
-    private let ingredientManager = IngredientManager()
-    var ingredients: [String] = [] {
-        didSet {
-            ingredients = ingredients.sorted { $0 < $1 }
-            DispatchQueue.main.async {
-                self.searchView.tableView.reloadData()
-            }
-        }
-    }
+    private let ingredientDataSource = IngredientDataSource()
+
     // MARK: - Lifecycle
 
     override func loadView() {
@@ -37,7 +30,7 @@ class SearchViewController: UIViewController, IngredientsDelegate {
 
     // MARK: - Setup
     private func setDelegates() {
-        ingredientManager.ingredientDelegate = self
+        // ingredientManager.ingredientDelegate = self
         searchView.addIngredientView.textField.delegate = self
         searchView.tableView.delegate = self
         searchView.tableView.dataSource = self
@@ -48,7 +41,7 @@ class SearchViewController: UIViewController, IngredientsDelegate {
                                           action: #selector(navigateToRecipeList),
                                           for: .touchUpInside)
         searchView.addIngredientView.addIngredientButton.addTarget(self,
-                                                                   action: #selector(addIngredient),
+                                                                   action: #selector(addIngredientToList),
                                                                    for: .touchUpInside)
     }
 
@@ -58,9 +51,9 @@ class SearchViewController: UIViewController, IngredientsDelegate {
         navigationController?.pushViewController(recipeListVC, animated: true)
     }
 
-    @objc private func addIngredient() {
+    @objc private func addIngredientToList() {
         if let ingredient = searchView.addIngredientView.textField.text, !ingredient.isEmpty {
-            ingredientManager.addIngredient(for: ingredient)
+            ingredientDataSource.addIngredient(for: ingredient)
             searchView.addIngredientView.textField.text = nil
         } else {
             presentErrorAlert(with: "You forgot to enter an ingredient name.")
@@ -72,7 +65,7 @@ class SearchViewController: UIViewController, IngredientsDelegate {
                                           message: "Are you sure you want to clear the entire list?",
                                           okBtnTitle: "Yes",
                                           style: .destructive) { [weak self] in
-            self?.ingredientManager.clearIngredientList()
+            self?.ingredientDataSource.clearIngredientList()
         }
         present(alert, animated: true, completion: nil)
     }
@@ -85,15 +78,15 @@ extension SearchViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        searchView.emptyStateView.isHidden = !ingredients.isEmpty
-        return ingredients.count
+        searchView.emptyStateView.isHidden = !ingredientDataSource.ingredients.isEmpty
+        return ingredientDataSource.ingredients.count
     }
 
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
         cell.backgroundColor = .quaternarySystemFill
-        cell.textLabel?.text = ingredients[indexPath.row]
+        cell.textLabel?.text = ingredientDataSource.ingredients[indexPath.row]
         return cell
     }
 }
@@ -109,7 +102,7 @@ extension SearchViewController: UITableViewDelegate {
             return nil
         }
         view.deleteAllIngredientsButton.addTarget(self, action: #selector(clearIngredients), for: .touchUpInside)
-        return ingredients.isEmpty ? nil : view
+        return ingredientDataSource.ingredients.isEmpty ? nil : view
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -120,7 +113,7 @@ extension SearchViewController: UITableViewDelegate {
                    commit editingStyle: UITableViewCell.EditingStyle,
                    forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            ingredientManager.deleteIngredient(with: ingredients[indexPath.row])
+            ingredientDataSource.deleteIngredient(with: ingredientDataSource.ingredients[indexPath.row])
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
     }
@@ -130,7 +123,7 @@ extension SearchViewController: UITableViewDelegate {
 extension SearchViewController: UITextFieldDelegate {
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        addIngredient()
+        addIngredientToList()
         return true
     }
 }

@@ -19,7 +19,7 @@ class SearchView: UIView {
     }
 
     let addIngredientView = IngredientsFromFridgeView()
-    let searchButton = BigButton(title: "Search for recipe")
+    let searchButton = CustomButton(title: "Search for recipe")
     let emptyStateView = RecipeTableViewEmptyStateView()
 
     let tableView: UITableView = {

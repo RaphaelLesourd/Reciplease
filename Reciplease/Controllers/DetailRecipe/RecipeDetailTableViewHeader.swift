@@ -24,13 +24,19 @@ class RecipeDetailHeaderView: UITableViewHeaderFooterView {
     private let gradientLayer = CAGradientLayer()
     let recipeCardView = RecipeCardView()
 
+    override func layoutSubviews() {
+        setupRecipeCard()
+        addFadeGradientToRecipeImage()
+    }
+
     // MARK: - Fade gradient
     private func addFadeGradientToRecipeImage() {
+        recipeCardView.recipeImage.layer.sublayers?.removeAll()
         gradientLayer.removeFromSuperlayer()
         gradientLayer.type = .axial
         gradientLayer.colors = [UIColor.secondarySystemBackground.withAlphaComponent(0).cgColor,
                                 UIColor.secondarySystemBackground.cgColor]
-        gradientLayer.locations = [0.5, 0.9]
+        gradientLayer.locations = [0.5, 0.8]
         gradientLayer.frame = recipeCardView.recipeImage.bounds
         recipeCardView.recipeImage.layer.addSublayer(gradientLayer)
     }
@@ -41,14 +47,13 @@ class RecipeDetailHeaderView: UITableViewHeaderFooterView {
                                 UIColor.secondarySystemBackground.cgColor]
     }
 
-    override func layoutSubviews() {
-        setStackViewConstraints()
-        addFadeGradientToRecipeImage()
-    }
 }
 // MARK: - Constraints
 extension RecipeDetailHeaderView {
-    private func setStackViewConstraints() {
+
+    private func  setupRecipeCard() {
+        recipeCardView.recipeNameLabel.textColor = .label
+        recipeCardView.recipeIngredientsLabel.textColor = .secondaryLabel
         recipeCardView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(recipeCardView)
         NSLayoutConstraint.activate([

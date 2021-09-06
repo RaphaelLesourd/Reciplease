@@ -42,8 +42,8 @@ class IngredientsFromFridgeView: UIView {
         return label
     }()
 
-    let addIngredientButton: BigButton = {
-        let button = BigButton(color: .systemGreen, title: "ADD")
+    let addIngredientButton: CustomButton = {
+        let button = CustomButton(color: .systemGreen, title: "ADD")
         button.translatesAutoresizingMaskIntoConstraints = false
         button.widthAnchor.constraint(equalToConstant: 50).isActive = true
         return button
@@ -92,7 +92,7 @@ class IngredientsFromFridgeView: UIView {
 
     override func layoutSubviews() {
         backgroundColor = .secondarySystemGroupedBackground
-        addShadow(opacity: 0.2)
+        addShadow(opacity: 0.1)
         setTextFieldStackView()
         setMainStackViewConstraints()
     }

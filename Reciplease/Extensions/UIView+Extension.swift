@@ -23,11 +23,14 @@ extension UIView {
     /// - Parameters:
     ///   - view: View to add the gradient to.
     ///   - color: Color of the gradient ending.
-    func addGradient(to view: UIView, color: UIColor = .black) {
+    func addGradient(to view: UIView,
+                     color: UIColor = .black,
+                     topLocation: NSNumber = 0.4,
+                     bottomLocation: NSNumber = 1) {
         let gradientLayer = CAGradientLayer()
         gradientLayer.type = .axial
         gradientLayer.colors = [color.withAlphaComponent(0).cgColor, color.withAlphaComponent(0.7).cgColor]
-        gradientLayer.locations = [0.4, 1]
+        gradientLayer.locations = [topLocation, bottomLocation]
         gradientLayer.frame = view.bounds
         view.layer.addSublayer(gradientLayer)
     }

@@ -72,7 +72,7 @@ class RecipeInfoView: UIView {
     }
 }
 // MARK: - Constraints
-extension RecipeCellInfoView {
+extension RecipeInfoView {
 
     private func setRatingStackView() {
         ratingStackView.addArrangedSubview(ratingLabel)
