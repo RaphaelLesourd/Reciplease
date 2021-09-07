@@ -1,19 +1,8 @@
 {
   "images" : [
     {
-      "filename" : "noun_onion_3925294.png",
-      "idiom" : "universal",
-      "scale" : "1x"
-    },
-    {
-      "filename" : "noun_onion_3925294@2x.png",
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "filename" : "noun_onion_3925294@3x.png",
-      "idiom" : "universal",
-      "scale" : "3x"
+      "filename" : "noun_onion_3925294-2.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {
@@ -21,6 +10,7 @@
     "version" : 1
   },
   "properties" : {
+    "auto-scaling" : "auto",
     "template-rendering-intent" : "template"
   }
 }

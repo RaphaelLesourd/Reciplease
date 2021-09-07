@@ -7,13 +7,8 @@
 
 import Foundation
 
-protocol ErrorDelegate: AnyObject {
-    func presentErrorAlert(with message: String)
-}
-
 class IngredientDataSource {
 
-    weak var errorDelegate: ErrorDelegate?
     var ingredients: [String] = [] {
         didSet {
             ingredients = ingredients.sorted { $0 < $1 }
@@ -21,18 +16,21 @@ class IngredientDataSource {
         }
     }
 
-    func addIngredient(for ingredientsName: String) {
+    func addIngredient(for ingredientsName: String, completion: (IngredientError?) -> Void) {
+        guard !ingredientsName.isEmpty else {
+            completion(.noName)
+            return
+        }
         let result = ingredientsName.components(separatedBy: ",")
         result.forEach {
-            guard !$0.isEmpty else {
-                errorDelegate?.presentErrorAlert(with: "You did not enter any ingredient!")
-                return
-            }
             guard !ingredientAlreadyExist(for: $0.capitalized) else {
-                errorDelegate?.presentErrorAlert(with: "\($0.capitalized) already in your list!")
+                completion(.alreadyExist(ingredientName: $0))
                 return
             }
-            ingredients.append($0.capitalized)
+            if !$0.isEmpty {
+                ingredients.append($0.capitalized)
+            }
+            completion(nil)
         }
     }
 

@@ -37,6 +37,8 @@
 		8134686626E6579400A2DDCA /* Recipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8134686526E6579400A2DDCA /* Recipe.swift */; };
 		8134686926E66EBF00A2DDCA /* RecipeDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8134686826E66EBF00A2DDCA /* RecipeDataSource.swift */; };
 		8134686B26E6709300A2DDCA /* ApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8134686A26E6709300A2DDCA /* ApiClient.swift */; };
+		8134686E26E717CF00A2DDCA /* RecipeClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8134686D26E717CF00A2DDCA /* RecipeClient.swift */; };
+		8134687026E72B1900A2DDCA /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8134686F26E72B1900A2DDCA /* Errors.swift */; };
 		AE13AEB475EF063792C24C27 /* Pods_Reciplease.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD1F4DEE8121F25939D8D587 /* Pods_Reciplease.framework */; };
 /* End PBXBuildFile section */
 
@@ -98,6 +100,8 @@
 		8134686526E6579400A2DDCA /* Recipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recipe.swift; sourceTree = "<group>"; };
 		8134686826E66EBF00A2DDCA /* RecipeDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeDataSource.swift; sourceTree = "<group>"; };
 		8134686A26E6709300A2DDCA /* ApiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiClient.swift; sourceTree = "<group>"; };
+		8134686D26E717CF00A2DDCA /* RecipeClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeClient.swift; sourceTree = "<group>"; };
+		8134686F26E72B1900A2DDCA /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		9866449E2E8CD30EAE52567A /* Pods-Reciplease-RecipleaseUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Reciplease-RecipleaseUITests.debug.xcconfig"; path = "Target Support Files/Pods-Reciplease-RecipleaseUITests/Pods-Reciplease-RecipleaseUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		CD1F4DEE8121F25939D8D587 /* Pods_Reciplease.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Reciplease.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC16C1B37C03473E2905A3F7 /* Pods-Reciplease.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Reciplease.debug.xcconfig"; path = "Target Support Files/Pods-Reciplease/Pods-Reciplease.debug.xcconfig"; sourceTree = "<group>"; };
@@ -256,14 +260,24 @@
 			path = DetailRecipe;
 			sourceTree = "<group>";
 		};
-		813AA2EE26E3EB5200C48DAC /* Model */ = {
+		8134686C26E7165B00A2DDCA /* Recipe */ = {
 			isa = PBXGroup;
 			children = (
-				8134686A26E6709300A2DDCA /* ApiClient.swift */,
-				8134684E26E4E8C800A2DDCA /* IngredientsDataSource.swift */,
 				8127E87726E3E8E5004B1684 /* Reciplease.xcdatamodeld */,
 				8134686526E6579400A2DDCA /* Recipe.swift */,
 				8134686826E66EBF00A2DDCA /* RecipeDataSource.swift */,
+				8134686D26E717CF00A2DDCA /* RecipeClient.swift */,
+			);
+			path = Recipe;
+			sourceTree = "<group>";
+		};
+		813AA2EE26E3EB5200C48DAC /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				8134686F26E72B1900A2DDCA /* Errors.swift */,
+				8134686A26E6709300A2DDCA /* ApiClient.swift */,
+				8134684E26E4E8C800A2DDCA /* IngredientsDataSource.swift */,
+				8134686C26E7165B00A2DDCA /* Recipe */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -589,8 +603,10 @@
 				8134685526E4F67100A2DDCA /* IngredientsFromFridgeview.swift in Sources */,
 				8134684B26E4C4A100A2DDCA /* Constants.swift in Sources */,
 				8134683B26E47E5C00A2DDCA /* RecipeTableViewCell.swift in Sources */,
+				8134686E26E717CF00A2DDCA /* RecipeClient.swift in Sources */,
 				8134685A26E518EB00A2DDCA /* RecipeTableViewHeader.swift in Sources */,
 				8134685F26E5688000A2DDCA /* RecipeCardView.swift in Sources */,
+				8134687026E72B1900A2DDCA /* Errors.swift in Sources */,
 				8134686926E66EBF00A2DDCA /* RecipeDataSource.swift in Sources */,
 				8134684326E4873500A2DDCA /* SearchView.swift in Sources */,
 				8134685D26E555DF00A2DDCA /* RecipeDetailView.swift in Sources */,

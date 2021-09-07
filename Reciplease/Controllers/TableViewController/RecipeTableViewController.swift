@@ -14,12 +14,12 @@ class RecipeTableViewController: UITableViewController {
     private var recipeListType: RecipeListType
     private let recipeListEmptyStateView = RecipeTableViewEmptyStateView()
     private let recipeDataSource = RecipeDataSource()
-    private var recipes: [RecipeClass] = [] {
+    private var recipes: [Hit] = [] {
         didSet {
             filteredRecipes = recipes
         }
     }
-    private var filteredRecipes: [RecipeClass] = [] {
+    private var filteredRecipes: [Hit] = [] {
         didSet {
             tableView.reloadData()
         }
@@ -29,6 +29,7 @@ class RecipeTableViewController: UITableViewController {
     // MARK: - Initializers
     init(recipeListType: RecipeListType) {
         self.recipeListType = recipeListType
+        recipes = recipeDataSource.recipes
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -68,8 +69,8 @@ class RecipeTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        emptyStateView.isHidden = !filteredRecipes.isEmpty
-        return filteredRecipes.count
+        emptyStateView.isHidden = true // !filteredRecipes.isEmpty
+        return 2 // filteredRecipes.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -79,8 +80,8 @@ class RecipeTableViewController: UITableViewController {
         ) as? RecipeTableViewCell else {
             return UITableViewCell()
         }
-        let recipes = filteredRecipes[indexPath.row]
-        cell.configure(with: recipes)
+//        let recipes = filteredRecipes[indexPath.row].recipe
+//        cell.configure(with: recipes)
         return cell
     }
 
@@ -130,7 +131,7 @@ extension RecipeTableViewController: UISearchResultsUpdating {
             filteredRecipes = recipes
         } else {
             filteredRecipes = recipes.filter({
-                guard let recipeName = $0.label else { return false }
+                guard let recipeName = $0.recipe?.label else { return false }
                 return recipeName.contains(searchText)
             })
         }

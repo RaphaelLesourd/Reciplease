@@ -21,12 +21,34 @@ class IngredientsTestCase: XCTestCase {
         sut = nil
     }
 
+    // MARK: - Errors
+    func test_givenAnIngredienThatExist_WhenAddingIngredient_ThenAlreadyExistError() {
+        // Given
+        let string = "lemon"
+        // When
+        sut?.addIngredient(for: string) { _ in }
+        sut?.addIngredient(for: string) { error in
+            // Then
+            XCTAssertEqual(error?.description, IngredientError.alreadyExist(ingredientName: string).description)
+        }
+    }
+
+    func test_givenAnEmptyString_WhenAddingIngredient_ThenNoNameError() {
+        // Given
+        let string = ""
+        // When
+        sut?.addIngredient(for: string) { error in
+            // Then
+            XCTAssertEqual(error?.description, IngredientError.noName.description)
+        }
+    }
+
     // MARK: - Success
     func test_givenStringOfIngredientsSeparatedByComma_WhenAdding_ThenArrayOfIngredients() {
         // Given
         let string = "lemon,carrots,onions,cheese"
         // When
-        sut?.addIngredient(for: string)
+        sut?.addIngredient(for: string) { _ in }
         // Then
         XCTAssertEqual(sut?.ingredients, ["Carrots", "Cheese", "Lemon", "Onions"])
     }
@@ -35,7 +57,7 @@ class IngredientsTestCase: XCTestCase {
         // Given
         let string = "lemon,carrots,,onions,cheese,"
         // When
-        sut?.addIngredient(for: string)
+        sut?.addIngredient(for: string) { _ in }
         // Then
         XCTAssertEqual(sut?.ingredients, ["Carrots", "Cheese", "Lemon", "Onions"])
     }

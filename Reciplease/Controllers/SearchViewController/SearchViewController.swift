@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class SearchViewController: UIViewController, ErrorDelegate {
+class SearchViewController: UIViewController {
 
     // MARK: - Properties
     private let searchView = SearchView()
@@ -30,7 +30,6 @@ class SearchViewController: UIViewController, ErrorDelegate {
 
     // MARK: - Setup
     private func setDelegates() {
-        ingredientDataSource.errorDelegate = self
         searchView.addIngredientView.textField.delegate = self
         searchView.tableView.delegate = self
         searchView.tableView.dataSource = self
@@ -53,9 +52,13 @@ class SearchViewController: UIViewController, ErrorDelegate {
 
     @objc private func addIngredientToList() {
         if let ingredient = searchView.addIngredientView.textField.text {
-            ingredientDataSource.addIngredient(for: ingredient)
-            searchView.addIngredientView.textField.text = nil
-            searchView.tableView.reloadData()
+            ingredientDataSource.addIngredient(for: ingredient) { error in
+                if let error = error {
+                    return presentErrorAlert(with: error.description)
+                }
+                searchView.addIngredientView.textField.text = nil
+                searchView.tableView.reloadData()
+            }
         }
     }
 
