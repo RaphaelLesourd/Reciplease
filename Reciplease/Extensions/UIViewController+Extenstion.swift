@@ -56,4 +56,16 @@ extension UIViewController {
     @objc func dismissKeyboard() {
             view.endEditing(true)
     }
+
+    // MARK: - Activity Indicator
+    func showIndicator(_ indicator: UIActivityIndicatorView) {
+        let barButton = UIBarButtonItem(customView: indicator)
+        self.navigationItem.setRightBarButton(barButton, animated: true)
+        indicator.startAnimating()
+    }
+
+    func hideIndicator(_ indicator: UIActivityIndicatorView) {
+        indicator.stopAnimating()
+        navigationItem.setRightBarButton(nil, animated: true)
+    }
 }

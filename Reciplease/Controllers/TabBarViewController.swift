@@ -29,8 +29,7 @@ class TabBarViewController: UITabBarController {
 
         let favoriteIconImage = UIImage(systemName: "star")!
         let recipeTableViewController = createController(
-            for: RecipeTableViewController(recipeListType: .favorite),
-
+            for: RecipeTableViewController(recipeListType: .favorite, recipes: []),
             title: "Favorite",
             image: favoriteIconImage)
 

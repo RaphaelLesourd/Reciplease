@@ -96,9 +96,7 @@ extension SearchView {
         addSubview(emptyStateView)
         NSLayoutConstraint.activate([
             emptyStateView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            emptyStateView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            emptyStateView.heightAnchor.constraint(equalToConstant: 100),
-            emptyStateView.widthAnchor.constraint(equalToConstant: 150)
+            emptyStateView.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }
 }

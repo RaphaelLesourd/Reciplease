@@ -29,8 +29,8 @@ class RecipeTableViewCell: UITableViewCell {
         gradientLayer.removeFromSuperlayer()
         gradientLayer.type = .axial
         gradientLayer.colors = [UIColor.black.withAlphaComponent(0).cgColor,
-                                UIColor.black.withAlphaComponent(0.5).cgColor]
-        gradientLayer.locations = [0.2, 1.1]
+                                UIColor.black.withAlphaComponent(0.7).cgColor]
+        gradientLayer.locations = [0.2, 1]
         gradientLayer.frame = contentView.bounds
         recipeCardView.recipeImage.layer.addSublayer(gradientLayer)
     }
@@ -45,22 +45,37 @@ class RecipeTableViewCell: UITableViewCell {
         recipeCardView.recipeIngredientsLabel .text  = nil
         recipeCardView.recipeInfoView.ratingLabel.text = nil
         recipeCardView.recipeInfoView.recipeTimeLabel.text = nil
+        recipeCardView.recipeImage.image = nil
     }
 
     // MARK: - Configuration
     func configure(with recipe: RecipeClass?) {
         guard let recipe = recipe else {return}
+
         recipeCardView.recipeNameLabel.text = recipe.label
-        if let rating = recipe.yield {
+
+        if let rating = recipe.yield, rating > 0 {
             recipeCardView.recipeInfoView.ratingLabel.text = "\(rating)"
+        } else {
+            recipeCardView.recipeInfoView.ratingStackView.isHidden = true
         }
-        if let cookingTime = recipe.totalTime {
-            recipeCardView.recipeInfoView.recipeTimeLabel.text = "\(cookingTime)"
+
+        if let cookingTime = recipe.totalTime, cookingTime > 0 {
+            recipeCardView.recipeInfoView.recipeTimeLabel.text = "\(cookingTime)'"
+        } else {
+            recipeCardView.recipeInfoView.recipeTimeStackView.isHidden = true
         }
-        let ingredients = recipe.ingredients?.compactMap({
-            $0.text
-        }).joined(separator: ", ")
+        
+        let ingredients = recipe.ingredientLines?.compactMap({ $0 }).joined(separator: ", ")
         recipeCardView.recipeIngredientsLabel.text = ingredients
+
+        guard let imageURL = recipe.image, let recipeImageURL = URL(string: imageURL) else {return}
+        DispatchQueue.global().async {
+            guard let data = try? Data(contentsOf: recipeImageURL) else {return}
+            DispatchQueue.main.async {
+                self.recipeCardView.recipeImage.image = UIImage(data: data)
+            }
+        }
     }
 }
 // MARK: - Constraints

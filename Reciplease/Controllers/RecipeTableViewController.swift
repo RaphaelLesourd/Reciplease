@@ -11,15 +11,11 @@ class RecipeTableViewController: UITableViewController {
 
     // MARK: - Properties
     private let cellIndentifier = RecipeTableViewCell.reuseIdentifier
-    private var recipeListType: RecipeListType
+    private var recipeListType: RecipeListType = .favorite
     private let recipeListEmptyStateView = RecipeTableViewEmptyStateView()
-    private let recipeDataSource = RecipeDataSource()
-    private var recipes: [Hit] = [] {
-        didSet {
-            filteredRecipes = recipes
-        }
-    }
-    private var filteredRecipes: [Hit] = [] {
+    private let recipeClient = RecipeClient()
+    private var recipes: [Hit]
+    private var filteredRecipes: [Hit] {
         didSet {
             tableView.reloadData()
         }
@@ -27,9 +23,10 @@ class RecipeTableViewController: UITableViewController {
     let emptyStateView = RecipeTableViewEmptyStateView()
 
     // MARK: - Initializers
-    init(recipeListType: RecipeListType) {
+    init(recipeListType: RecipeListType, recipes: [Hit]) {
         self.recipeListType = recipeListType
-        recipes = recipeDataSource.recipes
+        self.recipes = recipes
+        self.filteredRecipes = recipes
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -69,25 +66,25 @@ class RecipeTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        emptyStateView.isHidden = true // !filteredRecipes.isEmpty
-        return 2 // filteredRecipes.count
+        emptyStateView.isHidden = !filteredRecipes.isEmpty
+        return filteredRecipes.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: cellIndentifier,
-            for: indexPath
-        ) as? RecipeTableViewCell else {
-            return UITableViewCell()
-        }
-//        let recipes = filteredRecipes[indexPath.row].recipe
-//        cell.configure(with: recipes)
+            for: indexPath) as? RecipeTableViewCell else { return UITableViewCell() }
+        let recipes = filteredRecipes[indexPath.row].recipe
+        cell.configure(with: recipes)
         return cell
     }
 
     // MARK: - TableView Delegate
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let recipeDetailVC = RecipeDetailViewController()
+        guard let selectedRecipe = filteredRecipes[indexPath.row].recipe else {
+            return presentErrorAlert(with: "Unable to view this recipe")
+        }
+        let recipeDetailVC = RecipeDetailViewController(recipe: selectedRecipe)
         navigationController?.pushViewController(recipeDetailVC, animated: true)
     }
 
@@ -145,8 +142,7 @@ extension RecipeTableViewController {
         view.addSubview(emptyStateView)
         NSLayoutConstraint.activate([
             emptyStateView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 100),
-            emptyStateView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            emptyStateView.heightAnchor.constraint(equalToConstant: 150)
+            emptyStateView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
     }
 }

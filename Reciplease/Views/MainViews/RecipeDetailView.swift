@@ -27,6 +27,7 @@ class RecipeDetailView: UIView {
         table.backgroundColor = .clear
         table.separatorStyle = .none
         table.allowsSelection = false
+        table.estimatedRowHeight = 50
         table.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         table.register(RecipeDetailHeaderView.self,
                        forHeaderFooterViewReuseIdentifier: RecipeDetailHeaderView.reuseIdentifier)

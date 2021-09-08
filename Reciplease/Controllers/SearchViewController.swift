@@ -12,7 +12,9 @@ class SearchViewController: UIViewController {
 
     // MARK: - Properties
     private let searchView = SearchView()
-    private let ingredientDataSource = IngredientDataSource()
+    private let ingredientManager = IngredientManager()
+    private let recipeClient = RecipeClient()
+    private let activityIndicator = UIActivityIndicatorView(style: .medium)
 
     // MARK: - Lifecycle
 
@@ -26,6 +28,7 @@ class SearchViewController: UIViewController {
         setDelegates()
         addKeyboardDismissGesture()
         configureButtonTargets()
+        activityIndicator.hidesWhenStopped = true
     }
 
     // MARK: - Setup
@@ -37,7 +40,7 @@ class SearchViewController: UIViewController {
 
     private func configureButtonTargets() {
         searchView.searchButton.addTarget(self,
-                                          action: #selector(navigateToRecipeList),
+                                          action: #selector(getRecipesFromApi),
                                           for: .touchUpInside)
         searchView.addIngredientView.addIngredientButton.addTarget(self,
                                                                    action: #selector(addIngredientToList),
@@ -45,18 +48,14 @@ class SearchViewController: UIViewController {
     }
 
     // MARK: - Target
-    @objc private func navigateToRecipeList() {
-        let recipeListVC = RecipeTableViewController(recipeListType: .search)
-        navigationController?.pushViewController(recipeListVC, animated: true)
-    }
-
     @objc private func addIngredientToList() {
-        if let ingredient = searchView.addIngredientView.textField.text {
-            ingredientDataSource.addIngredient(for: ingredient) { error in
+        if let ingredientName = searchView.addIngredientView.textField.text {
+            ingredientManager.addIngredient(with: ingredientName) { error in
                 if let error = error {
                     return presentErrorAlert(with: error.description)
                 }
                 searchView.addIngredientView.textField.text = nil
+                dismissKeyboard()
                 searchView.tableView.reloadData()
             }
         }
@@ -68,12 +67,38 @@ class SearchViewController: UIViewController {
                                           okBtnTitle: "Yes",
                                           style: .destructive) { [weak self] in
             guard let self = self else {return}
-            self.ingredientDataSource.clearIngredientList()
+            self.ingredientManager.clearIngredientList()
             self.searchView.tableView.reloadData()
         }
         present(alert, animated: true, completion: nil)
     }
+
+    // MARK: - Api Call
+    @objc private func getRecipesFromApi() {
+        showIndicator(activityIndicator)
+        recipeClient.getRecipes(with: ingredientManager.ingredients) { [weak self] result in
+            guard let self = self else {return}
+
+            self.hideIndicator(self.activityIndicator)
+            switch result {
+            case .success(let recipes):
+                    guard let recipes = recipes.hits else {return}
+                    self.navigateToRecipeList(with: recipes)
+            case .failure(let error):
+                    self.presentErrorAlert(with: error.description)
+            }
+        }
+    }
+
+    // MARK: - Navigation
+    private func navigateToRecipeList(with recipes: [Hit]) {
+        let recipeListVC = RecipeTableViewController(recipeListType: .search,
+                                                     recipes: recipes)
+        navigationController?.pushViewController(recipeListVC, animated: true)
+    }
+
 }
+
 // MARK: - TableView datasource
 extension SearchViewController: UITableViewDataSource {
 
@@ -82,15 +107,14 @@ extension SearchViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        searchView.emptyStateView.isHidden = !ingredientDataSource.ingredients.isEmpty
-        return ingredientDataSource.ingredients.count
+        searchView.emptyStateView.isHidden = !ingredientManager.ingredients.isEmpty
+        return ingredientManager.ingredients.count
     }
 
-    func tableView(_ tableView: UITableView,
-                   cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
         cell.backgroundColor = .quaternarySystemFill
-        cell.textLabel?.text = ingredientDataSource.ingredients[indexPath.row]
+        cell.textLabel?.text = ingredientManager.ingredients[indexPath.row]
         return cell
     }
 }
@@ -103,27 +127,26 @@ extension SearchViewController: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView,
-                   viewForHeaderInSection section: Int) -> UIView? {
-        guard let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: SectionHeaderView.reuseIdentifier)
-                as? SectionHeaderView
-        else {
-            return nil
-        }
-        view.deleteAllIngredientsButton.addTarget(self, action: #selector(clearIngredients), for: .touchUpInside)
-        return ingredientDataSource.ingredients.isEmpty ? nil : view
-    }
-
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 60
-    }
-
-    func tableView(_ tableView: UITableView,
                    commit editingStyle: UITableViewCell.EditingStyle,
                    forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            ingredientDataSource.deleteIngredient(with: ingredientDataSource.ingredients[indexPath.row])
+            ingredientManager.deleteIngredient(with: ingredientManager.ingredients[indexPath.row])
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
+    }
+
+    // TableView header
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard let view = tableView
+                .dequeueReusableHeaderFooterView(withIdentifier: SectionHeaderView.reuseIdentifier)
+                as? SectionHeaderView
+        else { return nil }
+        view.deleteAllIngredientsButton.addTarget(self, action: #selector(clearIngredients), for: .touchUpInside)
+        return ingredientManager.ingredients.isEmpty ? nil : view
+    }
+
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 50
     }
 }
 

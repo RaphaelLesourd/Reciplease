@@ -15,6 +15,18 @@ class RecipeDetailViewController: UIViewController {
     private let favoriteIcon = UIImage(systemName: "star.fill")
     private var isFavorite = true
     private var addToFavoriteButton: UIBarButtonItem?
+    private var recipe: RecipeClass
+    private var headerView = RecipeDetailHeaderView()
+
+    // MARK: - Intializers
+    init(recipe: RecipeClass) {
+        self.recipe = recipe
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     // MARK: - Lifecycle
     override func loadView() {
@@ -62,14 +74,15 @@ extension RecipeDetailViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return recipe.ingredientLines?.count ?? 0
     }
 
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
         cell.backgroundColor = .clear
-        cell.textLabel?.text = "Ingredient \(indexPath.row + 1)"
+        cell.textLabel?.numberOfLines = 0
+        cell.textLabel?.text = recipe.ingredientLines?[indexPath.row]
         return cell
     }
 }
@@ -84,7 +97,7 @@ extension RecipeDetailViewController: UITableViewDelegate {
         else {
             return nil
         }
-        view.recipeCardView.recipeNameLabel.text = "Green Curry"
+        view.recipeCardView.recipeNameLabel.text = recipe.label
         view.recipeCardView.recipeIngredientsLabel.text = "Ingredients"
         return view
     }

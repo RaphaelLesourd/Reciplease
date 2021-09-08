@@ -9,11 +9,11 @@ import XCTest
 
 class IngredientsTestCase: XCTestCase {
 
-    var sut: IngredientDataSource?
+    var sut: IngredientManager?
 
     override func setUp() {
         super.setUp()
-        sut = IngredientDataSource()
+        sut = IngredientManager()
     }
 
     override func tearDown() {
@@ -26,8 +26,8 @@ class IngredientsTestCase: XCTestCase {
         // Given
         let string = "lemon"
         // When
-        sut?.addIngredient(for: string) { _ in }
-        sut?.addIngredient(for: string) { error in
+        sut?.addIngredient(with: string) { _ in }
+        sut?.addIngredient(with: string) { error in
             // Then
             XCTAssertEqual(error?.description, IngredientError.alreadyExist(ingredientName: string).description)
         }
@@ -37,7 +37,7 @@ class IngredientsTestCase: XCTestCase {
         // Given
         let string = ""
         // When
-        sut?.addIngredient(for: string) { error in
+        sut?.addIngredient(with: string) { error in
             // Then
             XCTAssertEqual(error?.description, IngredientError.noName.description)
         }
@@ -48,7 +48,7 @@ class IngredientsTestCase: XCTestCase {
         // Given
         let string = "lemon,carrots,onions,cheese"
         // When
-        sut?.addIngredient(for: string) { _ in }
+        sut?.addIngredient(with: string) { _ in }
         // Then
         XCTAssertEqual(sut?.ingredients, ["Carrots", "Cheese", "Lemon", "Onions"])
     }
@@ -57,7 +57,7 @@ class IngredientsTestCase: XCTestCase {
         // Given
         let string = "lemon,carrots,,onions,cheese,"
         // When
-        sut?.addIngredient(for: string) { _ in }
+        sut?.addIngredient(with: string) { _ in }
         // Then
         XCTAssertEqual(sut?.ingredients, ["Carrots", "Cheese", "Lemon", "Onions"])
     }
