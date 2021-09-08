@@ -17,6 +17,7 @@ class RecipeDetailViewController: UIViewController {
     private var addToFavoriteButton: UIBarButtonItem?
     private var recipe: RecipeClass
     private var headerView = RecipeDetailHeaderView()
+    private var imageClient = ImageClient()
 
     // MARK: - Intializers
     init(recipe: RecipeClass) {
@@ -82,7 +83,10 @@ extension RecipeDetailViewController: UITableViewDataSource {
         let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
         cell.backgroundColor = .clear
         cell.textLabel?.numberOfLines = 0
-        cell.textLabel?.text = recipe.ingredientLines?[indexPath.row]
+        let ingredient = recipe.ingredientLines?[indexPath.row]
+        if let ingredient = ingredient {
+            cell.textLabel?.text = "• \(ingredient)"
+        }
         return cell
     }
 }
@@ -92,13 +96,33 @@ extension RecipeDetailViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView,
                    viewForHeaderInSection section: Int) -> UIView? {
-        guard let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: RecipeDetailHeaderView.reuseIdentifier)
-                as? RecipeDetailHeaderView
-        else {
-            return nil
+        guard let view = tableView.dequeueReusableHeaderFooterView(
+                withIdentifier: RecipeDetailHeaderView.reuseIdentifier) as? RecipeDetailHeaderView
+        else { return nil }
+
+        if let rating = recipe.yield, rating > 0 {
+            view.recipeCardView.recipeInfoView.ratingLabel.text = "\(rating)"
+        } else {
+            view.recipeCardView.recipeInfoView.ratingStackView.isHidden = true
         }
+
+        if let cookingTime = recipe.totalTime, cookingTime > 0 {
+            view.recipeCardView.recipeInfoView.recipeTimeLabel.text = "\(cookingTime)'"
+        } else {
+            view.recipeCardView.recipeInfoView.recipeTimeStackView.isHidden = true
+        }
+
         view.recipeCardView.recipeNameLabel.text = recipe.label
         view.recipeCardView.recipeIngredientsLabel.text = "Ingredients"
+
+        imageClient.getImage(with: recipe.image) { result in
+            switch result {
+            case .success(let image):
+                    view.recipeCardView.recipeImage.image = image
+            case .failure(_):
+                    view.recipeCardView.recipeImage.image = UIImage(named: "EmptyStateCellImage")
+            }
+        }
         return view
     }
 

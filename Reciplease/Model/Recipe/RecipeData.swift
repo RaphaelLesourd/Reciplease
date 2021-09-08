@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: - Recipe
-struct Recipe: Decodable {
+struct RecipeData: Decodable {
     let hits: [Hit]?
 }
 

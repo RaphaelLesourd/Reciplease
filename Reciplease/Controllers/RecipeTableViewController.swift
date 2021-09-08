@@ -13,7 +13,6 @@ class RecipeTableViewController: UITableViewController {
     private let cellIndentifier = RecipeTableViewCell.reuseIdentifier
     private var recipeListType: RecipeListType = .favorite
     private let recipeListEmptyStateView = RecipeTableViewEmptyStateView()
-    private let recipeClient = RecipeClient()
     private var recipes: [Hit]
     private var filteredRecipes: [Hit] {
         didSet {
@@ -47,7 +46,7 @@ class RecipeTableViewController: UITableViewController {
     // MARK: - Setup
     private func configureTableView() {
         self.tableView.register(RecipeTableViewCell.self, forCellReuseIdentifier: cellIndentifier)
-        self.tableView.rowHeight = 170
+        self.tableView.rowHeight = 250
         self.tableView.separatorStyle = .none
     }
 
@@ -56,6 +55,7 @@ class RecipeTableViewController: UITableViewController {
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = true
         searchController.searchBar.placeholder = "Search for recipes"
+        searchController.automaticallyShowsSearchResultsController = false
         self.navigationItem.searchController = searchController
         self.definesPresentationContext = true
     }
@@ -89,7 +89,8 @@ class RecipeTableViewController: UITableViewController {
     }
 
     // ContextMenu
-    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration {
+    override func tableView(_ tableView: UITableView,
+                            trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration {
         let addAction = self.addToFavoriteAction(forRowAtIndexPath: indexPath)
         let removeAction = self.removeFromFavoriteAction(forRowAtIndexPath: indexPath)
         let action = recipeListType == .favorite ? removeAction : addAction

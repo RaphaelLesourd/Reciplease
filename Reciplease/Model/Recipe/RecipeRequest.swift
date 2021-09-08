@@ -7,17 +7,17 @@
 
 import Foundation
 
-class RecipeClient {
+class RecipeRequest {
 
     let apiClient = ApiClient()
 
-    func getRecipes(with ingredientList: [String], completionHandler: @escaping (Result<Recipe, ApiError>) -> Void) {
+    func getRecipes(with ingredientList: [String], completion: @escaping (Result<RecipeData, ApiError>) -> Void) {
         guard !ingredientList.isEmpty else {
-            return completionHandler(.failure(.decodeError))
+            return completion(.failure(.noInputData))
         }
         let apiURL = createRecipeRequestUrl(with: ingredientList)
-        apiClient.getData(with: apiURL) { (result: Result<Recipe, ApiError>) in
-            completionHandler(result)
+        apiClient.getData(with: apiURL) { (result: Result<RecipeData, ApiError>) in
+            completion(result)
         }
     }
 
@@ -28,12 +28,12 @@ class RecipeClient {
         urlComponents.host = "api.edamam.com"
         urlComponents.path = "/api/recipes/v2"
         urlComponents.queryItems = [
-            URLQueryItem(name: "q", value: ingredientList.joined(separator: ", ")),
+            URLQueryItem(name: "q", value: ingredientList.joined(separator: ",")),
             URLQueryItem(name: "type", value: "public"),
             URLQueryItem(name: "app_id", value: "51f9801c"),
             URLQueryItem(name: "app_key", value: "32c858b39ceb0df2fadf69b33d49e09c"),
             URLQueryItem(name: "from", value: "0"),
-            URLQueryItem(name: "to", value: "50")
+            URLQueryItem(name: "to", value: "10")
         ]
         return urlComponents.url
     }

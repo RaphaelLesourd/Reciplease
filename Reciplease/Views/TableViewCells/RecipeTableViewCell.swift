@@ -6,10 +6,12 @@
 //
 
 import UIKit
+import Alamofire
 
 class RecipeTableViewCell: UITableViewCell {
 
     static let reuseIdentifier = "recipeCell"
+    private let imageClient = ImageClient()
 
     // MARK: - Initializers
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -29,7 +31,7 @@ class RecipeTableViewCell: UITableViewCell {
         gradientLayer.removeFromSuperlayer()
         gradientLayer.type = .axial
         gradientLayer.colors = [UIColor.black.withAlphaComponent(0).cgColor,
-                                UIColor.black.withAlphaComponent(0.7).cgColor]
+                                UIColor.black.withAlphaComponent(0.5).cgColor]
         gradientLayer.locations = [0.2, 1]
         gradientLayer.frame = contentView.bounds
         recipeCardView.recipeImage.layer.addSublayer(gradientLayer)
@@ -45,7 +47,7 @@ class RecipeTableViewCell: UITableViewCell {
         recipeCardView.recipeIngredientsLabel .text  = nil
         recipeCardView.recipeInfoView.ratingLabel.text = nil
         recipeCardView.recipeInfoView.recipeTimeLabel.text = nil
-        recipeCardView.recipeImage.image = nil
+    //    recipeCardView.recipeImage.image = nil
     }
 
     // MARK: - Configuration
@@ -65,15 +67,17 @@ class RecipeTableViewCell: UITableViewCell {
         } else {
             recipeCardView.recipeInfoView.recipeTimeStackView.isHidden = true
         }
-        
+
         let ingredients = recipe.ingredientLines?.compactMap({ $0 }).joined(separator: ", ")
         recipeCardView.recipeIngredientsLabel.text = ingredients
 
-        guard let imageURL = recipe.image, let recipeImageURL = URL(string: imageURL) else {return}
-        DispatchQueue.global().async {
-            guard let data = try? Data(contentsOf: recipeImageURL) else {return}
-            DispatchQueue.main.async {
-                self.recipeCardView.recipeImage.image = UIImage(data: data)
+        imageClient.getImage(with: recipe.image) { [weak self] result in
+            guard let self = self else {return}
+            switch result {
+            case .success(let image):
+                    self.recipeCardView.recipeImage.image = image
+            case .failure(_):
+                    self.recipeCardView.recipeImage.image = UIImage(named: "EmptyStateCellImage")
             }
         }
     }

@@ -13,7 +13,7 @@ class SearchViewController: UIViewController {
     // MARK: - Properties
     private let searchView = SearchView()
     private let ingredientManager = IngredientManager()
-    private let recipeClient = RecipeClient()
+    private let recipeClient = RecipeRequest()
     private let activityIndicator = UIActivityIndicatorView(style: .medium)
 
     // MARK: - Lifecycle
@@ -83,6 +83,9 @@ class SearchViewController: UIViewController {
             switch result {
             case .success(let recipes):
                     guard let recipes = recipes.hits else {return}
+                    guard !recipes.isEmpty else {
+                        return self.presentErrorAlert(with: ApiError.noInputData.description)
+                    }
                     self.navigateToRecipeList(with: recipes)
             case .failure(let error):
                     self.presentErrorAlert(with: error.description)

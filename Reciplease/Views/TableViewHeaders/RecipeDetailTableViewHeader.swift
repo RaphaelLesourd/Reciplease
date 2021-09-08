@@ -51,7 +51,7 @@ class RecipeDetailHeaderView: UITableViewHeaderFooterView {
 // MARK: - Constraints
 extension RecipeDetailHeaderView {
 
-    private func  setupRecipeCard() {
+    private func setupRecipeCard() {
         recipeCardView.recipeNameLabel.textColor = .label
         recipeCardView.recipeIngredientsLabel.textColor = .secondaryLabel
         recipeCardView.translatesAutoresizingMaskIntoConstraints = false
