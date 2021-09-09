@@ -18,6 +18,7 @@ excluded:
 - Pods
 - SwiftLint/Common/3rdPartyLib
 - Reciplease/Model/Recipe/RecipeData.swift
+- Reciplease/Helper/Constants.swift
 
 # configurable rules can be customized from this configuration file
 # binary rules can set their severity level

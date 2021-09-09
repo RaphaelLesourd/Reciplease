@@ -75,7 +75,7 @@ class RecipeTableViewCell: UITableViewCell {
         imageClient.getImage(with: recipe.image) { [weak self] image in
             guard let self = self else {return}
             guard let recipeImage = image else {
-                self.recipeCardView.recipeImage.image = UIImage(named: "EmptyStateCellImage")
+                self.recipeCardView.recipeImage.image = DefaultImages.recipe
                 return
             }
             self.recipeCardView.recipeImage.image = recipeImage

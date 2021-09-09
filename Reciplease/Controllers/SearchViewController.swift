@@ -13,7 +13,7 @@ class SearchViewController: UIViewController, ErrorPresenter, SearchDelegate {
     // MARK: - Properties
     private let searchView = SearchView()
     private let ingredientDatasource = IngredientManager()
-    private let recipeClient = RecipeClient(apiClient: ApiClient())
+    private let recipeClient = RecipeService(apiClient: ApiClient())
     let activityIndicator = UIActivityIndicatorView(style: .medium)
 
     // MARK: - Lifecycle

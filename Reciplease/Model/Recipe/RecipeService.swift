@@ -12,7 +12,7 @@ protocol SearchDelegate: AnyObject {
     func stopActivityIndicator()
 }
 
-class RecipeClient {
+class RecipeService {
 
     private var apiClient: ApiClient
     weak var errorPresenter: ErrorPresenter?
@@ -24,7 +24,7 @@ class RecipeClient {
 
     func getRecipes(with ingredientList: [String]) {
         guard !ingredientList.isEmpty else {
-            errorPresenter?.presentErrorAlert(with: ApiError.noInputData.description)
+            errorPresenter?.presentErrorAlert(with: RequestError.noInputData.description)
             searchDelegate?.stopActivityIndicator()
             return
         }
@@ -35,7 +35,7 @@ class RecipeClient {
             switch result {
             case .success(let recipes):
                     guard let recipes = recipes.hits, !recipes.isEmpty else {
-                        self.errorPresenter?.presentErrorAlert(with: ApiError.noData.description)
+                        self.errorPresenter?.presentErrorAlert(with: RequestError.noData.description)
                         return
                     }
                     self.searchDelegate?.navigateToRecipeList(with: recipes)

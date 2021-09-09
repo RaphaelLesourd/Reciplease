@@ -25,7 +25,7 @@ class SectionHeaderView: UITableViewHeaderFooterView {
     // MARK: - Subview
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Your ingredients"
+        label.text = Text.ingredientListTitle
         label.textColor = .label
         label.font = UIFont.systemFont(ofSize: 18, weight: .medium)
         label.numberOfLines = 1
@@ -35,7 +35,7 @@ class SectionHeaderView: UITableViewHeaderFooterView {
     }()
 
     let deleteAllIngredientsButton: CustomButton = {
-        let button = CustomButton(color: .systemGreen, title: "Clear")
+        let button = CustomButton(color: .systemGreen, title: Text.clearButtonTitle)
         button.backgroundColor = .clear
         button.setTitleColor(.label, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false

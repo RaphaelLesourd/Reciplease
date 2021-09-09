@@ -20,7 +20,7 @@ class RecipeDetailView: UIView {
     }
 
     // MARK: - Subviews
-    let directionButton = CustomButton(title: "Get directions")
+    let directionButton = CustomButton(title: Text.getDirectionButton)
 
     let tableView: UITableView = {
         let table = UITableView(frame: .zero, style: .insetGrouped)

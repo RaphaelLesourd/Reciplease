@@ -24,7 +24,7 @@ class RecipeInfoView: UIView {
     // Create common views
     private func infoLabel() -> UILabel {
         let label = UILabel()
-        label.text = "--"
+        label.text = Text.noData
         label.textColor = .white
         label.font = UIFont.systemFont(ofSize: 14, weight: .medium)
         label.numberOfLines = 1
@@ -42,10 +42,10 @@ class RecipeInfoView: UIView {
         return stack
     }
 
-    private func infoIconView(systemImageName: String) -> UIImageView {
+    private func infoIconView(image: UIImage?) -> UIImageView {
         let icon = UIImageView()
         icon.contentMode = .scaleAspectFit
-        icon.image = UIImage(systemName: systemImageName)
+        icon.image = image
         icon.tintColor = .white
         icon.translatesAutoresizingMaskIntoConstraints = true
         icon.widthAnchor.constraint(equalToConstant: 15).isActive = true
@@ -54,11 +54,11 @@ class RecipeInfoView: UIView {
 
     // Initialise views
     lazy var ratingLabel = infoLabel()
-    private lazy var ratingIcon = infoIconView(systemImageName: "star.fill")
+    private lazy var ratingIcon = infoIconView(image: Icons.favorite)
     lazy var ratingStackView = stackView()
 
     lazy var  recipeTimeLabel = infoLabel()
-    private lazy var recipeTimeIcon = infoIconView(systemImageName: "timer")
+    private lazy var recipeTimeIcon = infoIconView(image: Icons.timer)
     lazy var recipeTimeStackView = stackView()
 
     private lazy var mainStackView = stackView(spacing: 20, distribution: .fillProportionally)

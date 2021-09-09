@@ -28,20 +28,31 @@ enum IngredientError: Error {
 
 enum ApiError: Error {
     case badURL
-    case noInputData
-    case noData
     case alamofireError(AFError)
 
     var description: String {
         switch self {
         case .badURL:
                 return "Could not locate the data"
-        case .noInputData:
-                return "Please add ingredients in your list before looking for recipes."
         case .alamofireError(let error):
             return error.errorDescription ?? ""
+        }
+    }
+}
+
+enum RequestError: Error {
+    case noInputData
+    case noData
+    case noRecipeFound
+
+    var description: String {
+        switch self {
+        case .noInputData:
+                return "Please add ingredients in your list before looking for recipes."
         case .noData:
                 return "Unable to find anything matching your request."
+        case .noRecipeFound:
+                return "Unable to get directions"
         }
     }
 }

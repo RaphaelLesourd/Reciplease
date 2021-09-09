@@ -54,7 +54,7 @@ class RecipeTableViewController: UITableViewController {
         let searchController = UISearchController(searchResultsController: nil)
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = true
-        searchController.searchBar.placeholder = "Search for recipes"
+        searchController.searchBar.placeholder = Text.tableViewSearchPlaceholder
         searchController.automaticallyShowsSearchResultsController = false
         self.navigationItem.searchController = searchController
         self.definesPresentationContext = true
@@ -81,9 +81,7 @@ class RecipeTableViewController: UITableViewController {
 
     // MARK: - TableView Delegate
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let selectedRecipe = filteredRecipes[indexPath.row].recipe else {
-            return presentErrorAlert(with: "Unable to view this recipe")
-        }
+        guard let selectedRecipe = filteredRecipes[indexPath.row].recipe else {return}
         let recipeDetailVC = RecipeDetailViewController(recipe: selectedRecipe)
         navigationController?.pushViewController(recipeDetailVC, animated: true)
     }
@@ -99,23 +97,23 @@ class RecipeTableViewController: UITableViewController {
     }
 
     private func addToFavoriteAction(forRowAtIndexPath indexPath: IndexPath) -> UIContextualAction {
-        let action = UIContextualAction(style: .destructive, title: "Add favorite") { (_, _, completion) in
+        let action = UIContextualAction(style: .destructive, title: Text.addToFavorite) { (_, _, completion) in
 
             completion(true)
         }
         action.backgroundColor = .systemOrange
-        action.image = UIImage(systemName: "star.fill")
+        action.image = Icons.favorite
         return action
     }
 
     private func removeFromFavoriteAction(forRowAtIndexPath indexPath: IndexPath) -> UIContextualAction {
-        let action = UIContextualAction(style: .destructive, title: "Delete favorite") { (_, _, completion) in
+        let action = UIContextualAction(style: .destructive, title: Text.deleteFavorite) { (_, _, completion) in
             self.recipes.remove(at: indexPath.row)
             self.tableView.deleteRows(at: [indexPath], with: .fade)
             completion(true)
         }
         action.backgroundColor = .systemRed
-        action.image = UIImage(systemName: "trash.fill")
+        action.image = Icons.trash
         return action
     }
 }

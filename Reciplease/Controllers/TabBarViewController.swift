@@ -22,15 +22,15 @@ class TabBarViewController: UITabBarController {
     }
 
     private func configureViewControllers() {
-        let searchIconImage = UIImage(systemName: "magnifyingglass")!
+        let searchIconImage = TabBar.Icons.searchIcon
         let searchViewController = createController(for: SearchViewController(),
-                                                  title: "Search",
-                                                  image: searchIconImage)
+                                                    title: TabBar.Text.search,
+                                                    image: searchIconImage)
 
-        let favoriteIconImage = UIImage(systemName: "star")!
+        let favoriteIconImage = TabBar.Icons.favoriteIcon
         let recipeTableViewController = createController(
             for: RecipeTableViewController(recipeListType: .favorite, recipes: []),
-            title: "Favorite",
+            title: TabBar.Text.favorite,
             image: favoriteIconImage)
 
         self.viewControllers = [searchViewController, recipeTableViewController]

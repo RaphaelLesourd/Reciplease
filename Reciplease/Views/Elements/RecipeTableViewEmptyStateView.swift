@@ -25,14 +25,14 @@ class RecipeTableViewEmptyStateView: UIView {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.layer.masksToBounds = true
-        imageView.image = UIImage(named: "EmptyState_Icon")
+        imageView.image = DefaultImages.emptyState
         imageView.tintColor = .tertiaryLabel
         return imageView
     }()
 
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Nothing here yet!"
+        label.text = Text.emptyStateMessage
         label.textColor = .tertiaryLabel
         label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
         label.numberOfLines = 2

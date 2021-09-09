@@ -22,7 +22,7 @@ class RecipeCardView: UIView {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.layer.masksToBounds = true
-        imageView.image = UIImage(named: "EmptyStateCellImage")
+        imageView.image = DefaultImages.recipe
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()

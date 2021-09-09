@@ -11,8 +11,8 @@ class RecipeDetailViewController: UIViewController {
 
     // MARK: - Properties
     private let recipeView = RecipeDetailView()
-    private let unFavoriteIcon = UIImage(systemName: "star")
-    private let favoriteIcon = UIImage(systemName: "star.fill")
+    private let notFavoriteIcon = Icons.notFavorite
+    private let favoriteIcon = Icons.favorite
     private var isFavorite = true
     private var addToFavoriteButton: UIBarButtonItem?
     private var recipe: RecipeClass
@@ -44,7 +44,7 @@ class RecipeDetailViewController: UIViewController {
 
     // MARK: - Setup
     private func configureNavigationItem() {
-        addToFavoriteButton = UIBarButtonItem(image: unFavoriteIcon,
+        addToFavoriteButton = UIBarButtonItem(image: notFavoriteIcon,
                                                   style: .plain,
                                                   target: self,
                                                   action: #selector(favoriteButtonTapped))
@@ -72,7 +72,7 @@ class RecipeDetailViewController: UIViewController {
               let recipeURL = URL(string: linkURL),
               UIApplication.shared.canOpenURL(recipeURL)
         else {
-            presentErrorAlert(with: "Unable to get directions")
+            presentErrorAlert(with: RequestError.noRecipeFound.description)
             return
         }
         UIApplication.shared.open(recipeURL, options: [:], completionHandler: nil)
@@ -80,7 +80,7 @@ class RecipeDetailViewController: UIViewController {
 
     // MARK: - Update view
     private func toggleFavoriteButtonImage() {
-        addToFavoriteButton?.image = isFavorite ? favoriteIcon : unFavoriteIcon
+        addToFavoriteButton?.image = isFavorite ? favoriteIcon : notFavoriteIcon
     }
 }
 // MARK: - TableView datasource
@@ -130,11 +130,11 @@ extension RecipeDetailViewController: UITableViewDelegate {
         }
 
         view.recipeCardView.recipeNameLabel.text = recipe.label
-        view.recipeCardView.recipeIngredientsLabel.text = "Ingredients"
+        view.recipeCardView.recipeIngredientsLabel.text = Text.detailViewIngredientTitle
 
         imageClient.getImage(with: recipe.image) { image in
             guard let recipeImage = image else {
-                view.recipeCardView.recipeImage.image = UIImage(named: "EmptyStateCellImage")
+                view.recipeCardView.recipeImage.image = DefaultImages.recipe
                 return
             }
             view.recipeCardView.recipeImage.image = recipeImage

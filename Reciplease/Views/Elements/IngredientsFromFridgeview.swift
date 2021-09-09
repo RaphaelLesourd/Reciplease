@@ -43,7 +43,7 @@ class IngredientsFromFridgeView: UIView {
     }()
 
     let addIngredientButton: CustomButton = {
-        let button = CustomButton(color: .systemGreen, title: "ADD")
+        let button = CustomButton(color: .systemGreen, title: Text.add)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.widthAnchor.constraint(equalToConstant: 50).isActive = true
         return button
@@ -51,7 +51,7 @@ class IngredientsFromFridgeView: UIView {
 
     let textField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Lemon,Cheese,Sausages..."
+        textField.placeholder = Text.addIngredientPlaceholder
         let leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 2))
         textField.leftView = leftView
         textField.leftViewMode = .always
