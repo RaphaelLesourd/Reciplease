@@ -35,17 +35,6 @@ extension UIViewController {
         return alert
     }
 
-    // MARK: - ActivtyIndicator
-    func toggleActiviyIndicator(for indicator: UIActivityIndicatorView,
-                                and refresher: UIRefreshControl,
-                                showing: Bool) {
-        indicator.isHidden = !showing
-        showing ? indicator.startAnimating() : indicator.stopAnimating()
-        if showing == false {
-            refresher.perform(#selector(UIRefreshControl.endRefreshing), with: nil, afterDelay: 0.1)
-        }
-    }
-
     // MARK: - Keyboard
     func addKeyboardDismissGesture() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))

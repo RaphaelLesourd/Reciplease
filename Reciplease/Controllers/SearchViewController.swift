@@ -8,13 +8,13 @@
 import Foundation
 import UIKit
 
-class SearchViewController: UIViewController {
+class SearchViewController: UIViewController, ErrorPresenter, SearchDelegate {
 
     // MARK: - Properties
     private let searchView = SearchView()
-    private let ingredientManager = IngredientManager()
-    private let recipeClient = RecipeRequest()
-    private let activityIndicator = UIActivityIndicatorView(style: .medium)
+    private let ingredientDatasource = IngredientManager()
+    private let recipeClient = RecipeClient(apiClient: ApiClient())
+    let activityIndicator = UIActivityIndicatorView(style: .medium)
 
     // MARK: - Lifecycle
 
@@ -36,6 +36,8 @@ class SearchViewController: UIViewController {
         searchView.addIngredientView.textField.delegate = self
         searchView.tableView.delegate = self
         searchView.tableView.dataSource = self
+        recipeClient.errorPresenter = self
+        recipeClient.searchDelegate = self
     }
 
     private func configureButtonTargets() {
@@ -50,7 +52,7 @@ class SearchViewController: UIViewController {
     // MARK: - Target
     @objc private func addIngredientToList() {
         if let ingredientName = searchView.addIngredientView.textField.text {
-            ingredientManager.addIngredient(with: ingredientName) { error in
+            ingredientDatasource.addIngredient(with: ingredientName) { error in
                 if let error = error {
                     return presentErrorAlert(with: error.description)
                 }
@@ -67,7 +69,7 @@ class SearchViewController: UIViewController {
                                           okBtnTitle: "Yes",
                                           style: .destructive) { [weak self] in
             guard let self = self else {return}
-            self.ingredientManager.clearIngredientList()
+            self.ingredientDatasource.clearIngredientList()
             self.searchView.tableView.reloadData()
         }
         present(alert, animated: true, completion: nil)
@@ -76,30 +78,19 @@ class SearchViewController: UIViewController {
     // MARK: - Api Call
     @objc private func getRecipesFromApi() {
         showIndicator(activityIndicator)
-        recipeClient.getRecipes(with: ingredientManager.ingredients) { [weak self] result in
-            guard let self = self else {return}
+        recipeClient.getRecipes(with: ingredientDatasource.ingredients)
+    }
 
-            self.hideIndicator(self.activityIndicator)
-            switch result {
-            case .success(let recipes):
-                    guard let recipes = recipes.hits else {return}
-                    guard !recipes.isEmpty else {
-                        return self.presentErrorAlert(with: ApiError.noInputData.description)
-                    }
-                    self.navigateToRecipeList(with: recipes)
-            case .failure(let error):
-                    self.presentErrorAlert(with: error.description)
-            }
-        }
+    func stopActivityIndicator() {
+        hideIndicator(activityIndicator)
     }
 
     // MARK: - Navigation
-    private func navigateToRecipeList(with recipes: [Hit]) {
+    func navigateToRecipeList(with recipes: [Hit]) {
         let recipeListVC = RecipeTableViewController(recipeListType: .search,
                                                      recipes: recipes)
         navigationController?.pushViewController(recipeListVC, animated: true)
     }
-
 }
 
 // MARK: - TableView datasource
@@ -110,14 +101,14 @@ extension SearchViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        searchView.emptyStateView.isHidden = !ingredientManager.ingredients.isEmpty
-        return ingredientManager.ingredients.count
+        searchView.emptyStateView.isHidden = !ingredientDatasource.ingredients.isEmpty
+        return ingredientDatasource.ingredients.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
         cell.backgroundColor = .quaternarySystemFill
-        cell.textLabel?.text = ingredientManager.ingredients[indexPath.row]
+        cell.textLabel?.text = ingredientDatasource.ingredients[indexPath.row]
         return cell
     }
 }
@@ -133,9 +124,11 @@ extension SearchViewController: UITableViewDelegate {
                    commit editingStyle: UITableViewCell.EditingStyle,
                    forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            ingredientManager.deleteIngredient(with: ingredientManager.ingredients[indexPath.row])
+            ingredientDatasource.deleteIngredient(with: ingredientDatasource.ingredients[indexPath.row])
             tableView.deleteRows(at: [indexPath], with: .fade)
+            searchView.tableView.reloadData()
         }
+
     }
 
     // TableView header
@@ -145,7 +138,7 @@ extension SearchViewController: UITableViewDelegate {
                 as? SectionHeaderView
         else { return nil }
         view.deleteAllIngredientsButton.addTarget(self, action: #selector(clearIngredients), for: .touchUpInside)
-        return ingredientManager.ingredients.isEmpty ? nil : view
+        return ingredientDatasource.ingredients.isEmpty ? nil : view
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

@@ -47,7 +47,7 @@ class RecipeTableViewCell: UITableViewCell {
         recipeCardView.recipeIngredientsLabel .text  = nil
         recipeCardView.recipeInfoView.ratingLabel.text = nil
         recipeCardView.recipeInfoView.recipeTimeLabel.text = nil
-    //    recipeCardView.recipeImage.image = nil
+        recipeCardView.recipeImage.image = nil
     }
 
     // MARK: - Configuration
@@ -63,7 +63,8 @@ class RecipeTableViewCell: UITableViewCell {
         }
 
         if let cookingTime = recipe.totalTime, cookingTime > 0 {
-            recipeCardView.recipeInfoView.recipeTimeLabel.text = "\(cookingTime)'"
+            let time = Double(cookingTime).asString(style: .abbreviated)
+            recipeCardView.recipeInfoView.recipeTimeLabel.text = "\(time)"
         } else {
             recipeCardView.recipeInfoView.recipeTimeStackView.isHidden = true
         }
@@ -71,14 +72,13 @@ class RecipeTableViewCell: UITableViewCell {
         let ingredients = recipe.ingredientLines?.compactMap({ $0 }).joined(separator: ", ")
         recipeCardView.recipeIngredientsLabel.text = ingredients
 
-        imageClient.getImage(with: recipe.image) { [weak self] result in
+        imageClient.getImage(with: recipe.image) { [weak self] image in
             guard let self = self else {return}
-            switch result {
-            case .success(let image):
-                    self.recipeCardView.recipeImage.image = image
-            case .failure(_):
-                    self.recipeCardView.recipeImage.image = UIImage(named: "EmptyStateCellImage")
+            guard let recipeImage = image else {
+                self.recipeCardView.recipeImage.image = UIImage(named: "EmptyStateCellImage")
+                return
             }
+            self.recipeCardView.recipeImage.image = recipeImage
         }
     }
 }

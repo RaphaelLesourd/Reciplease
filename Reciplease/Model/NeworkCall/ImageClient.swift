@@ -7,32 +7,31 @@
 
 import Foundation
 import Alamofire
+import AlamofireImage
 
 class ImageClient {
 
-    let alamoFireManager = Session(configuration: .default,
-                                   delegate: SessionDelegate(),
-                                   startRequestsImmediately: true)
-    var count = 0
+    let imageDownloader = ImageDownloader(configuration: ImageDownloader.defaultURLSessionConfiguration(),
+                                          downloadPrioritization: .fifo,
+                                          maximumActiveDownloads: 4,
+                                          imageCache: AutoPurgingImageCache())
 
-    func getImage(with providedURL: String?, completion: @escaping (Result<UIImage, ApiError>) -> Void) {
+    func getImage(with providedURL: String?, completion: @escaping (UIImage?) -> Void) {
         guard let stringURL = providedURL,
               let imageURL = URL(string: stringURL) else {
-            completion(.failure(.badURL))
+            completion(nil)
             return
         }
-        count += 1
-        print("Called \(count) times")
-        alamoFireManager.download(imageURL).validate().responseData { response in
-            DispatchQueue.main.async {
+        let request = URLRequest(url: imageURL)
+        imageDownloader.download(request, completion: { response in
                 switch response.result {
-                case .success(let responseData):
-                        guard let image = UIImage(data: responseData, scale: 1) else {return}
-                        completion(.success(image))
+                case .success(let image):
+                    DispatchQueue.main.async {
+                        completion(image)
+                    }
                 case .failure(_):
-                        completion(.failure(.noData))
+                    completion(nil)
                 }
-            }
-        }
+        })
     }
 }

@@ -10,16 +10,19 @@ import Alamofire
 
 class ApiClient {
 
-    let alamoFireManager = Session(configuration: .default,
-                                   delegate: SessionDelegate(),
-                                   startRequestsImmediately: true)
+    let sessionManager: Session = {
+        let configuration = URLSessionConfiguration.af.default
+        configuration.timeoutIntervalForRequest = 30
+        configuration.waitsForConnectivity = true
+        return Session(configuration: configuration)
+    }()
 
     func getData<T: Decodable>(with apiURL: URL?, completion: @escaping (Result<T,ApiError>) -> Void) {
         guard let apiURL = apiURL else {
             completion(.failure(.badURL))
             return
         }
-        alamoFireManager.request(apiURL, method: .get)
+        sessionManager.request(apiURL, method: .get)
             .validate()
             .responseDecodable(of:T.self) { response in
             switch response.result {

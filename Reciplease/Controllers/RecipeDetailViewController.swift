@@ -37,8 +37,9 @@ class RecipeDetailViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureNavigationItem()
         setDelegates()
+        configureNavigationItem()
+        setGetDirectionButtonTarget()
     }
 
     // MARK: - Setup
@@ -51,6 +52,10 @@ class RecipeDetailViewController: UIViewController {
         navigationItem.rightBarButtonItem = addToFavoriteButton
     }
 
+    private func setGetDirectionButtonTarget() {
+        recipeView.directionButton.addTarget(self, action: #selector(getDirections), for: .touchUpInside)
+    }
+
     private func setDelegates() {
         recipeView.tableView.delegate = self
         recipeView.tableView.dataSource = self
@@ -60,6 +65,17 @@ class RecipeDetailViewController: UIViewController {
     @objc private func favoriteButtonTapped() {
         toggleFavoriteButtonImage()
         isFavorite.toggle()
+    }
+
+    @objc private func getDirections() {
+        guard let linkURL = recipe.url,
+              let recipeURL = URL(string: linkURL),
+              UIApplication.shared.canOpenURL(recipeURL)
+        else {
+            presentErrorAlert(with: "Unable to get directions")
+            return
+        }
+        UIApplication.shared.open(recipeURL, options: [:], completionHandler: nil)
     }
 
     // MARK: - Update view
@@ -107,7 +123,8 @@ extension RecipeDetailViewController: UITableViewDelegate {
         }
 
         if let cookingTime = recipe.totalTime, cookingTime > 0 {
-            view.recipeCardView.recipeInfoView.recipeTimeLabel.text = "\(cookingTime)'"
+            let time = Double(cookingTime).asString(style: .abbreviated)
+            view.recipeCardView.recipeInfoView.recipeTimeLabel.text = "\(time)"
         } else {
             view.recipeCardView.recipeInfoView.recipeTimeStackView.isHidden = true
         }
@@ -115,13 +132,12 @@ extension RecipeDetailViewController: UITableViewDelegate {
         view.recipeCardView.recipeNameLabel.text = recipe.label
         view.recipeCardView.recipeIngredientsLabel.text = "Ingredients"
 
-        imageClient.getImage(with: recipe.image) { result in
-            switch result {
-            case .success(let image):
-                    view.recipeCardView.recipeImage.image = image
-            case .failure(_):
-                    view.recipeCardView.recipeImage.image = UIImage(named: "EmptyStateCellImage")
+        imageClient.getImage(with: recipe.image) { image in
+            guard let recipeImage = image else {
+                view.recipeCardView.recipeImage.image = UIImage(named: "EmptyStateCellImage")
+                return
             }
+            view.recipeCardView.recipeImage.image = recipeImage
         }
         return view
     }

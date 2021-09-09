@@ -8,6 +8,10 @@
 import Foundation
 import Alamofire
 
+protocol ErrorPresenter: AnyObject {
+    func presentErrorAlert(with message: String)
+}
+
 enum IngredientError: Error {
     case noName
     case alreadyExist(ingredientName: String)
@@ -37,7 +41,7 @@ enum ApiError: Error {
         case .alamofireError(let error):
             return error.errorDescription ?? ""
         case .noData:
-                return "Unable to find anything."
+                return "Unable to find anything matching your request."
         }
     }
 }

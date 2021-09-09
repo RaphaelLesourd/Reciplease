@@ -26,7 +26,7 @@ class IngredientManager {
                 return completion(.alreadyExist(ingredientName: $0))
             }
             if !$0.isEmpty {
-                ingredients.append($0.capitalized)
+                ingredients.append($0.capitalized.trimmingCharacters(in: .whitespacesAndNewlines))
                 ingredients = ingredients.sorted { $0 < $1 }
             }
             completion(nil)
