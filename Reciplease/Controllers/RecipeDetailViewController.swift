@@ -17,7 +17,6 @@ class RecipeDetailViewController: UIViewController {
     private var addToFavoriteButton: UIBarButtonItem?
     private var recipe: RecipeClass
     private var headerView = RecipeDetailHeaderView()
-    private var imageClient = ImageClient()
 
     // MARK: - Intializers
     init(recipe: RecipeClass) {
@@ -72,7 +71,7 @@ class RecipeDetailViewController: UIViewController {
               let recipeURL = URL(string: linkURL),
               UIApplication.shared.canOpenURL(recipeURL)
         else {
-            presentErrorAlert(with: RequestError.noRecipeFound.description)
+            presentErrorAlert(with: ApiError.noRecipeFound.description)
             return
         }
         UIApplication.shared.open(recipeURL, options: [:], completionHandler: nil)
@@ -132,12 +131,10 @@ extension RecipeDetailViewController: UITableViewDelegate {
         view.recipeCardView.recipeNameLabel.text = recipe.label
         view.recipeCardView.recipeIngredientsLabel.text = Text.detailViewIngredientTitle
 
-        imageClient.getImage(with: recipe.image) { image in
-            guard let recipeImage = image else {
-                view.recipeCardView.recipeImage.image = DefaultImages.recipe
-                return
-            }
-            view.recipeCardView.recipeImage.image = recipeImage
+        if let recipeImageURL = recipe.image, let imageURL = URL(string: recipeImageURL) {
+            view.recipeCardView.recipeImage.af.setImage(withURL: imageURL,
+                                                        cacheKey: recipe.image,
+                                                        placeholderImage: DefaultImages.recipe)
         }
         return view
     }

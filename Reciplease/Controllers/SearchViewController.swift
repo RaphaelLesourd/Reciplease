@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class SearchViewController: UIViewController, ErrorPresenter, SearchDelegate {
+class SearchViewController: UIViewController {
 
     // MARK: - Properties
     private let searchView = SearchView()
@@ -36,8 +36,6 @@ class SearchViewController: UIViewController, ErrorPresenter, SearchDelegate {
         searchView.addIngredientView.textField.delegate = self
         searchView.tableView.delegate = self
         searchView.tableView.dataSource = self
-        recipeClient.errorPresenter = self
-        recipeClient.searchDelegate = self
     }
 
     private func configureButtonTargets() {
@@ -78,7 +76,20 @@ class SearchViewController: UIViewController, ErrorPresenter, SearchDelegate {
     // MARK: - Api Call
     @objc private func getRecipesFromApi() {
         showIndicator(activityIndicator)
-        recipeClient.getRecipes(with: ingredientDatasource.ingredients)
+        recipeClient.getRecipes(for: ingredientDatasource.ingredients) { [weak self] result in
+            guard let self = self else {return}
+            self.hideIndicator(self.activityIndicator)
+            switch result {
+            case .success(let recipeList):
+                    guard let recipes = recipeList.hits, !recipes.isEmpty else {
+                        self.presentErrorAlert(with: ApiError.noRecipeFound.description)
+                        return
+                    }
+                    self.navigateToRecipeList(with: recipes)
+            case .failure(let error):
+                    self.presentErrorAlert(with: error.description)
+            }
+        }
     }
 
     func stopActivityIndicator() {

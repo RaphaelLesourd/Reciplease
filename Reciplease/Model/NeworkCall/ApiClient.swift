@@ -17,12 +17,14 @@ class ApiClient {
         return Session(configuration: configuration)
     }()
 
-    func getData<T: Decodable>(with apiURL: URL?, completion: @escaping (Result<T,ApiError>) -> Void) {
+    func getData<T: Decodable>(with apiURL: URL?,
+                               parameters: [String: String],
+                               completion: @escaping (Result<T,ApiError>) -> Void) {
         guard let apiURL = apiURL else {
             completion(.failure(.badURL))
             return
         }
-        sessionManager.request(apiURL, method: .get)
+        sessionManager.request(apiURL, method: .get, parameters: parameters)
             .validate()
             .responseDecodable(of:T.self) { response in
             switch response.result {

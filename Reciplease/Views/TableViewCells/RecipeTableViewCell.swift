@@ -6,12 +6,11 @@
 //
 
 import UIKit
-import Alamofire
+import AlamofireImage
 
 class RecipeTableViewCell: UITableViewCell {
 
     static let reuseIdentifier = "recipeCell"
-    private let imageClient = ImageClient()
 
     // MARK: - Initializers
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -72,14 +71,10 @@ class RecipeTableViewCell: UITableViewCell {
         let ingredients = recipe.ingredientLines?.compactMap({ $0 }).joined(separator: ", ")
         recipeCardView.recipeIngredientsLabel.text = ingredients
 
-        imageClient.getImage(with: recipe.image) { [weak self] image in
-            guard let self = self else {return}
-            guard let recipeImage = image else {
-                self.recipeCardView.recipeImage.image = DefaultImages.recipe
-                return
-            }
-            self.recipeCardView.recipeImage.image = recipeImage
+        if let recipeImageURL = recipe.image, let imageURL = URL(string: recipeImageURL) {
+            recipeCardView.recipeImage.af.setImage(withURL: imageURL, cacheKey: recipe.image, placeholderImage: DefaultImages.recipe)
         }
+
     }
 }
 // MARK: - Constraints
