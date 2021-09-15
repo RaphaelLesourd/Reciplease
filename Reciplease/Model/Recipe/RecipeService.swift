@@ -6,14 +6,9 @@
 //
 
 import Foundation
+import Alamofire
 
 class RecipeService {
-
-    private var apiClient: ApiClient
-
-    init(apiClient: ApiClient) {
-        self.apiClient = apiClient
-    }
 
     func getRecipes(for ingredientList: [String], completion: @escaping (Result<RecipeData, ApiError>) -> Void) {
 
@@ -21,21 +16,25 @@ class RecipeService {
         let parameters = ["q": ingredientList.joined(separator: ","),
                           "type": "public",
                           "app_id": "51f9801c",
-                          "app_key": "32c858b39ceb0df2fadf69b33d49e09c",
-                          "from": "0",
-                          "to": "50"]
+                          "app_key": "32c858b39ceb0df2fadf69b33d49e09c"]
 
-        apiClient.getData(with: apiURL, parameters: parameters) { (result: Result<RecipeData, ApiError>) in
-            switch result {
-            case .success(let recipes):
-                guard let recipeList = recipes.hits, !recipeList.isEmpty else {
-                    completion(.failure(.noData))
-                    return
-                }
-                completion(.success(recipes))
-            case .failure(let error):
-                completion(.failure(error))
-            }
+        guard let apiURL = apiURL else {
+            completion(.failure(.badURL))
+            return
         }
+        AF.request(apiURL, method: .get, parameters: parameters)
+            .validate()
+            .responseDecodable(of: RecipeData.self) { response in
+                switch response.result {
+                case .success(let jsonData):
+                        guard let recipeList = jsonData.hits, !recipeList.isEmpty else {
+                            completion(.failure(.noData))
+                            return
+                        }
+                        completion(.success(jsonData))
+                case .failure(let error):
+                        completion(.failure(.alamofireError(error)))
+                }
+            }
     }
 }

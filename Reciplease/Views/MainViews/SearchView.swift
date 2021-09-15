@@ -78,10 +78,11 @@ extension SearchView {
     }
 
     private func setStackViewConstraints() {
+        addSubview(stackView)
         stackView.addArrangedSubview(addIngredientView)
         stackView.addArrangedSubview(tableView)
         stackView.addArrangedSubview(searchButton)
-        addSubview(stackView)
+
         stackView.setCustomSpacing(0, after: addIngredientView)
         NSLayoutConstraint.activate([
             stackView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),

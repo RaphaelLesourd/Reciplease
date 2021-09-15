@@ -22,7 +22,7 @@ class RecipeTableViewCell: UITableViewCell {
     }
 
     // MARK: - Subview
-    private let recipeCardView = RecipeCardView()
+    let recipeCardView = RecipeCardView()
 
     private func addFadeGradientToRecipeImage() {
         let gradientLayer = CAGradientLayer()
@@ -72,7 +72,12 @@ class RecipeTableViewCell: UITableViewCell {
         recipeCardView.recipeIngredientsLabel.text = ingredients
 
         if let recipeImageURL = recipe.image, let imageURL = URL(string: recipeImageURL) {
-            recipeCardView.recipeImage.af.setImage(withURL: imageURL, cacheKey: recipe.image, placeholderImage: DefaultImages.recipe)
+            recipeCardView.recipeImage.af.setImage(withURL: imageURL,
+                                                   cacheKey: recipe.image,
+                                                   placeholderImage: DefaultImages.recipe,
+                                                   imageTransition: .noTransition,
+                                                   runImageTransitionIfCached: false,
+                                                   completion: nil)
         }
 
     }
@@ -84,8 +89,8 @@ extension RecipeTableViewCell {
         recipeCardView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(recipeCardView)
         NSLayoutConstraint.activate([
-            recipeCardView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            recipeCardView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -2),
+            recipeCardView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 1),
+            recipeCardView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -1),
             recipeCardView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             recipeCardView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
         ])

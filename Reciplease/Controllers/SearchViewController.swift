@@ -13,11 +13,10 @@ class SearchViewController: UIViewController {
     // MARK: - Properties
     private let searchView = SearchView()
     private let ingredientDatasource = IngredientManager()
-    private let recipeClient = RecipeService(apiClient: ApiClient())
-    let activityIndicator = UIActivityIndicatorView(style: .medium)
+    private let recipeClient = RecipeService()
+    private let activityIndicator = UIActivityIndicatorView(style: .medium)
 
     // MARK: - Lifecycle
-
     override func loadView() {
         view = searchView
         view.backgroundColor = .secondarySystemGroupedBackground
@@ -52,11 +51,11 @@ class SearchViewController: UIViewController {
         if let ingredientName = searchView.addIngredientView.textField.text {
             ingredientDatasource.addIngredient(with: ingredientName) { error in
                 if let error = error {
-                    return presentErrorAlert(with: error.description)
+                    return presentMessageAlert(with: error.description)
                 }
+                searchView.tableView.reloadData()
                 searchView.addIngredientView.textField.text = nil
                 dismissKeyboard()
-                searchView.tableView.reloadData()
             }
         }
     }
@@ -82,12 +81,12 @@ class SearchViewController: UIViewController {
             switch result {
             case .success(let recipeList):
                     guard let recipes = recipeList.hits, !recipes.isEmpty else {
-                        self.presentErrorAlert(with: ApiError.noRecipeFound.description)
+                        self.presentMessageAlert(with: ApiError.noRecipeFound.description)
                         return
                     }
                     self.navigateToRecipeList(with: recipes)
             case .failure(let error):
-                    self.presentErrorAlert(with: error.description)
+                    self.presentMessageAlert(with: error.description)
             }
         }
     }
@@ -139,7 +138,6 @@ extension SearchViewController: UITableViewDelegate {
             tableView.deleteRows(at: [indexPath], with: .fade)
             searchView.tableView.reloadData()
         }
-
     }
 
     // TableView header

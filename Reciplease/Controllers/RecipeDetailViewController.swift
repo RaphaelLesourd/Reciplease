@@ -10,17 +10,21 @@ import UIKit
 class RecipeDetailViewController: UIViewController {
 
     // MARK: - Properties
+    private lazy var coreDataStack = CoreDataStack()
+    private lazy var coreDataManager = CoreDataManager(managedObjectContext: coreDataStack.context,
+                                                       coreDataStack: coreDataStack)
     private let recipeView = RecipeDetailView()
-    private let notFavoriteIcon = Icons.notFavorite
-    private let favoriteIcon = Icons.favorite
-    private var isFavorite = true
+    private let headerView = RecipeDetailHeaderView()
+
+    private var recipeImage: UIImage
     private var addToFavoriteButton: UIBarButtonItem?
     private var recipe: RecipeClass
-    private var headerView = RecipeDetailHeaderView()
+    var isFavorite = false
 
     // MARK: - Intializers
-    init(recipe: RecipeClass) {
+    init(recipe: RecipeClass, recipeImage: UIImage) {
         self.recipe = recipe
+        self.recipeImage = recipeImage
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -39,14 +43,19 @@ class RecipeDetailViewController: UIViewController {
         setDelegates()
         configureNavigationItem()
         setGetDirectionButtonTarget()
+        toggleFavoriteButtonImage()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
     }
 
     // MARK: - Setup
     private func configureNavigationItem() {
-        addToFavoriteButton = UIBarButtonItem(image: notFavoriteIcon,
-                                                  style: .plain,
-                                                  target: self,
-                                                  action: #selector(favoriteButtonTapped))
+        addToFavoriteButton = UIBarButtonItem(image: Icons.notFavorite,
+                                              style: .plain,
+                                              target: self,
+                                              action: #selector(favoriteButtonTapped))
         addToFavoriteButton?.tintColor = .systemOrange
         navigationItem.rightBarButtonItem = addToFavoriteButton
     }
@@ -59,11 +68,19 @@ class RecipeDetailViewController: UIViewController {
         recipeView.tableView.delegate = self
         recipeView.tableView.dataSource = self
     }
-
     // MARK: - Targets
     @objc private func favoriteButtonTapped() {
-        toggleFavoriteButtonImage()
+        isFavorite ? removeFromFavorite() : addToFavorite()
         isFavorite.toggle()
+        toggleFavoriteButtonImage()
+    }
+
+    private func addToFavorite() {
+        coreDataManager.add(recipe: recipe)
+    }
+
+    private func removeFromFavorite() {
+        coreDataManager.delete(recipe)
     }
 
     @objc private func getDirections() {
@@ -71,17 +88,18 @@ class RecipeDetailViewController: UIViewController {
               let recipeURL = URL(string: linkURL),
               UIApplication.shared.canOpenURL(recipeURL)
         else {
-            presentErrorAlert(with: ApiError.noRecipeFound.description)
-            return
+            return presentMessageAlert(with: ApiError.noRecipeFound.description)
         }
         UIApplication.shared.open(recipeURL, options: [:], completionHandler: nil)
     }
 
     // MARK: - Update view
     private func toggleFavoriteButtonImage() {
-        addToFavoriteButton?.image = isFavorite ? favoriteIcon : notFavoriteIcon
+        isFavorite = coreDataManager.verifyRecipeExist(for: recipe)
+        addToFavoriteButton?.image = isFavorite ? Icons.favorite : Icons.notFavorite
     }
 }
+
 // MARK: - TableView datasource
 extension RecipeDetailViewController: UITableViewDataSource {
 
@@ -93,24 +111,20 @@ extension RecipeDetailViewController: UITableViewDataSource {
         return recipe.ingredientLines?.count ?? 0
     }
 
-    func tableView(_ tableView: UITableView,
-                   cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
         cell.backgroundColor = .clear
         cell.textLabel?.numberOfLines = 0
-        let ingredient = recipe.ingredientLines?[indexPath.row]
-        if let ingredient = ingredient {
+        if let ingredient = recipe.ingredientLines?[indexPath.row] {
             cell.textLabel?.text = "• \(ingredient)"
         }
         return cell
     }
 }
-
 // MARK: - TableView Delegate
 extension RecipeDetailViewController: UITableViewDelegate {
 
-    func tableView(_ tableView: UITableView,
-                   viewForHeaderInSection section: Int) -> UIView? {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let view = tableView.dequeueReusableHeaderFooterView(
                 withIdentifier: RecipeDetailHeaderView.reuseIdentifier) as? RecipeDetailHeaderView
         else { return nil }
@@ -127,15 +141,9 @@ extension RecipeDetailViewController: UITableViewDelegate {
         } else {
             view.recipeCardView.recipeInfoView.recipeTimeStackView.isHidden = true
         }
-
-        view.recipeCardView.recipeNameLabel.text = recipe.label
         view.recipeCardView.recipeIngredientsLabel.text = Text.detailViewIngredientTitle
-
-        if let recipeImageURL = recipe.image, let imageURL = URL(string: recipeImageURL) {
-            view.recipeCardView.recipeImage.af.setImage(withURL: imageURL,
-                                                        cacheKey: recipe.image,
-                                                        placeholderImage: DefaultImages.recipe)
-        }
+        view.recipeCardView.recipeNameLabel.text = recipe.label
+        view.recipeCardView.recipeImage.image = recipeImage
         return view
     }
 

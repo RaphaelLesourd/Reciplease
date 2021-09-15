@@ -9,7 +9,7 @@ import Foundation
 import Alamofire
 
 protocol ErrorPresenter: AnyObject {
-    func presentErrorAlert(with message: String)
+    func presentMessageAlert(type: AlertType, with message: String)
 }
 
 enum IngredientError: Error {
@@ -45,6 +45,26 @@ enum ApiError: Error {
             return "Unable to find anything matching your request."
         case .noRecipeFound:
             return "Unable to get directions"
+        }
+    }
+}
+
+enum CoredataError: Error {
+    case recipeExist
+    case savingFailed
+    case retreiveFailed
+    case deletingFailed
+
+    var description: String {
+        switch self {
+        case .recipeExist:
+            return "This recipe already one your favorites."
+        case .savingFailed:
+            return "Unable to add this recipe to your favorites."
+        case .retreiveFailed:
+            return "unable to find your favorite recipe."
+        case .deletingFailed:
+            return "Unable to delete this recipe from your favorites."
         }
     }
 }

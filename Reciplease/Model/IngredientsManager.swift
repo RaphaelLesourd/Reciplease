@@ -43,7 +43,6 @@ class IngredientManager {
     func clearIngredientList() {
         ingredients.removeAll()
     }
-
     // MARK: - Private function
     /// Check if an ingredient is already in the list.
     /// - Parameter ingredientName: Ingredient name.

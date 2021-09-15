@@ -13,6 +13,11 @@ enum RecipeListType {
     case favorite
     case search
 }
+// MARK: - Recipelist types
+enum AlertType: String {
+    case success = "Success"
+    case error = "Error !"
+}
 // MARK: - Images
 enum DefaultImages {
     static let recipe = UIImage(named: "EmptyStateCellImage")
@@ -30,8 +35,8 @@ enum Text {
     static let noData = "--"
     static let detailViewIngredientTitle = "Ingredients"
     static let tableViewSearchPlaceholder = "Search for recipes"
-    static let addToFavorite = "Add favorite"
-    static let deleteFavorite = "Delete favorite"
+    static let addToFavorite = "Add to favorites"
+    static let deleteFavorite = "Remove from favorites"
     static let add = "ADD"
     static let addIngredientPlaceholder = "Lemon, Cheese, Sausages..."
     static let emptyStateMessage = "Nothing here yet!"

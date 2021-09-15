@@ -14,7 +14,6 @@ class TabBarViewController: UITabBarController {
         configureTabBar()
         configureViewControllers()
     }
-
     /// Set up the tabBar appearance with standard darkmode compatible colors.
     private func configureTabBar() {
         UITabBar.appearance().barTintColor = .systemBackground
@@ -32,10 +31,8 @@ class TabBarViewController: UITabBarController {
             for: RecipeTableViewController(recipeListType: .favorite, recipes: []),
             title: TabBar.Text.favorite,
             image: favoriteIconImage)
-
         self.viewControllers = [searchViewController, recipeTableViewController]
     }
-
     /// Create a navigation controller  for each tab with an icon inmage and a title.
     /// Large title have been set as default to keep the iOS look and feel.
     /// - Parameters:

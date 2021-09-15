@@ -10,8 +10,8 @@ import UIKit
 extension UIViewController {
 
     // MARK: - Alerts
-    func presentErrorAlert(with message: String) {
-        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+    func presentMessageAlert(type: AlertType = .error, with message: String) {
+        let alert = UIAlertController(title: type.rawValue, message: message, preferredStyle: .alert)
         let dismissAction = UIAlertAction(title: "Dismiss", style: .default, handler: nil)
         alert.addAction(dismissAction)
         present(alert, animated: true, completion: nil)

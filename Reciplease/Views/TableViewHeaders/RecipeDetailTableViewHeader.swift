@@ -46,7 +46,6 @@ class RecipeDetailHeaderView: UITableViewHeaderFooterView {
         gradientLayer.colors = [UIColor.secondarySystemBackground.withAlphaComponent(0).cgColor,
                                 UIColor.secondarySystemBackground.cgColor]
     }
-
 }
 // MARK: - Constraints
 extension RecipeDetailHeaderView {
