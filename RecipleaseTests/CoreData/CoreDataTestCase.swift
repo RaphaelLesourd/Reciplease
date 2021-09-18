@@ -37,7 +37,7 @@ class CoreDataTestCase: XCTestCase {
         let recipe = sut.add(recipe: recipe)
         // Then
         XCTAssertNotNil(recipe)
-        XCTAssertTrue(recipe?.label == "Chicken stew")
+        XCTAssertTrue(recipe.label == "Chicken stew")
     }
 
     func test_fetchRecipe() {
@@ -47,7 +47,7 @@ class CoreDataTestCase: XCTestCase {
         let favoriteRecipes = sut.getRecipes()
         XCTAssertNotNil(favoriteRecipes)
         XCTAssertTrue(favoriteRecipes.count == 1)
-        XCTAssertTrue(recipe?.label == favoriteRecipes.first?.recipe?.label)
+        XCTAssertTrue(recipe.label == favoriteRecipes.first?.recipe?.label)
     }
 
     func test_fetchRecipeWithPredicate() {
@@ -57,7 +57,7 @@ class CoreDataTestCase: XCTestCase {
         let favoriteRecipes = sut.getRecipes(with: "Chicken")
         XCTAssertNotNil(favoriteRecipes)
         XCTAssertTrue(favoriteRecipes.count == 1)
-        XCTAssertTrue(recipe?.label == favoriteRecipes.first?.recipe?.label)
+        XCTAssertTrue(recipe.label == favoriteRecipes.first?.recipe?.label)
     }
 
     func test_deleteRecipe() {

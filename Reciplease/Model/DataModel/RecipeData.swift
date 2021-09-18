@@ -12,10 +12,7 @@ struct RecipeData: Decodable {
     let hits: [Hit]?
 }
 
-struct Hit: Decodable, Equatable {
-    static func == (lhs: Hit, rhs: Hit) -> Bool {
-        return lhs.recipe?.label == rhs.recipe?.label
-    }
+struct Hit: Decodable {
     let recipe: RecipeClass?
 }
 

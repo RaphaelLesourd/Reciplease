@@ -54,12 +54,12 @@ class RecipeInfoView: UIView {
 
     // Initialise views
     lazy var ratingLabel = infoLabel()
-    private lazy var ratingIcon = infoIconView(image: Icons.favorite)
     lazy var ratingStackView = stackView()
+    private lazy var ratingIcon = infoIconView(image: Icons.favorite)
 
-    lazy var  recipeTimeLabel = infoLabel()
-    private lazy var recipeTimeIcon = infoIconView(image: Icons.timer)
+    lazy var recipeTimeLabel = infoLabel()
     lazy var recipeTimeStackView = stackView()
+    private lazy var recipeTimeIcon = infoIconView(image: Icons.timer)
 
     private lazy var mainStackView = stackView(spacing: 20, distribution: .fillProportionally)
 

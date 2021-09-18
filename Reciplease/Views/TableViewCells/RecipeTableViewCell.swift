@@ -51,7 +51,7 @@ class RecipeTableViewCell: UITableViewCell {
 
     // MARK: - Configuration
     func configure(with recipe: RecipeClass?) {
-        guard let recipe = recipe else {return}
+        guard let recipe = recipe else { return }
 
         recipeCardView.recipeNameLabel.text = recipe.label
         if let rating = recipe.yield, rating > 0 {

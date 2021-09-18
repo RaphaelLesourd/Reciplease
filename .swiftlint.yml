@@ -17,7 +17,7 @@ excluded:
 - Carthage
 - Pods
 - SwiftLint/Common/3rdPartyLib
-- Reciplease/Model/Recipe/RecipeData.swift
+- Reciplease/Model/DataModel/RecipeData.swift
 - Reciplease/Helper/Constants.swift
 - Reciplease/Model/CoreData/RecipeFavorite+CoreDataProperties.swift
 

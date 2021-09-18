@@ -39,13 +39,13 @@ extension CoreDataManager {
         return favoriteRecipe
     }
 
-    public func getRecipes(with name: String = "") -> [Hit] {
+    public func getRecipes(with name: String = "", ascending: Bool = false) -> [Hit] {
         let request: NSFetchRequest<RecipeFavorite> = RecipeFavorite.fetchRequest()
         if name != "" {
             request.predicate = NSPredicate(format: "label CONTAINS[cd] %@", name)
         }
         request.sortDescriptors = [
-            NSSortDescriptor(key: "timestamp", ascending: false)
+            NSSortDescriptor(key: "timestamp", ascending: ascending)
         ]
 
         var favoriteRecipes: [Hit] = []

@@ -244,12 +244,12 @@
 			path = MainViews;
 			sourceTree = "<group>";
 		};
-		8134686C26E7165B00A2DDCA /* Recipe */ = {
+		8134686C26E7165B00A2DDCA /* DataModel */ = {
 			isa = PBXGroup;
 			children = (
 				8134686526E6579400A2DDCA /* RecipeData.swift */,
 			);
-			path = Recipe;
+			path = DataModel;
 			sourceTree = "<group>";
 		};
 		8134687126E86B5000A2DDCA /* TableViewHeaders */ = {
@@ -287,7 +287,7 @@
 				8134684E26E4E8C800A2DDCA /* IngredientsManager.swift */,
 				8134688F26ECAF2400A2DDCA /* CoreData */,
 				8140C83326F4A85B00E00DEE /* Network */,
-				8134686C26E7165B00A2DDCA /* Recipe */,
+				8134686C26E7165B00A2DDCA /* DataModel */,
 			);
 			path = Model;
 			sourceTree = "<group>";

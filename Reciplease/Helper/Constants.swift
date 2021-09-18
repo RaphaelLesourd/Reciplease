@@ -29,6 +29,9 @@ enum Icons {
     static let favorite = UIImage(systemName: "star.fill")
     static let trash = UIImage(systemName: "trash.fill")
     static let timer = UIImage(systemName: "timer")
+    static let configuration = UIImage.SymbolConfiguration(pointSize: 20, weight: .semibold, scale: .medium)
+    static let arrowUp = UIImage(systemName: "arrow.up", withConfiguration: configuration)
+    static let arrowDown = UIImage(systemName: "arrow.down", withConfiguration: configuration)
 }
 // MARK: - Text string
 enum Text {
