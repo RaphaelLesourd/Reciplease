@@ -16,7 +16,6 @@ struct Hit: Decodable, Equatable {
     static func == (lhs: Hit, rhs: Hit) -> Bool {
         return lhs.recipe?.label == rhs.recipe?.label
     }
-    
     let recipe: RecipeClass?
 }
 

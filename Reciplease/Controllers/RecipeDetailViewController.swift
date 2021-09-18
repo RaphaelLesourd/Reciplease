@@ -11,7 +11,7 @@ class RecipeDetailViewController: UIViewController {
 
     // MARK: - Properties
     private lazy var coreDataStack = CoreDataStack()
-    private lazy var coreDataManager = CoreDataManager(managedObjectContext: coreDataStack.context,
+    private lazy var coreDataManager = CoreDataManager(managedObjectContext: coreDataStack.mainContext,
                                                        coreDataStack: coreDataStack)
     private let recipeView = RecipeDetailView()
     private let headerView = RecipeDetailHeaderView()

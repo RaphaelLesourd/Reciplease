@@ -30,7 +30,7 @@ class RecipeCardView: UIView {
     let recipeNameLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
-        label.font = UIFont.systemFont(ofSize: 21, weight: .bold)
+        label.font = UIFont.systemFont(ofSize: 18, weight: .bold)
         label.numberOfLines = 2
         label.minimumScaleFactor = 0.5
         label.textAlignment = .left
@@ -40,7 +40,7 @@ class RecipeCardView: UIView {
     let recipeIngredientsLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
-        label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        label.font = UIFont.systemFont(ofSize: 14, weight: .medium)
         label.minimumScaleFactor = 0.5
         label.numberOfLines = 2
         label.textAlignment = .left

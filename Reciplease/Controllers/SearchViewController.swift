@@ -157,7 +157,6 @@ extension SearchViewController: UITableViewDelegate {
 
 // MARK: - Textfield delegate
 extension SearchViewController: UITextFieldDelegate {
-
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         addIngredientToList()
         return true

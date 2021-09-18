@@ -30,7 +30,7 @@ class RecipeTableViewCell: UITableViewCell {
         gradientLayer.removeFromSuperlayer()
         gradientLayer.type = .axial
         gradientLayer.colors = [UIColor.black.withAlphaComponent(0).cgColor,
-                                UIColor.black.withAlphaComponent(0.5).cgColor]
+                                UIColor.black.withAlphaComponent(0.7).cgColor]
         gradientLayer.locations = [0.2, 1]
         gradientLayer.frame = contentView.bounds
         recipeCardView.recipeImage.layer.addSublayer(gradientLayer)
@@ -54,20 +54,17 @@ class RecipeTableViewCell: UITableViewCell {
         guard let recipe = recipe else {return}
 
         recipeCardView.recipeNameLabel.text = recipe.label
-
         if let rating = recipe.yield, rating > 0 {
             recipeCardView.recipeInfoView.ratingLabel.text = "\(rating)"
         } else {
             recipeCardView.recipeInfoView.ratingStackView.isHidden = true
         }
-
         if let cookingTime = recipe.totalTime, cookingTime > 0 {
             let time = Double(cookingTime).asString(style: .abbreviated)
             recipeCardView.recipeInfoView.recipeTimeLabel.text = "\(time)"
         } else {
             recipeCardView.recipeInfoView.recipeTimeStackView.isHidden = true
         }
-
         let ingredients = recipe.ingredientLines?.compactMap({ $0 }).joined(separator: ", ")
         recipeCardView.recipeIngredientsLabel.text = ingredients
 

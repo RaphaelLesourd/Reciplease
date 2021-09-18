@@ -11,7 +11,7 @@ class RecipeTableViewController: UITableViewController {
 
     // MARK: - Properties
     private lazy var coreDataStack = CoreDataStack()
-    private lazy var coreDataManager = CoreDataManager(managedObjectContext: coreDataStack.context,
+    private lazy var coreDataManager = CoreDataManager(managedObjectContext: coreDataStack.mainContext,
                                                        coreDataStack: coreDataStack)
     private let emptyStateView = RecipeTableViewEmptyStateView()
     private let refresherControl = UIRefreshControl()
@@ -20,8 +20,7 @@ class RecipeTableViewController: UITableViewController {
     private let searchController = UISearchController(searchResultsController: nil)
 
     private var recipeListType: RecipeListType = .favorite
-    private var recipes: [Hit]
-    private var filteredRecipes: [Hit] = [] {
+    private var recipes: [Hit] {
         didSet {
             tableView.reloadData()
         }
@@ -31,7 +30,6 @@ class RecipeTableViewController: UITableViewController {
     init(recipeListType: RecipeListType, recipes: [Hit]) {
         self.recipeListType = recipeListType
         self.recipes = recipes
-        self.filteredRecipes = recipes
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -63,18 +61,19 @@ class RecipeTableViewController: UITableViewController {
     }
 
     private func configureSearchController() {
-        searchController.searchResultsUpdater = self
-        searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = Text.tableViewSearchPlaceholder
-        searchController.automaticallyShowsSearchResultsController = true
-        self.navigationItem.searchController = searchController
-        self.definesPresentationContext = true
+        if recipeListType == .favorite {
+            searchController.searchResultsUpdater = self
+            searchController.obscuresBackgroundDuringPresentation = false
+            searchController.searchBar.placeholder = Text.tableViewSearchPlaceholder
+            searchController.automaticallyShowsSearchResultsController = true
+            self.navigationItem.searchController = searchController
+            self.definesPresentationContext = true
+        }
     }
 
     private func configureRefresherControl() {
         if recipeListType == .favorite {
-        let refresherTitle = recipeListType == .favorite ? "Fetching favorite recipes" : "Fetching recipes"
-        refresherControl.attributedTitle = NSAttributedString(string: refresherTitle)
+            refresherControl.attributedTitle = NSAttributedString(string: Text.favoriteREcipeRefresherTitle)
         refresherControl.tintColor = .label
         self.tableView.refreshControl = refresherControl
         refreshControl?.addTarget(self, action: #selector(fetchFavoriteRecipes), for: .valueChanged)
@@ -84,24 +83,13 @@ class RecipeTableViewController: UITableViewController {
     // MARK: - CoreData
     @objc func fetchFavoriteRecipes() {
         if recipeListType == .favorite {
-            coreDataManager.getRecipes { [weak self] result in
-                guard let self = self else {return}
-                switch result {
-                case .success(let favoriteRecipes):
-                        self.recipes = favoriteRecipes
-                        self.filteredRecipes = favoriteRecipes
-                        self.refresherControl.endRefreshing()
-                case .failure(let error):
-                        self.presentMessageAlert(with: error.description)
-                }
-            }
+            self.recipes = coreDataManager.getRecipes()
+            self.refresherControl.endRefreshing()
         }
     }
 
     private func addFavorite(_ recipe: RecipeClass) {
-        guard coreDataManager.add(recipe: recipe) != nil else {
-            return presentMessageAlert(with: CoredataError.recipeExist.description)
-        }
+        coreDataManager.add(recipe: recipe)
     }
 
     private func removeFavorite(_ recipe: RecipeClass) {
@@ -114,22 +102,22 @@ class RecipeTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        emptyStateView.isHidden = !filteredRecipes.isEmpty
-        return filteredRecipes.count
+        emptyStateView.isHidden = !recipes.isEmpty
+        return recipes.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: cellIndentifier,
             for: indexPath) as? RecipeTableViewCell else { return UITableViewCell() }
-        let recipes = filteredRecipes[indexPath.row].recipe
+        let recipes = recipes[indexPath.row].recipe
         cell.configure(with: recipes)
         return cell
     }
 
     // MARK: - TableView Delegate
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let selectedRecipe = filteredRecipes[indexPath.row].recipe else {return}
+        guard let selectedRecipe = recipes[indexPath.row].recipe else {return}
 
         guard let cell = self.tableView.cellForRow(at: indexPath) as? RecipeTableViewCell else {return}
         guard let recipeImage = cell.recipeCardView.recipeImage.image else {return}
@@ -145,7 +133,7 @@ class RecipeTableViewController: UITableViewController {
         let addAction = self.addToFavoriteAction(forRowAtIndexPath: indexPath)
         let removeAction = self.removeFromFavoriteAction(forRowAtIndexPath: indexPath)
 
-        guard let recipe = filteredRecipes[indexPath.row].recipe else {return nil}
+        guard let recipe = recipes[indexPath.row].recipe else {return nil}
         let isRecipeFavorite = coreDataManager.verifyRecipeExist(for: recipe)
         let action = isRecipeFavorite ? removeAction : addAction
         let swipeConfig = UISwipeActionsConfiguration(actions: [action])
@@ -172,7 +160,6 @@ class RecipeTableViewController: UITableViewController {
             guard let recipe = self.recipes[indexPath.row].recipe else {return}
             self.removeFavorite(recipe)
             self.recipes.remove(at: indexPath.row)
-            self.filteredRecipes.remove(at: indexPath.row)
             completion(true)
         }
         action.backgroundColor = .systemRed
@@ -186,13 +173,8 @@ extension RecipeTableViewController: UISearchResultsUpdating {
 
     func updateSearchResults(for searchController: UISearchController) {
         guard let searchText = searchController.searchBar.text else {return}
-        if searchText.isEmpty {
-            filteredRecipes = recipes
-        } else {
-            filteredRecipes = recipes.filter({
-                guard let recipeName = $0.recipe?.label else { return false }
-                return recipeName.contains(searchText)
-            })
+        if recipeListType == .favorite {
+            recipes = coreDataManager.getRecipes(with: searchText)
         }
     }
 }

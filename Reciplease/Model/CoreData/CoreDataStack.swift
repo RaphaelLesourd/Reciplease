@@ -9,21 +9,20 @@ import Foundation
 import CoreData
 
 open class CoreDataStack {
-    public static let modelName = "Reciplease"
+    static let modelName = "Reciplease"
 
-    public static let model: NSManagedObjectModel = {
+    static let model: NSManagedObjectModel = {
         let modelURL = Bundle.main.url(forResource: modelName, withExtension: "momd")!
         return NSManagedObjectModel(contentsOf: modelURL)!
     }()
 
-    public init() {
-    }
+    init() {}
 
-    public lazy var context: NSManagedObjectContext = {
-        return storageContainer.viewContext
+    lazy var mainContext: NSManagedObjectContext = {
+        return persitentContainer.viewContext
     }()
 
-    public lazy var storageContainer: NSPersistentContainer = {
+    lazy var persitentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: CoreDataStack.modelName, managedObjectModel: CoreDataStack.model)
         container.loadPersistentStores { _, error in
             if let error = error as NSError? {
@@ -33,7 +32,7 @@ open class CoreDataStack {
         return container
     }()
 
-    public func saveContext(_ context: NSManagedObjectContext) {
+    func saveContext(_ context: NSManagedObjectContext) {
         context.perform {
             do {
                 try context.save()
@@ -42,5 +41,4 @@ open class CoreDataStack {
             }
         }
     }
-
 }

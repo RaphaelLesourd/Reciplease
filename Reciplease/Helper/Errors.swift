@@ -48,23 +48,3 @@ enum ApiError: Error {
         }
     }
 }
-
-enum CoredataError: Error {
-    case recipeExist
-    case savingFailed
-    case retreiveFailed
-    case deletingFailed
-
-    var description: String {
-        switch self {
-        case .recipeExist:
-            return "This recipe already one your favorites."
-        case .savingFailed:
-            return "Unable to add this recipe to your favorites."
-        case .retreiveFailed:
-            return "unable to find your favorite recipe."
-        case .deletingFailed:
-            return "Unable to delete this recipe from your favorites."
-        }
-    }
-}

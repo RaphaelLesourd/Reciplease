@@ -44,6 +44,7 @@ enum Text {
     static let ingredientListTitle = "Your ingredients"
     static let searchRecipeButton = "Search for recipe"
     static let getDirectionButton = "Get directions"
+    static let favoriteREcipeRefresherTitle = "Refreshing"
 }
 
 enum TabBar {

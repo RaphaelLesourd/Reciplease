@@ -10,22 +10,22 @@ import CoreData
 
 class CoreDataManager {
 
-// MARK: - Properties
-let managedObjectContext: NSManagedObjectContext
-let coreDataStack: CoreDataStack
+    // MARK: - Properties
+    let managedObjectContext: NSManagedObjectContext
+    let coreDataStack: CoreDataStack
 
-// MARK: - Initializers
-public init(managedObjectContext: NSManagedObjectContext, coreDataStack: CoreDataStack) {
-    self.managedObjectContext = managedObjectContext
-    self.coreDataStack = coreDataStack
-}
+    // MARK: - Initializers
+    public init(managedObjectContext: NSManagedObjectContext, coreDataStack: CoreDataStack) {
+        self.managedObjectContext = managedObjectContext
+        self.coreDataStack = coreDataStack
+    }
 }
 
 // MARK: - Public
 extension CoreDataManager {
 
     @discardableResult
-    public func add(recipe: RecipeClass) -> RecipeFavorite? {
+    public func add(recipe: RecipeClass) -> RecipeFavorite {
         let favoriteRecipe = RecipeFavorite(context: managedObjectContext)
         favoriteRecipe.timestamp       = Date()
         favoriteRecipe.label           = recipe.label
@@ -39,47 +39,46 @@ extension CoreDataManager {
         return favoriteRecipe
     }
 
-    public func getRecipes(completion: @escaping (Result<[Hit], CoredataError>) -> Void) {
+    public func getRecipes(with name: String = "") -> [Hit] {
         let request: NSFetchRequest<RecipeFavorite> = RecipeFavorite.fetchRequest()
-        request.sortDescriptors = [NSSortDescriptor(key: "timestamp", ascending: false)]
+        if name != "" {
+            request.predicate = NSPredicate(format: "label CONTAINS[cd] %@", name)
+        }
+        request.sortDescriptors = [
+            NSSortDescriptor(key: "timestamp", ascending: false)
+        ]
 
         var favoriteRecipes: [Hit] = []
-        do {
-            let recipes = try managedObjectContext.fetch(request)
-            recipes.forEach { favoriteRecipes.append(Hit(recipe: RecipeClass(label: $0.label,
-                                                                             image: $0.image,
-                                                                             url: $0.url,
-                                                                             yield: Int($0.yield),
-                                                                             ingredientLines: $0.ingredientLines,
-                                                                             totalTime: Int($0.totalTime))))}
-            completion(.success(favoriteRecipes))
-        } catch {
-            completion(.failure(.retreiveFailed))
-        }
+        let recipes = try? managedObjectContext.fetch(request)
+        recipes?.forEach { favoriteRecipes.append(Hit(recipe: RecipeClass(label: $0.label,
+                                                                          image: $0.image,
+                                                                          url: $0.url,
+                                                                          yield: Int($0.yield),
+                                                                          ingredientLines: $0.ingredientLines,
+                                                                          totalTime: Int($0.totalTime))))}
+        return favoriteRecipes
     }
 
     public func delete(_ recipe: RecipeClass) {
         let request: NSFetchRequest<RecipeFavorite> = RecipeFavorite.fetchRequest()
         if let recipeURL = recipe.url {
             request.predicate = NSPredicate(format: "url == %@", "\(recipeURL)")
-        }
-
-        let result = try? managedObjectContext.fetch(request)
-        if let resultData = result {
-            for object in resultData {
-                managedObjectContext.delete(object)
+            let result = try? managedObjectContext.fetch(request)
+            if let resultData = result {
+                for object in resultData {
+                    managedObjectContext.delete(object)
+                }
             }
+            coreDataStack.saveContext(managedObjectContext)
         }
-        coreDataStack.saveContext(managedObjectContext)
     }
 
     // Verify
-    func verifyRecipeExist(for recipe: RecipeClass) -> Bool {
+    func verifyRecipeExist(for recipe: RecipeClass?) -> Bool {
         let request: NSFetchRequest<RecipeFavorite> = RecipeFavorite.fetchRequest()
-        if let recipeURL = recipe.url {
-            request.predicate = NSPredicate(format: "url == %@", "\(recipeURL)")
-        }
-        let recipes = try? managedObjectContext.fetch(request)
-        return !(recipes?.isEmpty ?? false)
+        guard  let recipeURL = recipe?.url else { return false }
+        request.predicate = NSPredicate(format: "url == %@", "\(recipeURL)")
+        guard let recipes = try? managedObjectContext.fetch(request) else { return false }
+        return !recipes.isEmpty
     }
 }

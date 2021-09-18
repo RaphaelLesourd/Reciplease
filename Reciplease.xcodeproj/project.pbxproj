@@ -207,9 +207,9 @@
 		8127E88726E3E8E8004B1684 /* RecipleaseTests */ = {
 			isa = PBXGroup;
 			children = (
-				8140C82926F1DBAF00E00DEE /* CoreData */,
 				8127E88A26E3E8E8004B1684 /* Info.plist */,
 				8134686326E6076E00A2DDCA /* IngredientsTestCase.swift */,
+				8140C82926F1DBAF00E00DEE /* CoreData */,
 			);
 			path = RecipleaseTests;
 			sourceTree = "<group>";
@@ -248,7 +248,6 @@
 			isa = PBXGroup;
 			children = (
 				8134686526E6579400A2DDCA /* RecipeData.swift */,
-				8134686D26E717CF00A2DDCA /* RecipeService.swift */,
 			);
 			path = Recipe;
 			sourceTree = "<group>";
@@ -270,13 +269,6 @@
 			path = TableViewCells;
 			sourceTree = "<group>";
 		};
-		8134687726E8E43C00A2DDCA /* NeworkCall */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = NeworkCall;
-			sourceTree = "<group>";
-		};
 		8134688F26ECAF2400A2DDCA /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
@@ -294,7 +286,7 @@
 			children = (
 				8134684E26E4E8C800A2DDCA /* IngredientsManager.swift */,
 				8134688F26ECAF2400A2DDCA /* CoreData */,
-				8134687726E8E43C00A2DDCA /* NeworkCall */,
+				8140C83326F4A85B00E00DEE /* Network */,
 				8134686C26E7165B00A2DDCA /* Recipe */,
 			);
 			path = Model;
@@ -359,6 +351,14 @@
 				8140C82C26F1DBE500E00DEE /* CoreDataTestCase.swift */,
 			);
 			path = CoreData;
+			sourceTree = "<group>";
+		};
+		8140C83326F4A85B00E00DEE /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				8134686D26E717CF00A2DDCA /* RecipeService.swift */,
+			);
+			path = Network;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
