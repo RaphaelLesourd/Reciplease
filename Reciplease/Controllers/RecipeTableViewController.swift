@@ -179,7 +179,6 @@ class RecipeTableViewController: UITableViewController {
     private func contextMenuAction(isFavorite: Bool, forRowAtIndexPath indexPath: IndexPath) -> UIContextualAction {
 
         let actionTitle = isFavorite ? Text.deleteFavorite : Text.addToFavorite
-
         let action = UIContextualAction(style: .normal, title: actionTitle) { [weak self] (_, _, completion) in
             guard let self = self else {return}
             guard let recipe = self.recipes[indexPath.row].recipe else {return}

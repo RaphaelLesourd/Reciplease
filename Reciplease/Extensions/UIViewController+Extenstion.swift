@@ -17,22 +17,32 @@ extension UIViewController {
         present(alert, animated: true, completion: nil)
     }
 
-    func presentUserQueryAlert(title: String,
-                               message: String?,
-                               okBtnTitle: String,
-                               style: UIAlertAction.Style,
-                               completion: (() -> Void)?) -> UIAlertController {
+    func presentUserQueryAlert(title: String? = nil,
+                               subtitle: String? = nil,
+                               actionTitle: String?,
+                               withTextField: Bool = false,
+                               inputText: String? = nil,
+                               inputPlaceholder: String? = nil,
+                               inputKeyboardType: UIKeyboardType = UIKeyboardType.default,
+                               actionHandler: ((_ text: String?) -> Void)? = nil) {
 
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let actionOK = UIAlertAction(title: okBtnTitle, style: style) { _ in
-            guard let completion = completion else { return }
-            completion()
+        let alert = UIAlertController(title: title, message: subtitle, preferredStyle: .alert)
+        if withTextField {
+            alert.addTextField { (textField:UITextField) in
+                textField.text = inputText
+                textField.placeholder = inputPlaceholder
+                textField.keyboardType = inputKeyboardType
+            }
         }
-        alert.addAction(actionOK)
-        alert.view.tintColor = .label
-        let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        alert.addAction(cancel)
-        return alert
+        alert.addAction(UIAlertAction(title: actionTitle, style: .destructive, handler: { _ in
+            guard let textField =  alert.textFields?.first else {
+                actionHandler?(nil)
+                return
+            }
+            actionHandler?(textField.text)
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
 
     // MARK: - Keyboard

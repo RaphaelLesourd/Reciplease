@@ -60,17 +60,16 @@ class SearchViewController: UIViewController {
             }
         }
     }
-
     @objc private func clearIngredients() {
-        let alert = presentUserQueryAlert(title: "Clearing the ingredient list.",
-                                          message: "Are you sure you want to clear the entire list?",
-                                          okBtnTitle: "Yes",
-                                          style: .destructive) { [weak self] in
+            presentUserQueryAlert(title: "Clearing the ingredient list.",
+                                          subtitle: "Are you sure you want to clear the entire list?",
+                                          actionTitle: "Yes",
+                                          withTextField: false,
+                                          actionHandler: { [weak self] _ in
             guard let self = self else {return}
             self.ingredientDatasource.clearIngredientList()
             self.searchView.tableView.reloadData()
-        }
-        present(alert, animated: true, completion: nil)
+        })
     }
 
     // MARK: - Api Call
@@ -100,6 +99,20 @@ class SearchViewController: UIViewController {
 
     func stopActivityIndicator() {
         hideIndicator(activityIndicator)
+    }
+
+    // MARK: - Edit
+    private func editIngredientName(for ingredient: String, at indexPath: IndexPath) {
+        self.presentUserQueryAlert(title: "Edit ingredient",
+                                   subtitle: "You can change the name of the ingredient.",
+                                   actionTitle: "Change",
+                                   withTextField: true,
+                                   inputText: ingredient,
+                                   inputPlaceholder: "Ingredient name") { newName in
+            guard let newName = newName else { return }
+            self.ingredientDatasource.ingredients[indexPath.row] = newName.capitalized
+            self.searchView.tableView.reloadRows(at: [indexPath], with: .right)
+        }
     }
 
     // MARK: - Navigation
@@ -165,6 +178,25 @@ extension SearchViewController: UITableViewDelegate {
     // Set a hardcoded value of 50 for the row height. A good balance for all screen sizes.
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 50
+    }
+    // Add a context ContextMenu to be able to add or remove a favorite recipe from coredata.
+    func tableView(_ tableView: UITableView,
+                   leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let action = self.contextMenuAction(forRowAtIndexPath: indexPath)
+        let swipeConfig = UISwipeActionsConfiguration(actions: [action])
+        return swipeConfig
+    }
+
+    private func contextMenuAction(forRowAtIndexPath indexPath: IndexPath) -> UIContextualAction {
+
+        let action = UIContextualAction(style: .normal, title: "Edit") { [weak self] (_, _, completion) in
+            guard let self = self else {return}
+            let ingredient = self.ingredientDatasource.ingredients[indexPath.row]
+            self.editIngredientName(for: ingredient, at: indexPath)
+            completion(true)
+        }
+        action.backgroundColor = .systemOrange
+        return action
     }
 }
 
