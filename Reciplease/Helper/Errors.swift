@@ -26,7 +26,11 @@ enum IngredientError: Error {
     }
 }
 
-enum ApiError: Error {
+enum ApiError: Error, Equatable {
+    static func == (lhs: ApiError, rhs: ApiError) -> Bool {
+        return lhs.description == rhs.description
+    }
+
     case noInputData
     case noData
     case noRecipeFound

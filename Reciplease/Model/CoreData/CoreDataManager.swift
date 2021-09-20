@@ -21,9 +21,12 @@ class CoreDataManager {
     }
 }
 
-// MARK: - Public
+// MARK: - Extension CRUD
 extension CoreDataManager {
 
+    /// Add a recipe to coredate
+    /// - Parameter recipe: Pass in a recipe of type REcipeClass
+    /// - Returns: A RecipeFavorite object of type NSManagedObject. (Used if the added object needs to be manipulated)
     @discardableResult
     public func add(recipe: RecipeClass) -> RecipeFavorite {
         let favoriteRecipe = RecipeFavorite(context: managedObjectContext)
@@ -38,7 +41,12 @@ extension CoreDataManager {
         coreDataStack.saveContext(managedObjectContext)
         return favoriteRecipe
     }
-
+    /// Get recipes from coredata.
+    /// - Parameters:
+    ///   - name: Word(s) part if the recipe label. if not empty a predicate cotaining the name is used to filter recipes.
+    ///   - ascending: Boolean to set wether if recipes are shown in ascending or descending order.
+    /// - Throws: An error of type NSError.
+    /// - Returns: Array of recipes of type Hit.
     public func getRecipes(with name: String = "", ascending: Bool = false) throws -> [Hit] {
         let request: NSFetchRequest<RecipeFavorite> = RecipeFavorite.fetchRequest()
         if name != "" {
@@ -51,15 +59,17 @@ extension CoreDataManager {
         do {
             let recipes = try managedObjectContext.fetch(request)
             recipes.forEach { favoriteRecipes.append(Hit(recipe: RecipeClass(label: $0.label,
-                                                                              image: $0.image,
-                                                                              url: $0.url,
-                                                                              yield: Int($0.yield),
-                                                                              ingredientLines: $0.ingredientLines,
-                                                                              totalTime: Int($0.totalTime))))}
+                                                                             image: $0.image,
+                                                                             url: $0.url,
+                                                                             yield: Int($0.yield),
+                                                                             ingredientLines: $0.ingredientLines,
+                                                                             totalTime: Int($0.totalTime))))}
         } catch { throw error }
         return favoriteRecipes
     }
-
+    /// Delete recipe from coredata.
+    /// - Parameter recipe: Pass in the recipe to delete
+    /// - Throws: An error of type NSError
     public func delete(_ recipe: RecipeClass?) throws {
         let request: NSFetchRequest<RecipeFavorite> = RecipeFavorite.fetchRequest()
         if let recipeURL = recipe?.url {
@@ -73,8 +83,9 @@ extension CoreDataManager {
             } catch { throw error }
         }
     }
-
-    // Verify
+    /// Verity if the recipe is already in coredata.
+    /// - Parameter recipe: Pass in the recipe to check.
+    /// - Returns: Boolean if in coredata or not.
     func verifyRecipeExist(for recipe: RecipeClass?) -> Bool {
         let request: NSFetchRequest<RecipeFavorite> = RecipeFavorite.fetchRequest()
         guard  let recipeURL = recipe?.url else { return false }

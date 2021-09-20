@@ -183,7 +183,8 @@ extension SearchViewController: UITableViewDelegate {
         return swipeConfig
     }
 
-    private func contextMenuAction(for actionType: EditActionType, forRowAtIndexPath indexPath: IndexPath) -> UIContextualAction {
+    private func contextMenuAction(for actionType: EditActionType,
+                                   forRowAtIndexPath indexPath: IndexPath) -> UIContextualAction {
 
         let action = UIContextualAction(style: .destructive,
                                         title: actionType.rawValue) { [weak self] (_, _, completion) in

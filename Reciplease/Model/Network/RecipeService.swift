@@ -16,9 +16,10 @@ class RecipeService {
         self.session = session
     }
 
+    var apiURL = URL(string: "https://api.edamam.com/api/recipes/v2")
+
     func getRecipes(for ingredientList: [String], completion: @escaping (Result<RecipeData, ApiError>) -> Void) {
 
-        let apiURL = URL(string: "https://api.edamam.com/api/recipes/v2")
         let parameters = ["q": ingredientList.joined(separator: ","),
                           "type": "public",
                           "app_id": "51f9801c",
