@@ -16,19 +16,21 @@ class RecipeService {
         self.session = session
     }
 
-    var apiURL = URL(string: "https://api.edamam.com/api/recipes/v2")
+    let apiURL = URL(string: "https://api.edamam.com/api/recipes/v2")
 
-    func getRecipes(for ingredientList: [String], completion: @escaping (Result<RecipeData, ApiError>) -> Void) {
+    func getRecipes(for ingredientList: [String]?, completion: @escaping (Result<RecipeData, ApiError>) -> Void) {
 
-        let parameters = ["q": ingredientList.joined(separator: ","),
+        guard let ingredients = ingredientList else {
+            completion(.failure(.noInputData))
+            return
+        }
+        let parameters = ["q": ingredients.joined(separator: ","),
                           "type": "public",
                           "app_id": "51f9801c",
                           "app_key": "32c858b39ceb0df2fadf69b33d49e09c"]
 
-        guard let apiURL = apiURL else {
-            completion(.failure(.badURL))
-            return
-        }
+        guard let apiURL = apiURL else { return }
+
         session.request(apiURL, method: .get, parameters: parameters)
             .validate()
             .responseDecodable(of: RecipeData.self) { response in

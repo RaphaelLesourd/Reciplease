@@ -92,7 +92,7 @@ class RecipeDetailViewController: UIViewController {
               let recipeURL = URL(string: linkURL),
               UIApplication.shared.canOpenURL(recipeURL)
         else {
-            return presentMessageAlert(with: ApiError.noRecipeFound.description)
+            return presentMessageAlert(with: ApiError.noData.description)
         }
         UIApplication.shared.open(recipeURL, options: [:], completionHandler: nil)
     }

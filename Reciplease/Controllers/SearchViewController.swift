@@ -86,10 +86,7 @@ class SearchViewController: UIViewController {
             self.hideIndicator(self.activityIndicator)
             switch result {
             case .success(let recipeList):
-                    guard let recipes = recipeList.hits, !recipes.isEmpty else {
-                        self.presentMessageAlert(with: ApiError.noRecipeFound.description)
-                        return
-                    }
+                    guard let recipes = recipeList.hits else { return }
                     self.navigateToRecipeList(with: recipes)
             case .failure(let error):
                     self.presentMessageAlert(with: error.description)

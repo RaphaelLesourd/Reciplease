@@ -12,15 +12,15 @@ class RecipeServiceTestCase: XCTestCase {
 
     var session: Session!
     var sut: RecipeService!
-    var expectation: XCTestExpectation!
 
     override func setUp() {
         super.setUp()
+
         let configuration = URLSessionConfiguration.default
         configuration.protocolClasses = [MockURLProtocol.self]
-        session = Session(configuration: configuration)
+        session = Session.init(configuration: configuration)
+
         sut = RecipeService(session: session)
-        expectation = expectation(description: "Expectation")
     }
 
     override func tearDown() {
@@ -29,49 +29,81 @@ class RecipeServiceTestCase: XCTestCase {
         session = nil
     }
 
-    func test_successResponse() {
-        MockURLProtocol.data = FakeData.recipeCorrectData
+    func test_givenListOfIngredients_whenRequestingRecipes_thenSuccessResponse() {
+        let expectation = XCTestExpectation(description: "Wait for queue change.")
+        guard let url = sut.apiURL else {return}
+        MockURLProtocol.requestHandler = { request in
+            let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: nil)!
+            return (response, FakeData.recipeCorrectData)
+        }
 
         sut.getRecipes(for: ["lemon, peach, almond"]) { (result) in
             switch result {
             case .success(let recipe):
                 XCTAssertEqual(recipe.hits?.first?.recipe?.label, "Peach almond cake")
             case .failure(let error):
-                print(error.localizedDescription)
                 XCTAssertNil(error)
             }
-            self.expectation.fulfill()
+            expectation.fulfill()
         }
         wait(for: [expectation], timeout: 1.0)
     }
 
-    func test_givenNoURL_whenRequestionRecipes_thenError() {
-        MockURLProtocol.data = FakeData.recipeCorrectData
-        sut.apiURL = nil
+    func test_givenListOfIngredients_whenRequestReturnBadData_thenDataError() {
+        let expectation = XCTestExpectation(description: "Wait for queue change.")
+
+        guard let url = sut.apiURL else {return}
+        MockURLProtocol.requestHandler = { request in
+            let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: nil)!
+            return (response, FakeData.recipeIncorrectData)
+        }
+
         sut.getRecipes(for: ["lemon, peach, almond"]) { (result) in
             switch result {
             case .success(let recipe):
                 XCTAssertNil(recipe)
             case .failure(let error):
-                XCTAssertEqual(error.description, ApiError.badURL.description)
+                XCTAssertNotNil(error)
             }
-            self.expectation.fulfill()
+            expectation.fulfill()
         }
         wait(for: [expectation], timeout: 1.0)
     }
 
-    func test_givenListOfIngredients_whenRequestionRecipes_thenNoData() {
+    func test_givenEmptyIngredients_whenRequestionRecipes_thenEmptyListError() {
 
-        MockURLProtocol.data = FakeData.recipeIncorrectData
-        sut.getRecipes(for: ["lemon, peach, almond"]) { (result) in
+        let expectation = XCTestExpectation(description: "Wait for queue change.")
+
+        guard let url = sut.apiURL else {return}
+        MockURLProtocol.requestHandler = { request in
+            let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: nil)!
+            return (response, FakeData.emptyRecipeCorrectData)
+        }
+
+        sut.getRecipes(for: []) { (result) in
             switch result {
             case .success(let recipe):
                 XCTAssertNil(recipe)
-                XCTAssertTrue(((recipe.hits?.isEmpty) != nil))
             case .failure(let error):
-               XCTAssertNotNil(error)
+                XCTAssertEqual(error, .noData)
             }
-            self.expectation.fulfill()
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 1.0)
+    }
+
+    func test_givenNoIngredients_whenRequestionRecipes_thenError() {
+
+        let expectation = XCTestExpectation(description: "Wait for queue change.")
+
+        sut.getRecipes(for: nil) { (result) in
+            switch result {
+            case .success(let recipe):
+                XCTAssertNil(recipe)
+            case .failure(let error):
+                XCTAssertEqual(error, .noInputData)
+            }
+            expectation.fulfill()
         }
         wait(for: [expectation], timeout: 1.0)
     }
