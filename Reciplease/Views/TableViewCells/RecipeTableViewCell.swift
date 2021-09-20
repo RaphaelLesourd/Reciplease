@@ -60,7 +60,7 @@ class RecipeTableViewCell: UITableViewCell {
             recipeCardView.recipeInfoView.ratingStackView.isHidden = true
         }
         if let cookingTime = recipe.totalTime, cookingTime > 0 {
-            let time = Double(cookingTime).asString(style: .abbreviated)
+            let time = Double(cookingTime * 60).asString(style: .abbreviated)
             recipeCardView.recipeInfoView.recipeTimeLabel.text = "\(time)"
         } else {
             recipeCardView.recipeInfoView.recipeTimeStackView.isHidden = true

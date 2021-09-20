@@ -80,7 +80,11 @@ class RecipeDetailViewController: UIViewController {
     }
 
     private func removeFromFavorite() {
-        coreDataManager.delete(recipe)
+        do {
+            try coreDataManager.delete(recipe)
+        } catch let error {
+            presentMessageAlert(with: error.localizedDescription)
+        }
     }
 
     @objc private func getDirections() {

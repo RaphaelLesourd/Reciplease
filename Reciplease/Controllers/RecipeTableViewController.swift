@@ -24,9 +24,10 @@ class RecipeTableViewController: UITableViewController {
     private var searchText = ""
     private var isAscending = false {
         didSet {
-            recipes = coreDataManager.getRecipes(with: searchText, ascending: isAscending)
+            fetchFavoriteRecipes()
         }
     }
+    private var unfilteredRecipes: [Hit] = []
     private var recipes: [Hit] {
         didSet {
             tableView.reloadData()
@@ -42,6 +43,7 @@ class RecipeTableViewController: UITableViewController {
     init(recipeListType: RecipeListType, recipes: [Hit]) {
         self.recipeListType = recipeListType
         self.recipes = recipes
+        self.unfilteredRecipes = recipes
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -55,6 +57,7 @@ class RecipeTableViewController: UITableViewController {
         view.backgroundColor = .secondarySystemBackground
         configureTableView()
         setEmptyStateViewConstraints()
+        configureSearchController()
         configureUiForFavoriteRecipes()
     }
 
@@ -74,7 +77,6 @@ class RecipeTableViewController: UITableViewController {
     private func configureUiForFavoriteRecipes() {
         if recipeListType == .favorite {
             addKeyboardDismissGesture()
-            configureSearchController()
             configureRefresherControl()
             configureNavigationItem()
         }
@@ -97,7 +99,7 @@ class RecipeTableViewController: UITableViewController {
     }
 
     private func configureNavigationItem() {
-        favoriteRecipeSortButton = UIBarButtonItem(image: Icons.arrowDown,
+        favoriteRecipeSortButton = UIBarButtonItem(image: Icons.sortIcon,
                                                    style: .plain,
                                                    target: self,
                                                    action: #selector(sortFavoriteRecipes))
@@ -108,7 +110,11 @@ class RecipeTableViewController: UITableViewController {
     // MARK: - CoreData
     @objc func fetchFavoriteRecipes() {
         if recipeListType == .favorite {
-            self.recipes = coreDataManager.getRecipes()
+            do {
+                self.recipes = try coreDataManager.getRecipes(with: searchText, ascending: isAscending)
+            } catch let error {
+                self.presentMessageAlert(with: error.localizedDescription)
+            }
             self.refresherControl.endRefreshing()
         }
     }
@@ -118,12 +124,15 @@ class RecipeTableViewController: UITableViewController {
     }
 
     private func removeFavorite(_ recipe: RecipeClass) {
-        coreDataManager.delete(recipe)
+        do {
+            try coreDataManager.delete(recipe)
+        } catch let error {
+            presentMessageAlert(with: error.localizedDescription)
+        }
     }
 
     @objc private func sortFavoriteRecipes() {
         isAscending.toggle()
-        favoriteRecipeSortButton?.image = isAscending ? Icons.arrowUp : Icons.arrowDown
     }
 
     // MARK: Navigation
@@ -199,10 +208,25 @@ class RecipeTableViewController: UITableViewController {
 // MARK: - Search result updater
 extension RecipeTableViewController: UISearchResultsUpdating {
 
+    fileprivate func filterSearchedRecipes(for searchText: String) {
+        if searchText.isEmpty {
+            recipes = unfilteredRecipes
+        } else {
+            recipes = unfilteredRecipes.filter({
+                guard let recipeName = $0.recipe?.label else { return false }
+                return recipeName.contains(searchText)
+            })
+        }
+    }
+
     func updateSearchResults(for searchController: UISearchController) {
         guard let searchText = searchController.searchBar.text else {return}
-        self.searchText = searchText
-        recipes = coreDataManager.getRecipes(with: self.searchText, ascending: isAscending)
+        if recipeListType == .favorite {
+            self.searchText = searchText
+            fetchFavoriteRecipes()
+        } else {
+            filterSearchedRecipes(for: searchText)
+        }
     }
 }
 // MARK: - Constraints

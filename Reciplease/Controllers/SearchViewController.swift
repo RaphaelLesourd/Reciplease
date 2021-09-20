@@ -101,7 +101,7 @@ class SearchViewController: UIViewController {
         hideIndicator(activityIndicator)
     }
 
-    // MARK: - Edit
+    // MARK: - Ingredient Management
     private func editIngredientName(for ingredient: String, at indexPath: IndexPath) {
         self.presentUserQueryAlert(title: "Edit ingredient",
                                    subtitle: "You can change the name of the ingredient.",
@@ -113,6 +113,12 @@ class SearchViewController: UIViewController {
             self.ingredientDatasource.ingredients[indexPath.row] = newName.capitalized
             self.searchView.tableView.reloadRows(at: [indexPath], with: .right)
         }
+    }
+
+    private func deleteIngredient(for ingredient: String, at indexPath: IndexPath) {
+        self.ingredientDatasource.deleteIngredient(with:ingredient)
+        self.searchView.tableView.deleteRows(at: [indexPath], with: .fade)
+        self.searchView.tableView.reloadData()
     }
 
     // MARK: - Navigation
@@ -154,17 +160,6 @@ extension SearchViewController: UITableViewDelegate {
         return false
     }
 
-    // Handle the tableView slide to delete funtionality.
-    // Delete object from data source then remove it from the tableView.
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle,
-                   forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            ingredientDatasource.deleteIngredient(with: ingredientDatasource.ingredients[indexPath.row])
-            tableView.deleteRows(at: [indexPath], with: .fade)
-            searchView.tableView.reloadData()
-        }
-    }
-
     // Create a tableView header to show the user a title for the list and present a clear button to clear
     // the entire list of ingredients.
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -179,30 +174,36 @@ extension SearchViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 50
     }
-    // Add a context ContextMenu to be able to add or remove a favorite recipe from coredata.
+    // Add a context ContextMenu to be able to remove  or edit an ingredient from the list.
     func tableView(_ tableView: UITableView,
-                   leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let action = self.contextMenuAction(forRowAtIndexPath: indexPath)
-        let swipeConfig = UISwipeActionsConfiguration(actions: [action])
+                   trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let editAction = self.contextMenuAction(for: .edit, forRowAtIndexPath: indexPath)
+        let deleteAction = self.contextMenuAction(for: .delete, forRowAtIndexPath: indexPath)
+        let swipeConfig = UISwipeActionsConfiguration(actions: [deleteAction, editAction])
         return swipeConfig
     }
 
-    private func contextMenuAction(forRowAtIndexPath indexPath: IndexPath) -> UIContextualAction {
+    private func contextMenuAction(for actionType: EditActionType, forRowAtIndexPath indexPath: IndexPath) -> UIContextualAction {
 
-        let action = UIContextualAction(style: .normal, title: "Edit") { [weak self] (_, _, completion) in
+        let action = UIContextualAction(style: .destructive,
+                                        title: actionType.rawValue) { [weak self] (_, _, completion) in
             guard let self = self else {return}
             let ingredient = self.ingredientDatasource.ingredients[indexPath.row]
-            self.editIngredientName(for: ingredient, at: indexPath)
+            switch actionType {
+            case .edit:
+                    self.editIngredientName(for: ingredient, at: indexPath)
+            case .delete:
+                    self.deleteIngredient(for: ingredient, at: indexPath)
+            }
             completion(true)
         }
-        action.backgroundColor = .systemOrange
+        action.backgroundColor = actionType.actionColor
         return action
     }
 }
 
 // MARK: - Textfield delegate
 extension SearchViewController: UITextFieldDelegate {
-
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         addIngredientToList()
         return true

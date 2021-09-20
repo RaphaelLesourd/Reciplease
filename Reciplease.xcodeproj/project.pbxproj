@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		5571BFFEB45C860914124A2D /* Pods_RecipleaseTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D66398069C0111980E7D41D /* Pods_RecipleaseTests.framework */; };
 		653EDECE6921D1077BA91DB5 /* Pods_Reciplease_RecipleaseUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BCEC6542A9B9AF6C499E2CE /* Pods_Reciplease_RecipleaseUITests.framework */; };
+		811D339026F7898700149FD8 /* RecipeServiceTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811D338F26F7898700149FD8 /* RecipeServiceTestCase.swift */; };
+		811D339226F790A400149FD8 /* UrlProtocolMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811D339126F790A400149FD8 /* UrlProtocolMock.swift */; };
+		811D339426F7991D00149FD8 /* FakeRecipeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811D339326F7991D00149FD8 /* FakeRecipeData.swift */; };
 		8127E86F26E3E8E5004B1684 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8127E86E26E3E8E5004B1684 /* AppDelegate.swift */; };
 		8127E87126E3E8E5004B1684 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8127E87026E3E8E5004B1684 /* SceneDelegate.swift */; };
 		8127E87326E3E8E5004B1684 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8127E87226E3E8E5004B1684 /* SearchViewController.swift */; };
@@ -71,6 +74,9 @@
 		7BAF2DE02152ED81A07864B0 /* Pods-Reciplease.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Reciplease.release.xcconfig"; path = "Target Support Files/Pods-Reciplease/Pods-Reciplease.release.xcconfig"; sourceTree = "<group>"; };
 		7C976D3A8E9EBE6A5EEF3FFF /* Pods-RecipleaseTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RecipleaseTests.debug.xcconfig"; path = "Target Support Files/Pods-RecipleaseTests/Pods-RecipleaseTests.debug.xcconfig"; sourceTree = "<group>"; };
 		7D43FA7EF99F0EF722C7F7A5 /* Pods-RecipleaseTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RecipleaseTests.release.xcconfig"; path = "Target Support Files/Pods-RecipleaseTests/Pods-RecipleaseTests.release.xcconfig"; sourceTree = "<group>"; };
+		811D338F26F7898700149FD8 /* RecipeServiceTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeServiceTestCase.swift; sourceTree = "<group>"; };
+		811D339126F790A400149FD8 /* UrlProtocolMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlProtocolMock.swift; sourceTree = "<group>"; };
+		811D339326F7991D00149FD8 /* FakeRecipeData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeRecipeData.swift; sourceTree = "<group>"; };
 		8127E86B26E3E8E4004B1684 /* Reciplease.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Reciplease.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8127E86E26E3E8E5004B1684 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8127E87026E3E8E5004B1684 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -168,6 +174,16 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		811D338E26F7896F00149FD8 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				811D338F26F7898700149FD8 /* RecipeServiceTestCase.swift */,
+				811D339126F790A400149FD8 /* UrlProtocolMock.swift */,
+				811D339326F7991D00149FD8 /* FakeRecipeData.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
 		8127E86226E3E8E4004B1684 = {
 			isa = PBXGroup;
 			children = (
@@ -210,6 +226,7 @@
 				8127E88A26E3E8E8004B1684 /* Info.plist */,
 				8134686326E6076E00A2DDCA /* IngredientsTestCase.swift */,
 				8140C82926F1DBAF00E00DEE /* CoreData */,
+				811D338E26F7896F00149FD8 /* Network */,
 			);
 			path = RecipleaseTests;
 			sourceTree = "<group>";
@@ -654,9 +671,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				811D339426F7991D00149FD8 /* FakeRecipeData.swift in Sources */,
+				811D339226F790A400149FD8 /* UrlProtocolMock.swift in Sources */,
 				8140C82826F1D8CA00E00DEE /* TestCoreDataStack.swift in Sources */,
 				8140C82D26F1DBE500E00DEE /* CoreDataTestCase.swift in Sources */,
 				8134686426E6076E00A2DDCA /* IngredientsTestCase.swift in Sources */,
+				811D339026F7898700149FD8 /* RecipeServiceTestCase.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

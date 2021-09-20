@@ -13,6 +13,20 @@ enum RecipeListType {
     case favorite
     case search
 }
+// MARK: - Edit actionType
+enum EditActionType: String {
+    case edit = "Edit"
+    case delete = "Delete"
+
+    var actionColor: UIColor {
+        switch self {
+            case .edit:
+                return .systemOrange
+            case .delete:
+                return .systemRed
+        }
+    }
+}
 // MARK: - Recipelist types
 enum AlertType: String {
     case success = "Success"
@@ -30,8 +44,7 @@ enum Icons {
     static let trash = UIImage(systemName: "trash.fill")
     static let timer = UIImage(systemName: "timer")
     static let configuration = UIImage.SymbolConfiguration(pointSize: 20, weight: .semibold, scale: .medium)
-    static let arrowUp = UIImage(systemName: "arrow.up", withConfiguration: configuration)
-    static let arrowDown = UIImage(systemName: "arrow.down", withConfiguration: configuration)
+    static let sortIcon = UIImage(systemName: "arrow.triangle.swap", withConfiguration: configuration)
 }
 // MARK: - Text string
 enum Text {

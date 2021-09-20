@@ -26,7 +26,7 @@ class RecipeInfoView: UIView {
         let label = UILabel()
         label.text = Text.noData
         label.textColor = .white
-        label.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+        label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         label.numberOfLines = 1
         label.textAlignment = .center
         return label
@@ -48,7 +48,7 @@ class RecipeInfoView: UIView {
         icon.image = image
         icon.tintColor = .white
         icon.translatesAutoresizingMaskIntoConstraints = true
-        icon.widthAnchor.constraint(equalToConstant: 15).isActive = true
+        icon.widthAnchor.constraint(equalToConstant: 17).isActive = true
         return icon
     }
 

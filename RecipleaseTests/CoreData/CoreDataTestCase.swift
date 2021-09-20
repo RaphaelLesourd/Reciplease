@@ -44,45 +44,88 @@ class CoreDataTestCase: XCTestCase {
         // Given
         let recipe = sut.add(recipe: recipe)
         // When
-        let favoriteRecipes = sut.getRecipes()
-        XCTAssertNotNil(favoriteRecipes)
-        XCTAssertTrue(favoriteRecipes.count == 1)
-        XCTAssertTrue(recipe.label == favoriteRecipes.first?.recipe?.label)
+        do {
+            let favoriteRecipes = try sut.getRecipes()
+            XCTAssertNotNil(favoriteRecipes)
+            XCTAssertTrue(favoriteRecipes.count == 1)
+            XCTAssertTrue(recipe.label == favoriteRecipes.first?.recipe?.label)
+        } catch {
+            XCTAssertNotNil(error)
+        }
     }
 
     func test_fetchRecipeWithPredicate() {
         // Given
         let recipe = sut.add(recipe: recipe)
         // When
-        let favoriteRecipes = sut.getRecipes(with: "Chicken")
-        XCTAssertNotNil(favoriteRecipes)
-        XCTAssertTrue(favoriteRecipes.count == 1)
-        XCTAssertTrue(recipe.label == favoriteRecipes.first?.recipe?.label)
+        do {
+            let favoriteRecipes = try sut.getRecipes(with: "Chicken")
+            XCTAssertNotNil(favoriteRecipes)
+            XCTAssertTrue(favoriteRecipes.count == 1)
+            XCTAssertTrue(recipe.label == favoriteRecipes.first?.recipe?.label)
+        } catch {
+            XCTAssertNotNil(error)
+        }
     }
 
     func test_deleteRecipe() {
         // Given
         sut.add(recipe: recipe)
-        let favoriteRecipes = sut.getRecipes()
-        XCTAssertNotNil(favoriteRecipes)
-        XCTAssertTrue(favoriteRecipes.count == 1)
-        XCTAssertTrue(recipe.label == favoriteRecipes.first?.recipe?.label)
+        do {
+            let favoriteRecipes = try sut.getRecipes()
+            XCTAssertNotNil(favoriteRecipes)
+            XCTAssertTrue(favoriteRecipes.count == 1)
+            XCTAssertTrue(recipe.label == favoriteRecipes.first?.recipe?.label)
+        } catch {
+            XCTAssertNotNil(error)
+        }
 
         // When
-        sut.delete(self.recipe)
+        do {
+            try sut.delete(self.recipe)
+        } catch let error {
+            XCTAssertNotNil(error)
+        }
+
         // Then
-        let getRecipes = sut.getRecipes()
-        XCTAssertNotNil(getRecipes)
-        XCTAssertTrue(getRecipes.count == 0)
+        do {
+            let favoriteRecipes = try sut.getRecipes()
+            XCTAssertNotNil(favoriteRecipes)
+            XCTAssertTrue(favoriteRecipes.count == 0)
+        } catch {
+            XCTAssertNotNil(error)
+        }
     }
 
-    func test_recipeAlreadyExist_whenCheckForExisitingRecipe() {
+    func test_deleteRecipe_whenNoREcipePassed() {
+        // Given
+        sut.add(recipe: recipe)
+        do {
+            let favoriteRecipes = try sut.getRecipes()
+            XCTAssertNotNil(favoriteRecipes)
+            XCTAssertTrue(favoriteRecipes.count == 1)
+            XCTAssertTrue(recipe.label == favoriteRecipes.first?.recipe?.label)
+        } catch {
+            XCTAssertNotNil(error)
+        }
+
+        sut.managedObjectContext.name = nil
+        // When
+        do {
+            try sut.delete(nil)
+        } catch let error {
+            // Then
+            XCTAssertNotNil(error)
+        }
+    }
+
+    func test_recipeAlreadyExist_whenCheckForExisitingRecipe_thenReturnTrue() {
         sut.add(recipe: recipe)
         let recipeExist = sut.verifyRecipeExist(for: recipe)
         XCTAssertTrue(recipeExist)
     }
 
-    func test_recipeDoNotExist_whenAddingAnotherRecipe() {
+    func test_recipeDoNotExist_whenAddingAnotherRecipe_thenReturnFalse() {
         sut.add(recipe: recipe)
         let otherRecipe = RecipeClass(label: "Green curry",
                                       image: "",
@@ -94,11 +137,15 @@ class CoreDataTestCase: XCTestCase {
         XCTAssertFalse(recipeExist)
     }
 
-    func test_givenNoRecipes_whenCheckingIfExist_thenError() {
+    func test_givenNoRecipes_whenCheckingIfExist_thenReturnFalse() {
         // When
-        let favoriteRecipes = sut.getRecipes()
-        XCTAssertNotNil(favoriteRecipes)
-        XCTAssertTrue(favoriteRecipes.count == 0)
+        do {
+            let favoriteRecipes = try sut.getRecipes()
+            XCTAssertNotNil(favoriteRecipes)
+            XCTAssertTrue(favoriteRecipes.count == 0)
+        } catch {
+            XCTAssertNotNil(error)
+        }
         // Then
         let recipeExist = sut.verifyRecipeExist(for: nil)
         XCTAssertFalse(recipeExist)

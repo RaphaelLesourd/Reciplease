@@ -22,7 +22,7 @@ open class CoreDataStack {
         return persitentContainer.viewContext
     }()
 
-    lazy var persitentContainer: NSPersistentContainer = {
+    var persitentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: CoreDataStack.modelName, managedObjectModel: CoreDataStack.model)
         container.loadPersistentStores { _, error in
             if let error = error as NSError? {

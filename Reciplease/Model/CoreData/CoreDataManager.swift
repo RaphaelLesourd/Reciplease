@@ -39,7 +39,7 @@ extension CoreDataManager {
         return favoriteRecipe
     }
 
-    public func getRecipes(with name: String = "", ascending: Bool = false) -> [Hit] {
+    public func getRecipes(with name: String = "", ascending: Bool = false) throws -> [Hit] {
         let request: NSFetchRequest<RecipeFavorite> = RecipeFavorite.fetchRequest()
         if name != "" {
             request.predicate = NSPredicate(format: "label CONTAINS[cd] %@", name)
@@ -47,29 +47,30 @@ extension CoreDataManager {
         request.sortDescriptors = [
             NSSortDescriptor(key: "timestamp", ascending: ascending)
         ]
-
         var favoriteRecipes: [Hit] = []
-        let recipes = try? managedObjectContext.fetch(request)
-        recipes?.forEach { favoriteRecipes.append(Hit(recipe: RecipeClass(label: $0.label,
-                                                                          image: $0.image,
-                                                                          url: $0.url,
-                                                                          yield: Int($0.yield),
-                                                                          ingredientLines: $0.ingredientLines,
-                                                                          totalTime: Int($0.totalTime))))}
+        do {
+            let recipes = try managedObjectContext.fetch(request)
+            recipes.forEach { favoriteRecipes.append(Hit(recipe: RecipeClass(label: $0.label,
+                                                                              image: $0.image,
+                                                                              url: $0.url,
+                                                                              yield: Int($0.yield),
+                                                                              ingredientLines: $0.ingredientLines,
+                                                                              totalTime: Int($0.totalTime))))}
+        } catch { throw error }
         return favoriteRecipes
     }
 
-    public func delete(_ recipe: RecipeClass) {
+    public func delete(_ recipe: RecipeClass?) throws {
         let request: NSFetchRequest<RecipeFavorite> = RecipeFavorite.fetchRequest()
-        if let recipeURL = recipe.url {
+        if let recipeURL = recipe?.url {
             request.predicate = NSPredicate(format: "url == %@", "\(recipeURL)")
-            let result = try? managedObjectContext.fetch(request)
-            if let resultData = result {
-                for object in resultData {
+            do {
+                let result = try managedObjectContext.fetch(request)
+                for object in result {
                     managedObjectContext.delete(object)
                 }
-            }
-            coreDataStack.saveContext(managedObjectContext)
+                coreDataStack.saveContext(managedObjectContext)
+            } catch { throw error }
         }
     }
 

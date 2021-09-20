@@ -10,6 +10,12 @@ import Alamofire
 
 class RecipeService {
 
+    private let session: Session
+
+    init(session: Session = .default) {
+        self.session = session
+    }
+
     func getRecipes(for ingredientList: [String], completion: @escaping (Result<RecipeData, ApiError>) -> Void) {
 
         let apiURL = URL(string: "https://api.edamam.com/api/recipes/v2")
@@ -22,7 +28,7 @@ class RecipeService {
             completion(.failure(.badURL))
             return
         }
-        AF.request(apiURL, method: .get, parameters: parameters)
+        session.request(apiURL, method: .get, parameters: parameters)
             .validate()
             .responseDecodable(of: RecipeData.self) { response in
                 switch response.result {
