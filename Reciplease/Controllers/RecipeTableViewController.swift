@@ -121,11 +121,16 @@ class RecipeTableViewController: UITableViewController {
 
     private func addFavorite(_ recipe: RecipeClass) {
         coreDataManager.add(recipe: recipe)
+        sendLocalNotification(with: Text.addToFavorite, and: recipe.label ?? "")
     }
 
-    private func removeFavorite(_ recipe: RecipeClass) {
+    private func removeFavorite(_ recipe: RecipeClass, at indexPath: IndexPath) {
         do {
             try coreDataManager.delete(recipe)
+            if self.recipeListType == .favorite {
+                self.recipes.remove(at: indexPath.row)
+            }
+            sendLocalNotification(with: Text.deleteFavorite, and: recipe.label ?? "")
         } catch let error {
             presentMessageAlert(with: error.localizedDescription)
         }
@@ -192,8 +197,7 @@ class RecipeTableViewController: UITableViewController {
             guard let self = self else {return}
             guard let recipe = self.recipes[indexPath.row].recipe else {return}
             if isFavorite {
-                self.removeFavorite(recipe)
-                self.recipes.remove(at: indexPath.row)
+                self.removeFavorite(recipe, at: indexPath)
             } else {
                 self.addFavorite(recipe)
             }

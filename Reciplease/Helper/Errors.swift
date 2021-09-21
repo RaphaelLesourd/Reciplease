@@ -38,7 +38,7 @@ enum ApiError: Error, Equatable {
     var description: String {
         switch self {
         case .alamofireError(let error):
-            return error.errorDescription ?? ""
+            return error.localizedDescription
         case .noInputData:
             return "Please add ingredients in your list before looking for recipes."
         case .noData:

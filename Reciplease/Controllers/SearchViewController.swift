@@ -62,10 +62,10 @@ class SearchViewController: UIViewController {
     }
     @objc private func clearIngredients() {
             presentUserQueryAlert(title: "Clearing the ingredient list.",
-                                          subtitle: "Are you sure you want to clear the entire list?",
-                                          actionTitle: "Yes",
-                                          withTextField: false,
-                                          actionHandler: { [weak self] _ in
+                                  subtitle: "Are you sure you want to clear the entire list?",
+                                  actionTitle: "Yes",
+                                  withTextField: false,
+                                  actionHandler: { [weak self] _ in
             guard let self = self else {return}
             self.ingredientDatasource.clearIngredientList()
             self.searchView.tableView.reloadData()
@@ -180,11 +180,9 @@ extension SearchViewController: UITableViewDelegate {
         return swipeConfig
     }
 
-    private func contextMenuAction(for actionType: EditActionType,
-                                   forRowAtIndexPath indexPath: IndexPath) -> UIContextualAction {
+    private func contextMenuAction(for actionType: EditActionType, forRowAtIndexPath indexPath: IndexPath) -> UIContextualAction {
 
-        let action = UIContextualAction(style: .destructive,
-                                        title: actionType.rawValue) { [weak self] (_, _, completion) in
+        let action = UIContextualAction(style: .destructive, title: actionType.rawValue) { [weak self] (_, _, completion) in
             guard let self = self else {return}
             let ingredient = self.ingredientDatasource.ingredients[indexPath.row]
             switch actionType {

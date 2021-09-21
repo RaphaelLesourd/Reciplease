@@ -18,16 +18,15 @@ class SearchView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    let addIngredientView = IngredientsFromFridgeView()
     let searchButton = CustomButton(title: Text.searchRecipeButton)
     let emptyStateView = RecipeTableViewEmptyStateView()
+    let addIngredientView = IngredientsFromFridgeView()
 
     let tableView: UITableView = {
         let table = UITableView(frame: .zero, style: .insetGrouped)
         table.backgroundColor = .clear
         table.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-        table.register(SectionHeaderView.self,
-                       forHeaderFooterViewReuseIdentifier: SectionHeaderView.reuseIdentifier)
+        table.register(SectionHeaderView.self, forHeaderFooterViewReuseIdentifier: SectionHeaderView.reuseIdentifier)
         table.translatesAutoresizingMaskIntoConstraints = false
         return table
     }()

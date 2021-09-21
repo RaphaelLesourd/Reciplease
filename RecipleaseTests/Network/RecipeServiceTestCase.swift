@@ -15,11 +15,9 @@ class RecipeServiceTestCase: XCTestCase {
 
     override func setUp() {
         super.setUp()
-
         let configuration = URLSessionConfiguration.default
         configuration.protocolClasses = [MockURLProtocol.self]
         session = Session.init(configuration: configuration)
-
         sut = RecipeService(session: session)
     }
 
@@ -71,7 +69,6 @@ class RecipeServiceTestCase: XCTestCase {
     }
 
     func test_givenEmptyIngredients_whenRequestionRecipes_thenEmptyListError() {
-
         let expectation = XCTestExpectation(description: "Wait for queue change.")
 
         guard let url = sut.apiURL else {return}
@@ -93,7 +90,6 @@ class RecipeServiceTestCase: XCTestCase {
     }
 
     func test_givenNoIngredients_whenRequestionRecipes_thenError() {
-
         let expectation = XCTestExpectation(description: "Wait for queue change.")
 
         sut.getRecipes(for: nil) { (result) in

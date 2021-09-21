@@ -77,11 +77,13 @@ class RecipeDetailViewController: UIViewController {
 
     private func addToFavorite() {
         coreDataManager.add(recipe: recipe)
+        sendLocalNotification(with: Text.addToFavorite, and: recipe.label ?? "")
     }
 
     private func removeFromFavorite() {
         do {
             try coreDataManager.delete(recipe)
+            sendLocalNotification(with: Text.deleteFavorite, and: recipe.label ?? "")
         } catch let error {
             presentMessageAlert(with: error.localizedDescription)
         }

@@ -7,18 +7,29 @@
 
 import UIKit
 import CoreData
+import UserNotifications
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions:
-                    [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions:
+                     [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        configureLocalNotifications()
         return true
     }
 
-    // MARK: UISceneSession Lifecycle
+    func configureLocalNotifications() {
+        UNUserNotificationCenter.current().delegate = self
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
+            if success {
+                print("All set!")
+            } else if let error = error {
+                print(error.localizedDescription)
+            }
+        }
+    }
 
+    // MARK: UISceneSession Lifecycle
     func application(_ application: UIApplication,
                      configurationForConnecting connectingSceneSession:UISceneSession,
                      options: UIScene.ConnectionOptions) -> UISceneConfiguration {
@@ -26,6 +37,17 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions lau
     }
 
     func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {
-
     }
+}
+// MARK: - UNUserNotificationCenterDelegate
+extension AppDelegate: UNUserNotificationCenterDelegate {
+  func userNotificationCenter(_ center: UNUserNotificationCenter,
+                              willPresent notification: UNNotification,
+                              withCompletionHandler completionHandler: (UNNotificationPresentationOptions) -> Void) {
+      if #available(iOS 14.0, *) {
+          completionHandler(.banner)
+      } else {
+          completionHandler(.badge)
+      }
+  }
 }

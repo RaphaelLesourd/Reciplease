@@ -29,8 +29,7 @@ class RecipeDetailView: UIView {
         table.allowsSelection = false
         table.estimatedRowHeight = 50
         table.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-        table.register(RecipeDetailHeaderView.self,
-                       forHeaderFooterViewReuseIdentifier: RecipeDetailHeaderView.reuseIdentifier)
+        table.register(RecipeDetailHeaderView.self, forHeaderFooterViewReuseIdentifier: RecipeDetailHeaderView.reuseIdentifier)
         table.translatesAutoresizingMaskIntoConstraints = false
         return table
     }()

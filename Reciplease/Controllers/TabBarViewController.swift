@@ -27,10 +27,9 @@ class TabBarViewController: UITabBarController {
                                                     image: searchIconImage)
 
         let favoriteIconImage = TabBar.Icons.favoriteIcon
-        let recipeTableViewController = createController(
-            for: RecipeTableViewController(recipeListType: .favorite, recipes: []),
-            title: TabBar.Text.favorite,
-            image: favoriteIconImage)
+        let recipeTableViewController = createController(for: RecipeTableViewController(recipeListType: .favorite, recipes: []),
+                                                         title: TabBar.Text.favorite,
+                                                         image: favoriteIconImage)
         self.viewControllers = [searchViewController, recipeTableViewController]
     }
     /// Create a navigation controller  for each tab with an icon inmage and a title.

@@ -26,8 +26,8 @@ class RecipeService {
         }
         let parameters = ["q": ingredients.joined(separator: ","),
                           "type": "public",
-                          "app_id": "51f9801c",
-                          "app_key": "32c858b39ceb0df2fadf69b33d49e09c"]
+                          "app_id": ApiKey.appID,
+                          "app_key": ApiKey.appKey]
 
         guard let apiURL = apiURL else { return }
 
