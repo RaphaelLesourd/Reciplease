@@ -142,9 +142,10 @@ class RecipeTableViewController: UITableViewController {
 
     // MARK: Navigation
     private func navigateToDetailViewController(with selectedRecipe: RecipeClass, and recipeImage: UIImage) {
-
-        let recipeDetailVC = RecipeDetailViewController(recipe: selectedRecipe, recipeImage: recipeImage)
-        recipeDetailVC.isFavorite = recipeListType == .favorite
+        let isRecipeFavorite = recipeListType == .favorite
+        let recipeDetailVC = RecipeDetailViewController(recipe: selectedRecipe,
+                                                        recipeImage: recipeImage,
+                                                        isFavorite: isRecipeFavorite)
         navigationController?.pushViewController(recipeDetailVC, animated: true)
     }
 
@@ -163,8 +164,8 @@ class RecipeTableViewController: UITableViewController {
         guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: cellIndentifier,
                 for: indexPath) as? RecipeTableViewCell else { return UITableViewCell() }
-        let recipes = recipes[indexPath.row].recipe
-        cell.configure(with: recipes)
+        let recipe = recipes[indexPath.row].recipe
+        cell.configure(with: recipe)
         return cell
     }
 

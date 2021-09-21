@@ -35,7 +35,7 @@ extension UIViewController {
                 textField.keyboardType = inputKeyboardType
             }
         }
-        alert.addAction(UIAlertAction(title: actionTitle, style: .destructive, handler: { _ in
+        alert.addAction(UIAlertAction(title: actionTitle, style: .default, handler: { _ in
             guard let textField =  alert.textFields?.first else {
                 actionHandler?(nil)
                 return
@@ -45,7 +45,7 @@ extension UIViewController {
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
-    
+
     // MARK: - User notification
     func sendLocalNotification(with title: String, and subtitle: String) {
         let content = UNMutableNotificationContent()
@@ -56,7 +56,7 @@ extension UIViewController {
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
         UNUserNotificationCenter.current().add(request)
     }
-    
+
     // MARK: - Keyboard
     func addKeyboardDismissGesture() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))

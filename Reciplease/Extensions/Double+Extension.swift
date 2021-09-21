@@ -6,10 +6,11 @@
 //
 
 import Foundation
+
 extension Double {
     func asString(style: DateComponentsFormatter.UnitsStyle) -> String {
         let formatter = DateComponentsFormatter()
-        formatter.allowedUnits = [.hour, .minute, .second]
+        formatter.allowedUnits = [.hour, .minute]
         formatter.unitsStyle = style
         return formatter.string(from: self) ?? ""
     }

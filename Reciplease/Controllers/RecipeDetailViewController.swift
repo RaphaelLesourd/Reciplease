@@ -19,12 +19,13 @@ class RecipeDetailViewController: UIViewController {
     private var recipeImage: UIImage
     private var addToFavoriteButton: UIBarButtonItem?
     private var recipe: RecipeClass
-    var isFavorite = false
+    private var isFavorite: Bool
 
     // MARK: - Intializers
-    init(recipe: RecipeClass, recipeImage: UIImage) {
+    init(recipe: RecipeClass, recipeImage: UIImage, isFavorite: Bool) {
         self.recipe = recipe
         self.recipeImage = recipeImage
+        self.isFavorite = isFavorite
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -141,11 +142,11 @@ extension RecipeDetailViewController: UITableViewDelegate {
             view.recipeCardView.recipeInfoView.ratingStackView.isHidden = true
         }
 
-        if let cookingTime = recipe.totalTime, cookingTime > 0 {
-            let time = Double(cookingTime).asString(style: .abbreviated)
-            view.recipeCardView.recipeInfoView.recipeTimeLabel.text = "\(time)"
-        } else {
-            view.recipeCardView.recipeInfoView.recipeTimeStackView.isHidden = true
+        if let cookingTime = recipe.totalTime {
+            let doubleTime = Double(cookingTime) * 60
+            view.recipeCardView.recipeInfoView.recipeTimeStackView.isHidden = !(doubleTime > 0)
+            let time = doubleTime.asString(style: .abbreviated)
+            view.recipeCardView.recipeInfoView.recipeTimeLabel.text = time
         }
         view.recipeCardView.recipeIngredientsLabel.text = Text.detailViewIngredientTitle
         view.recipeCardView.recipeNameLabel.text = recipe.label

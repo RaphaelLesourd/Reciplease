@@ -59,11 +59,11 @@ class RecipeTableViewCell: UITableViewCell {
         } else {
             recipeCardView.recipeInfoView.ratingStackView.isHidden = true
         }
-        if let cookingTime = recipe.totalTime, cookingTime > 0 {
-            let time = Double(cookingTime * 60).asString(style: .abbreviated)
-            recipeCardView.recipeInfoView.recipeTimeLabel.text = "\(time)"
-        } else {
-            recipeCardView.recipeInfoView.recipeTimeStackView.isHidden = true
+        if let cookingTime = recipe.totalTime {
+            let doubleTime = Double(cookingTime) * 60
+            recipeCardView.recipeInfoView.recipeTimeStackView.isHidden = !(doubleTime > 0)
+            let time = doubleTime.asString(style: .abbreviated)
+            recipeCardView.recipeInfoView.recipeTimeLabel.text = time
         }
         let ingredients = recipe.ingredientLines?.compactMap({ $0 }).joined(separator: ", ")
         recipeCardView.recipeIngredientsLabel.text = ingredients
