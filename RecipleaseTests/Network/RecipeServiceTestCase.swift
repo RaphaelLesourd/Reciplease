@@ -78,7 +78,7 @@ class RecipeServiceTestCase: XCTestCase {
             case .success(let recipe):
                 XCTAssertNil(recipe)
             case .failure(let error):
-                XCTAssertEqual(error, .noData)
+                XCTAssertEqual(error as! ApiError, ApiError.noData)
             }
             expectation.fulfill()
         }
@@ -93,7 +93,7 @@ class RecipeServiceTestCase: XCTestCase {
             case .success(let recipe):
                 XCTAssertNil(recipe)
             case .failure(let error):
-                XCTAssertEqual(error, .noInputData)
+                XCTAssertEqual(error as! ApiError, ApiError.noInputData)
             }
             expectation.fulfill()
         }
