@@ -10,8 +10,9 @@ import Alamofire
 
 class RecipeServiceTestCase: XCTestCase {
 
-    var session: Session!
-    var sut: RecipeService!
+    private var session: Session!
+    private var sut: RecipeService!
+    private let url = URL(string: "myDefaultURL")!
 
     override func setUp() {
         super.setUp()
@@ -20,7 +21,7 @@ class RecipeServiceTestCase: XCTestCase {
         session = Session.init(configuration: configuration)
         sut = RecipeService(session: session)
     }
-
+    
     override func tearDown() {
         super.tearDown()
         sut = nil
@@ -29,13 +30,12 @@ class RecipeServiceTestCase: XCTestCase {
 
     func test_givenListOfIngredients_whenRequestingRecipes_thenSuccessResponse() {
         let expectation = XCTestExpectation(description: "Wait for queue change.")
-        guard let url = sut.apiURL else {return}
-        MockURLProtocol.requestHandler = { request in
+        MockURLProtocol.requestHandler = { [self] request in
             let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: nil)!
             return (response, FakeData.recipeCorrectData)
         }
-
-        sut.getRecipes(for: ["lemon, peach, almond"]) { (result) in
+        
+       sut.getRecipes(for: ["lemon, peach, almond"]) { (result) in
             switch result {
             case .success(let recipe):
                 XCTAssertEqual(recipe.hits?.first?.recipe?.label, "Peach almond cake")
@@ -49,10 +49,8 @@ class RecipeServiceTestCase: XCTestCase {
 
     func test_givenListOfIngredients_whenRequestReturnBadData_thenDataError() {
         let expectation = XCTestExpectation(description: "Wait for queue change.")
-
-        guard let url = sut.apiURL else {return}
         MockURLProtocol.requestHandler = { request in
-            let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: nil)!
+            let response = HTTPURLResponse(url: self.url, statusCode: 200, httpVersion: nil, headerFields: nil)!
             return (response, FakeData.recipeIncorrectData)
         }
 
@@ -70,10 +68,8 @@ class RecipeServiceTestCase: XCTestCase {
 
     func test_givenEmptyIngredients_whenRequestionRecipes_thenEmptyListError() {
         let expectation = XCTestExpectation(description: "Wait for queue change.")
-
-        guard let url = sut.apiURL else {return}
         MockURLProtocol.requestHandler = { request in
-            let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: nil)!
+            let response = HTTPURLResponse(url: self.url, statusCode: 200, httpVersion: nil, headerFields: nil)!
             return (response, FakeData.emptyRecipeCorrectData)
         }
 

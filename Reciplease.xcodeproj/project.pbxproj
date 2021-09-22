@@ -288,10 +288,10 @@
 		813AA2EE26E3EB5200C48DAC /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				8134686C26E7165B00A2DDCA /* DataModel */,
 				8134684E26E4E8C800A2DDCA /* IngredientsManager.swift */,
 				8134688F26ECAF2400A2DDCA /* CoreData */,
 				8140C83326F4A85B00E00DEE /* Network */,
-				8134686C26E7165B00A2DDCA /* DataModel */,
 			);
 			path = Model;
 			sourceTree = "<group>";

@@ -25,7 +25,7 @@ class TabBarViewController: UITabBarController {
         let searchViewController = createController(for: SearchViewController(),
                                                     title: TabBar.Text.search,
                                                     image: searchIconImage)
-
+        
         let favoriteIconImage = TabBar.Icons.favoriteIcon
         let recipeTableViewController = createController(for: RecipeTableViewController(recipeListType: .favorite, recipes: []),
                                                          title: TabBar.Text.favorite,

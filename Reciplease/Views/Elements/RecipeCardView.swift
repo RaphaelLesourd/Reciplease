@@ -18,7 +18,7 @@ class RecipeCardView: UIView {
     }
 
     // MARK: - Subviews
-    let recipeImage: UIImageView = {
+    lazy var recipeImage: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.layer.masksToBounds = true
@@ -27,7 +27,7 @@ class RecipeCardView: UIView {
         return imageView
     }()
 
-    let recipeNameLabel: UILabel = {
+    lazy var recipeNameLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
         label.font = UIFont.systemFont(ofSize: 18, weight: .bold)
@@ -37,7 +37,7 @@ class RecipeCardView: UIView {
         return label
     }()
 
-    let recipeIngredientsLabel: UILabel = {
+    lazy var recipeIngredientsLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
         label.font = UIFont.systemFont(ofSize: 14, weight: .medium)
@@ -47,7 +47,7 @@ class RecipeCardView: UIView {
         return label
     }()
 
-    let titleStackView: UIStackView = {
+    lazy var titleStackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .vertical
         stack.spacing = 5
@@ -57,7 +57,7 @@ class RecipeCardView: UIView {
         return stack
     }()
 
-    let recipeInfoView = RecipeInfoView()
+    lazy var recipeInfoView = RecipeInfoView()
 
     override func layoutSubviews() {
         setRecipeImageContraints()

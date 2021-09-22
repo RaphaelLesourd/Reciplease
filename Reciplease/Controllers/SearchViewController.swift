@@ -13,7 +13,6 @@ class SearchViewController: UIViewController {
     // MARK: - Properties
     private let searchView = SearchView()
     private let ingredientDatasource = IngredientManager()
-    private let recipeClient = RecipeService()
     private let activityIndicator = UIActivityIndicatorView(style: .medium)
 
     // MARK: - Lifecycle
@@ -81,7 +80,7 @@ class SearchViewController: UIViewController {
     /// For the failire case , an error message is presented to the user.
     @objc private func getRecipesFromApi() {
         showIndicator(activityIndicator)
-        recipeClient.getRecipes(for: ingredientDatasource.ingredients) { [weak self] result in
+        RecipeService.shared.getRecipes(for: ingredientDatasource.ingredients) { [weak self] result in
             guard let self = self else {return}
             self.hideIndicator(self.activityIndicator)
             switch result {
@@ -181,7 +180,6 @@ extension SearchViewController: UITableViewDelegate {
     }
 
     private func contextMenuAction(for actionType: EditActionType, forRowAtIndexPath indexPath: IndexPath) -> UIContextualAction {
-
         let action = UIContextualAction(style: .destructive, title: actionType.rawValue) { [weak self] (_, _, completion) in
             guard let self = self else {return}
             let ingredient = self.ingredientDatasource.ingredients[indexPath.row]

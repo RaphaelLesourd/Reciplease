@@ -160,7 +160,6 @@ class RecipeTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
         guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: cellIndentifier,
                 for: indexPath) as? RecipeTableViewCell else { return UITableViewCell() }
@@ -171,7 +170,6 @@ class RecipeTableViewController: UITableViewController {
 
     // MARK: - TableView Delegate
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
         guard let selectedRecipe = recipes[indexPath.row].recipe else {return}
         guard let cell = self.tableView.cellForRow(at: indexPath) as? RecipeTableViewCell else {return}
         guard let recipeImage = cell.recipeCardView.recipeImage.image else {return}
@@ -190,9 +188,13 @@ class RecipeTableViewController: UITableViewController {
         let swipeConfig = UISwipeActionsConfiguration(actions: [action])
         return swipeConfig
     }
-
+    
+    /// Tableview context menu actions.
+    /// - Parameters:
+    ///   - isFavorite: Pass in Bool value if recipe at indexPath is already a favorite recipe.
+    ///   - indexPath: Index of the recipe
+    /// - Returns: Contextual menu action
     private func contextMenuAction(isFavorite: Bool, forRowAtIndexPath indexPath: IndexPath) -> UIContextualAction {
-
         let actionTitle = isFavorite ? Text.deleteFavorite : Text.addToFavorite
         let action = UIContextualAction(style: .normal, title: actionTitle) { [weak self] (_, _, completion) in
             guard let self = self else {return}
@@ -212,8 +214,24 @@ class RecipeTableViewController: UITableViewController {
 
 // MARK: - Search result updater
 extension RecipeTableViewController: UISearchResultsUpdating {
-
-    fileprivate func filterSearchedRecipes(for searchText: String) {
+    
+    /// Upadate the tableView according to the text entered in the UISearchControler textField
+    /// - Parameter searchController: Pass in the search controller used.
+   func updateSearchResults(for searchController: UISearchController) {
+        guard let searchText = searchController.searchBar.text else {return}
+        // If the recipe list type is favorite, the recipe stored in coredata are fetch according the the searchText criteria.
+       if recipeListType == .favorite {
+            self.searchText = searchText
+            fetchFavoriteRecipes()
+        } else {
+            // Otherwise if recipe list type is not favorite, the searched recipes are filtered.
+            filterSearchedRecipes(for: searchText)
+        }
+    }
+    
+    /// Filter the recipe searched
+    /// - Parameter searchText: Pass in the text used to filter recipes.
+    private func filterSearchedRecipes(for searchText: String) {
         if searchText.isEmpty {
             recipes = unfilteredRecipes
         } else {
@@ -221,16 +239,6 @@ extension RecipeTableViewController: UISearchResultsUpdating {
                 guard let recipeName = $0.recipe?.label else { return false }
                 return recipeName.contains(searchText)
             })
-        }
-    }
-
-    func updateSearchResults(for searchController: UISearchController) {
-        guard let searchText = searchController.searchBar.text else {return}
-        if recipeListType == .favorite {
-            self.searchText = searchText
-            fetchFavoriteRecipes()
-        } else {
-            filterSearchedRecipes(for: searchText)
         }
     }
 }
