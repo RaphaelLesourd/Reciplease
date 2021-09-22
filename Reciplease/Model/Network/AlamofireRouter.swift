@@ -8,22 +8,18 @@
 import Foundation
 import Alamofire
 
-enum Router: URLRequestConvertible {
-    
-    enum Constants {
-        static let baseURLPath = "https://api.edamam.com/api/recipes/v2"
-    }
-    
+enum AlamofireRouter: URLRequestConvertible {
+    // cases
     case ingredients([String])
-    
-    var method: HTTPMethod {
+    // Http methods
+    private var method: HTTPMethod {
         switch self {
         case .ingredients:
             return .get
         }
     }
-    
-    var parameters: [String: Any] {
+    // Parameters
+    private var parameters: [String: Any] {
         switch self {
         case .ingredients(let ingredientList):
             return ["q": ingredientList.joined(separator: ","),
@@ -32,9 +28,9 @@ enum Router: URLRequestConvertible {
                     "app_key": ApiKey.appKey]
         }
     }
-    
+    // Conforming to URLRequestConvertible protocol, returning URLRequest
     func asURLRequest() throws -> URLRequest {
-        let url = try Constants.baseURLPath.asURL()
+        let url = try ApiURL.baseURLPath.asURL()
         var request = URLRequest(url: url)
         request.httpMethod = method.rawValue
         request.timeoutInterval = TimeInterval(10*1000)

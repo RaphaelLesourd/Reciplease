@@ -12,7 +12,6 @@ class RecipeService {
     
     // MARK: - Properties
     static let shared = RecipeService(session: .default)
-    
     /// Create session
     private var session: Session
     
@@ -32,7 +31,7 @@ class RecipeService {
             return
         }
       
-        session.request(Router.ingredients(ingredients))
+        session.request(AlamofireRouter.ingredients(ingredients))
             .validate()
             .responseDecodable(of: RecipeData.self) { response in
                 switch response.result {

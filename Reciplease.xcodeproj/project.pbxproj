@@ -10,7 +10,7 @@
 		5571BFFEB45C860914124A2D /* Pods_RecipleaseTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D66398069C0111980E7D41D /* Pods_RecipleaseTests.framework */; };
 		811D339026F7898700149FD8 /* RecipeServiceTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811D338F26F7898700149FD8 /* RecipeServiceTestCase.swift */; };
 		811D339226F790A400149FD8 /* MockURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811D339126F790A400149FD8 /* MockURLProtocol.swift */; };
-		8122DF9E26FB652500084E2A /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8122DF9D26FB652500084E2A /* Router.swift */; };
+		8122DF9E26FB652500084E2A /* AlamofireRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8122DF9D26FB652500084E2A /* AlamofireRouter.swift */; };
 		8127E86F26E3E8E5004B1684 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8127E86E26E3E8E5004B1684 /* AppDelegate.swift */; };
 		8127E87126E3E8E5004B1684 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8127E87026E3E8E5004B1684 /* SceneDelegate.swift */; };
 		8127E87326E3E8E5004B1684 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8127E87226E3E8E5004B1684 /* SearchViewController.swift */; };
@@ -72,7 +72,7 @@
 		811D338F26F7898700149FD8 /* RecipeServiceTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeServiceTestCase.swift; sourceTree = "<group>"; };
 		811D339126F790A400149FD8 /* MockURLProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockURLProtocol.swift; sourceTree = "<group>"; };
 		811D339326F7991D00149FD8 /* FakeRecipe.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = FakeRecipe.json; sourceTree = "<group>"; };
-		8122DF9D26FB652500084E2A /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
+		8122DF9D26FB652500084E2A /* AlamofireRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlamofireRouter.swift; sourceTree = "<group>"; };
 		8127E86B26E3E8E4004B1684 /* Reciplease.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Reciplease.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8127E86E26E3E8E5004B1684 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8127E87026E3E8E5004B1684 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -374,7 +374,7 @@
 			isa = PBXGroup;
 			children = (
 				8134686D26E717CF00A2DDCA /* RecipeService.swift */,
-				8122DF9D26FB652500084E2A /* Router.swift */,
+				8122DF9D26FB652500084E2A /* AlamofireRouter.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -572,7 +572,7 @@
 				8134683726E47ADD00A2DDCA /* RecipeTableViewController.swift in Sources */,
 				8134683926E47E4300A2DDCA /* RecipeDetailViewController.swift in Sources */,
 				8134683E26E4846F00A2DDCA /* UIView+Extension.swift in Sources */,
-				8122DF9E26FB652500084E2A /* Router.swift in Sources */,
+				8122DF9E26FB652500084E2A /* AlamofireRouter.swift in Sources */,
 				8140C83226F25B0B00E00DEE /* RecipeFavorite+CoreDataProperties.swift in Sources */,
 				8134684F26E4E8C800A2DDCA /* IngredientsManager.swift in Sources */,
 				818D760926EF486100EBA491 /* CoreDataManager.swift in Sources */,

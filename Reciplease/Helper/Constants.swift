@@ -8,6 +8,10 @@
 import Foundation
 import UIKit
 
+// MARK: - URLs
+enum ApiURL {
+    static let baseURLPath = "https://api.edamam.com/api/recipes/v2"
+}
 // MARK: - Recipelist types
 enum RecipeListType {
     case favorite
