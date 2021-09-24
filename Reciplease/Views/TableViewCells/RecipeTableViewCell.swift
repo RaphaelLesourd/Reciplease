@@ -76,7 +76,6 @@ class RecipeTableViewCell: UITableViewCell {
                                                    runImageTransitionIfCached: false,
                                                    completion: nil)
         }
-
     }
 }
 // MARK: - Constraints

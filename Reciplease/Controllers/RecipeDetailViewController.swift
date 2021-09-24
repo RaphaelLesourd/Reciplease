@@ -10,9 +10,7 @@ import UIKit
 class RecipeDetailViewController: UIViewController {
 
     // MARK: - Properties
-    private lazy var coreDataStack = CoreDataStack()
-    private lazy var coreDataManager = CoreDataManager(managedObjectContext: coreDataStack.mainContext,
-                                                       coreDataStack: coreDataStack)
+    private lazy var coreDataManager = CoreDataManager(managedObjectContext: AppDelegate.context)
     private let recipeView = RecipeDetailView()
     private let headerView = RecipeDetailHeaderView()
 
@@ -78,13 +76,11 @@ class RecipeDetailViewController: UIViewController {
 
     private func addToFavorite() {
         coreDataManager.add(recipe: recipe)
-        sendLocalNotification(with: Text.addToFavorite, and: recipe.label ?? "")
     }
 
     private func removeFromFavorite() {
         do {
             try coreDataManager.delete(recipe)
-            sendLocalNotification(with: Text.deleteFavorite, and: recipe.label ?? "")
         } catch let error {
             presentMessageAlert(with: error.localizedDescription)
         }

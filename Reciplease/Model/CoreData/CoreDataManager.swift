@@ -12,12 +12,10 @@ class CoreDataManager {
 
     // MARK: - Properties
     let managedObjectContext: NSManagedObjectContext
-    let coreDataStack: CoreDataStack
-
+   
     // MARK: - Initializers
-    public init(managedObjectContext: NSManagedObjectContext, coreDataStack: CoreDataStack) {
+    public init(managedObjectContext: NSManagedObjectContext) {
         self.managedObjectContext = managedObjectContext
-        self.coreDataStack = coreDataStack
     }
 }
 
@@ -25,10 +23,9 @@ class CoreDataManager {
 extension CoreDataManager {
 
     /// Add a recipe to coredate
-    /// - Parameter recipe: Pass in a recipe of type REcipeClass
+    /// - Parameter recipe: Pass in a recipe of type RecipeClass
     /// - Returns: A RecipeFavorite object of type NSManagedObject. (Used if the added object needs to be manipulated)
-    @discardableResult
-    public func add(recipe: RecipeClass) -> RecipeFavorite {
+    public func add(recipe: RecipeClass) {
         let favoriteRecipe = RecipeFavorite(context: managedObjectContext)
         favoriteRecipe.timestamp       = Date()
         favoriteRecipe.label           = recipe.label
@@ -37,9 +34,7 @@ extension CoreDataManager {
         favoriteRecipe.ingredientLines = recipe.ingredientLines
         favoriteRecipe.totalTime       = Int32(recipe.totalTime ?? 0)
         favoriteRecipe.yield           = Int32(recipe.yield ?? 0)
-
-        coreDataStack.saveContext(managedObjectContext)
-        return favoriteRecipe
+        try? saveContext()
     }
     /// Get recipes from coredata.
     /// - Parameters:
@@ -79,7 +74,7 @@ extension CoreDataManager {
                 for object in result {
                     managedObjectContext.delete(object)
                 }
-                coreDataStack.saveContext(managedObjectContext)
+                try? saveContext()
             } catch { throw error }
         }
     }
@@ -92,5 +87,14 @@ extension CoreDataManager {
         request.predicate = NSPredicate(format: "url == %@", "\(recipeURL)")
         guard let recipes = try? managedObjectContext.fetch(request) else { return false }
         return !recipes.isEmpty
+    }
+    
+    // MARK: - Core Data Saving support
+    private func saveContext() throws {
+        if managedObjectContext.hasChanges {
+            do {
+                try managedObjectContext.save()
+            } catch { throw error }
+        }
     }
 }

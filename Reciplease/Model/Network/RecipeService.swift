@@ -11,12 +11,13 @@ import Alamofire
 class RecipeService {
     
     // MARK: - Properties
-    static let shared = RecipeService(session: .default)
+    static let shared = RecipeService()
+    
     /// Create session
-    private var session: Session
+    var session: Session
     
     // MARK: - Initializer
-    init(session: Session) {
+    init(session: Session = .default) {
         self.session = session
     }
     

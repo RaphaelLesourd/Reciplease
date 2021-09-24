@@ -10,9 +10,7 @@ import UIKit
 class RecipeTableViewController: UITableViewController {
 
     // MARK: - Properties
-    private lazy var coreDataStack = CoreDataStack()
-    private lazy var coreDataManager = CoreDataManager(managedObjectContext: coreDataStack.mainContext,
-                                                       coreDataStack: coreDataStack)
+    private lazy var coreDataManager = CoreDataManager(managedObjectContext: AppDelegate.context)
     private let emptyStateView = RecipeTableViewEmptyStateView()
     private let refresherControl = UIRefreshControl()
     private let cellIndentifier = RecipeTableViewCell.reuseIdentifier
@@ -35,7 +33,6 @@ class RecipeTableViewController: UITableViewController {
     }
 
     // MARK: - Initializers
-
     /// Intialize the controller with a list of recipes and type of recipes
     /// - Parameters:
     ///   - recipeListType: Type of recipes, by default .favorite
@@ -121,7 +118,6 @@ class RecipeTableViewController: UITableViewController {
 
     private func addFavorite(_ recipe: RecipeClass) {
         coreDataManager.add(recipe: recipe)
-        sendLocalNotification(with: Text.addToFavorite, and: recipe.label ?? "")
     }
 
     private func removeFavorite(_ recipe: RecipeClass, at indexPath: IndexPath) {
@@ -130,7 +126,6 @@ class RecipeTableViewController: UITableViewController {
             if self.recipeListType == .favorite {
                 self.recipes.remove(at: indexPath.row)
             }
-            sendLocalNotification(with: Text.deleteFavorite, and: recipe.label ?? "")
         } catch let error {
             presentMessageAlert(with: error.localizedDescription)
         }

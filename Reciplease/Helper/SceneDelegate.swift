@@ -47,7 +47,5 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func sceneDidEnterBackground(_ scene: UIScene) {
         // Save changes in the application's managed object context when the application transitions to the background.
-        let coreDataStack = CoreDataStack()
-        coreDataStack.saveContext(coreDataStack.mainContext)
     }
 }
