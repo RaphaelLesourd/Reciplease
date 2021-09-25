@@ -16,7 +16,7 @@ class CustomButton: UIButton {
         self.roundCorners(radius: 11)
     }
 
-    convenience init(color: UIColor = .systemGreen, title: String) {
+    convenience init(color: UIColor = .mainTintColor, title: String) {
         self.init()
         backgroundColor = color
         setTitle(title, for: .normal)

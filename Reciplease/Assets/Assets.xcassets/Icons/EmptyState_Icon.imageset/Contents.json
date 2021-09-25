@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "noun_onion_3925294-2.pdf",
+      "filename" : "Group.png",
       "idiom" : "universal"
     }
   ],
@@ -11,6 +11,6 @@
   },
   "properties" : {
     "auto-scaling" : "auto",
-    "template-rendering-intent" : "template"
+    "template-rendering-intent" : "original"
   }
 }

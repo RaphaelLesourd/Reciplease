@@ -21,7 +21,7 @@ class RecipeTableViewEmptyStateView: UIView {
     }
 
     // MARK: - Subview
-    private lazy var emptyStateImage: UIImageView = {
+    private let emptyStateImage: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.layer.masksToBounds = true
@@ -30,7 +30,7 @@ class RecipeTableViewEmptyStateView: UIView {
         return imageView
     }()
 
-    private lazy var titleLabel: UILabel = {
+    private let titleLabel: UILabel = {
         let label = UILabel()
         label.text = Text.emptyStateMessage
         label.textColor = .tertiaryLabel
@@ -41,7 +41,7 @@ class RecipeTableViewEmptyStateView: UIView {
         return label
     }()
 
-    private lazy var stackView: UIStackView = {
+    private let stackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .vertical
         stack.spacing = 5

@@ -20,7 +20,7 @@ class IngredientsFromFridgeView: UIView {
     }
 
     // MARK: - Subviews
-    private lazy var titleLabel: UILabel = {
+    private let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "What's in your fridge?"
         label.textColor = .label
@@ -31,7 +31,7 @@ class IngredientsFromFridgeView: UIView {
         return label
     }()
 
-    private lazy var subtitleLabel: UILabel = {
+    private let subtitleLabel: UILabel = {
         let label = UILabel()
         label.text = "You can add several ingredients by separating them with a comma."
         label.textColor = .secondaryLabel
@@ -42,14 +42,14 @@ class IngredientsFromFridgeView: UIView {
         return label
     }()
 
-    lazy var addIngredientButton: CustomButton = {
-        let button = CustomButton(color: .systemGreen, title: Text.add)
+    let addIngredientButton: CustomButton = {
+        let button = CustomButton(color: .mainTintColor, title: Text.add)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.widthAnchor.constraint(equalToConstant: 50).isActive = true
         return button
     }()
 
-    lazy var textField: UITextField = {
+    let textField: UITextField = {
         let textField = UITextField()
         textField.placeholder = Text.addIngredientPlaceholder
         let leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 2))
@@ -70,7 +70,7 @@ class IngredientsFromFridgeView: UIView {
         return textField
     }()
 
-    private lazy var textFieldStackView: UIStackView = {
+    private let textFieldStackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .horizontal
         stack.spacing = 5
@@ -79,7 +79,7 @@ class IngredientsFromFridgeView: UIView {
         return stack
     }()
 
-    private lazy var mainStackView: UIStackView = {
+    private let mainStackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .vertical
         stack.spacing = 10

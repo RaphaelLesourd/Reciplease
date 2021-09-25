@@ -25,7 +25,7 @@ enum EditActionType: String {
     var actionColor: UIColor {
         switch self {
             case .edit:
-                return .systemOrange
+                return .favoriteColor
             case .delete:
                 return .systemRed
         }
@@ -62,7 +62,7 @@ enum Text {
     static let emptyStateMessage = "Nothing here yet!"
     static let clearButtonTitle = "Clear"
     static let ingredientListTitle = "Your ingredients"
-    static let searchRecipeButton = "Search for recipe"
+    static let searchRecipeButton = "Search for recipes"
     static let getDirectionButton = "Get directions"
     static let favoriteREcipeRefresherTitle = "Refreshing"
 }

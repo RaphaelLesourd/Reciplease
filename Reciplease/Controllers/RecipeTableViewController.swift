@@ -201,7 +201,7 @@ class RecipeTableViewController: UITableViewController {
             }
             completion(true)
         }
-        action.backgroundColor = isFavorite ? .systemRed : .systemOrange
+        action.backgroundColor = isFavorite ? .systemRed : .favoriteColor
         action.image = isFavorite ? Icons.trash : Icons.favorite
         return action
     }

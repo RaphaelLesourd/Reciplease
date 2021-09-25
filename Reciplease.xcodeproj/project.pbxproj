@@ -47,6 +47,7 @@
 		8140C82D26F1DBE500E00DEE /* CoreDataTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8140C82C26F1DBE500E00DEE /* CoreDataTestCase.swift */; };
 		8140C83226F25B0B00E00DEE /* RecipeFavorite+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8140C83026F25AB500E00DEE /* RecipeFavorite+CoreDataProperties.swift */; };
 		818D760926EF486100EBA491 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818D760826EF486100EBA491 /* CoreDataManager.swift */; };
+		81AA6F0826FF64BB00E7CE4C /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AA6F0726FF64BB00E7CE4C /* UIColor+Extension.swift */; };
 		81CFA1B926F93605003289F6 /* ApiKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CFA1B826F93605003289F6 /* ApiKeys.swift */; };
 		AE13AEB475EF063792C24C27 /* Pods_Reciplease.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD1F4DEE8121F25939D8D587 /* Pods_Reciplease.framework */; };
 /* End PBXBuildFile section */
@@ -113,6 +114,7 @@
 		8140C82C26F1DBE500E00DEE /* CoreDataTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataTestCase.swift; sourceTree = "<group>"; };
 		8140C83026F25AB500E00DEE /* RecipeFavorite+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "RecipeFavorite+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		818D760826EF486100EBA491 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		81AA6F0726FF64BB00E7CE4C /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		81CFA1B826F93605003289F6 /* ApiKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiKeys.swift; sourceTree = "<group>"; };
 		9866449E2E8CD30EAE52567A /* Pods-Reciplease-RecipleaseUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Reciplease-RecipleaseUITests.debug.xcconfig"; path = "Target Support Files/Pods-Reciplease-RecipleaseUITests/Pods-Reciplease-RecipleaseUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		CD1F4DEE8121F25939D8D587 /* Pods_Reciplease.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Reciplease.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -201,6 +203,7 @@
 				813AA2EF26E3EBEC00C48DAC /* Helper */,
 				813AA2F326E3EC5000C48DAC /* Extensions */,
 				813AA2EE26E3EB5200C48DAC /* Model */,
+				8134684E26E4E8C800A2DDCA /* IngredientsManager.swift */,
 				813AA2F126E3EC1500C48DAC /* Views */,
 				813AA2F226E3EC2700C48DAC /* Controllers */,
 			);
@@ -288,9 +291,8 @@
 			isa = PBXGroup;
 			children = (
 				8134686C26E7165B00A2DDCA /* DataModel */,
-				8134684E26E4E8C800A2DDCA /* IngredientsManager.swift */,
-				8134688F26ECAF2400A2DDCA /* CoreData */,
 				8140C83326F4A85B00E00DEE /* Network */,
+				8134688F26ECAF2400A2DDCA /* CoreData */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -342,6 +344,7 @@
 			isa = PBXGroup;
 			children = (
 				8134685626E50A5D00A2DDCA /* UIViewController+Extenstion.swift */,
+				81AA6F0726FF64BB00E7CE4C /* UIColor+Extension.swift */,
 				8134683D26E4846F00A2DDCA /* UIView+Extension.swift */,
 				8134687826E9FEF400A2DDCA /* Double+Extension.swift */,
 			);
@@ -569,6 +572,7 @@
 				8134683726E47ADD00A2DDCA /* RecipeTableViewController.swift in Sources */,
 				8134683926E47E4300A2DDCA /* RecipeDetailViewController.swift in Sources */,
 				8134683E26E4846F00A2DDCA /* UIView+Extension.swift in Sources */,
+				81AA6F0826FF64BB00E7CE4C /* UIColor+Extension.swift in Sources */,
 				8122DF9E26FB652500084E2A /* AlamofireRouter.swift in Sources */,
 				8140C83226F25B0B00E00DEE /* RecipeFavorite+CoreDataProperties.swift in Sources */,
 				8134684F26E4E8C800A2DDCA /* IngredientsManager.swift in Sources */,

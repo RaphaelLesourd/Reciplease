@@ -55,7 +55,7 @@ class RecipeDetailViewController: UIViewController {
                                               style: .plain,
                                               target: self,
                                               action: #selector(favoriteButtonTapped))
-        addToFavoriteButton?.tintColor = .systemOrange
+        addToFavoriteButton?.tintColor = .favoriteColor
         navigationItem.rightBarButtonItem = addToFavoriteButton
     }
 
