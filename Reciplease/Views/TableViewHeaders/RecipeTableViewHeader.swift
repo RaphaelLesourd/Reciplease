@@ -35,7 +35,7 @@ class SectionHeaderView: UITableViewHeaderFooterView {
     }()
 
     let deleteAllIngredientsButton: CustomButton = {
-        let button = CustomButton(color: .mainTintColor, title: Text.clearButtonTitle)
+        let button = CustomButton(color: .appTintColor, title: Text.clearButtonTitle)
         button.backgroundColor = .clear
         button.setTitleColor(.label, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false

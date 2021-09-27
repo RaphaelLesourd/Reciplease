@@ -24,4 +24,3 @@ struct RecipeClass: Decodable {
     let ingredientLines: [String]?
     let totalTime: Int?
 }
-

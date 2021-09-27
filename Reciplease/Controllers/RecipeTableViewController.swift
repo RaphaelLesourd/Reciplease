@@ -143,7 +143,9 @@ class RecipeTableViewController: UITableViewController {
                                                         isFavorite: isRecipeFavorite)
         navigationController?.pushViewController(recipeDetailVC, animated: true)
     }
+}
 
+extension RecipeTableViewController {
     // MARK: - TableView Datasource
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1

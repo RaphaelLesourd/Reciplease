@@ -7,15 +7,13 @@
 
 import Foundation
 import Alamofire
-
-protocol ErrorPresenter: AnyObject {
-    func presentMessageAlert(type: AlertType, with message: String)
-}
+import AlamofireImage
 
 enum IngredientError: Error {
     case noName
     case alreadyExist(ingredientName: String)
-
+}
+extension IngredientError: LocalizedError {
     var description: String {
         switch self {
         case .noName:
@@ -27,19 +25,24 @@ enum IngredientError: Error {
 }
 
 enum ApiError: Error, Equatable {
+    case noImputData
+    case noData
+    case afError(AFError)
+ 
     static func == (lhs: ApiError, rhs: ApiError) -> Bool {
         return lhs.description == rhs.description
     }
+}
 
-    case noInputData
-    case noData
-   
+extension ApiError: LocalizedError {
     var description: String {
         switch self {
-        case .noInputData:
-            return "Please add ingredients in your list before looking for recipes."
+        case .noImputData:
+            return "You have not provided any ingredients yet."
         case .noData:
             return "Unable to find anything matching your request."
+        case .afError(let error):
+            return error.localizedDescription.description
         }
     }
 }

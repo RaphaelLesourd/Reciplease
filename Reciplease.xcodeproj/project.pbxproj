@@ -45,7 +45,7 @@
 		813F8B7726F8D3A40028D6F4 /* FakeEmptyRecipe.json in Resources */ = {isa = PBXBuildFile; fileRef = 813F8B7626F8D3A40028D6F4 /* FakeEmptyRecipe.json */; };
 		8140C82826F1D8CA00E00DEE /* TestCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8140C82726F1D8CA00E00DEE /* TestCoreDataStack.swift */; };
 		8140C82D26F1DBE500E00DEE /* CoreDataTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8140C82C26F1DBE500E00DEE /* CoreDataTestCase.swift */; };
-		8140C83226F25B0B00E00DEE /* RecipeFavorite+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8140C83026F25AB500E00DEE /* RecipeFavorite+CoreDataProperties.swift */; };
+		8140C83226F25B0B00E00DEE /* RecipeFavorite+CoreDataObectModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8140C83026F25AB500E00DEE /* RecipeFavorite+CoreDataObectModel.swift */; };
 		818D760926EF486100EBA491 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818D760826EF486100EBA491 /* CoreDataManager.swift */; };
 		81AA6F0826FF64BB00E7CE4C /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AA6F0726FF64BB00E7CE4C /* UIColor+Extension.swift */; };
 		81CFA1B926F93605003289F6 /* ApiKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CFA1B826F93605003289F6 /* ApiKeys.swift */; };
@@ -112,7 +112,7 @@
 		813F8B7626F8D3A40028D6F4 /* FakeEmptyRecipe.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = FakeEmptyRecipe.json; sourceTree = "<group>"; };
 		8140C82726F1D8CA00E00DEE /* TestCoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestCoreDataStack.swift; sourceTree = "<group>"; };
 		8140C82C26F1DBE500E00DEE /* CoreDataTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataTestCase.swift; sourceTree = "<group>"; };
-		8140C83026F25AB500E00DEE /* RecipeFavorite+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "RecipeFavorite+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		8140C83026F25AB500E00DEE /* RecipeFavorite+CoreDataObectModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "RecipeFavorite+CoreDataObectModel.swift"; sourceTree = "<group>"; };
 		818D760826EF486100EBA491 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		81AA6F0726FF64BB00E7CE4C /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		81CFA1B826F93605003289F6 /* ApiKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiKeys.swift; sourceTree = "<group>"; };
@@ -203,7 +203,6 @@
 				813AA2EF26E3EBEC00C48DAC /* Helper */,
 				813AA2F326E3EC5000C48DAC /* Extensions */,
 				813AA2EE26E3EB5200C48DAC /* Model */,
-				8134684E26E4E8C800A2DDCA /* IngredientsManager.swift */,
 				813AA2F126E3EC1500C48DAC /* Views */,
 				813AA2F226E3EC2700C48DAC /* Controllers */,
 			);
@@ -215,8 +214,8 @@
 			children = (
 				8127E88A26E3E8E8004B1684 /* Info.plist */,
 				8134686326E6076E00A2DDCA /* IngredientsTestCase.swift */,
-				8140C82926F1DBAF00E00DEE /* CoreData */,
 				811D338E26F7896F00149FD8 /* Network */,
+				8140C82926F1DBAF00E00DEE /* CoreData */,
 			);
 			path = RecipleaseTests;
 			sourceTree = "<group>";
@@ -280,7 +279,7 @@
 			isa = PBXGroup;
 			children = (
 				8127E87726E3E8E5004B1684 /* Reciplease.xcdatamodeld */,
-				8140C83026F25AB500E00DEE /* RecipeFavorite+CoreDataProperties.swift */,
+				8140C83026F25AB500E00DEE /* RecipeFavorite+CoreDataObectModel.swift */,
 				8134688D26ECAF1F00A2DDCA /* RecipeFavorite+CoreData.swift */,
 				818D760826EF486100EBA491 /* CoreDataManager.swift */,
 			);
@@ -290,6 +289,8 @@
 		813AA2EE26E3EB5200C48DAC /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				8134686F26E72B1900A2DDCA /* Errors.swift */,
+				8134684E26E4E8C800A2DDCA /* IngredientsManager.swift */,
 				8134686C26E7165B00A2DDCA /* DataModel */,
 				8140C83326F4A85B00E00DEE /* Network */,
 				8134688F26ECAF2400A2DDCA /* CoreData */,
@@ -303,7 +304,6 @@
 				8127E86E26E3E8E5004B1684 /* AppDelegate.swift */,
 				8127E87026E3E8E5004B1684 /* SceneDelegate.swift */,
 				8134684A26E4C4A100A2DDCA /* Constants.swift */,
-				8134686F26E72B1900A2DDCA /* Errors.swift */,
 				81CFA1B826F93605003289F6 /* ApiKeys.swift */,
 			);
 			path = Helper;
@@ -574,7 +574,7 @@
 				8134683E26E4846F00A2DDCA /* UIView+Extension.swift in Sources */,
 				81AA6F0826FF64BB00E7CE4C /* UIColor+Extension.swift in Sources */,
 				8122DF9E26FB652500084E2A /* AlamofireRouter.swift in Sources */,
-				8140C83226F25B0B00E00DEE /* RecipeFavorite+CoreDataProperties.swift in Sources */,
+				8140C83226F25B0B00E00DEE /* RecipeFavorite+CoreDataObectModel.swift in Sources */,
 				8134684F26E4E8C800A2DDCA /* IngredientsManager.swift in Sources */,
 				818D760926EF486100EBA491 /* CoreDataManager.swift in Sources */,
 				8127E87326E3E8E5004B1684 /* SearchViewController.swift in Sources */,

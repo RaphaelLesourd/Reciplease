@@ -137,11 +137,10 @@ extension RecipeDetailViewController: UITableViewDelegate {
         } else {
             view.recipeCardView.recipeInfoView.ratingStackView.isHidden = true
         }
-
         if let cookingTime = recipe.totalTime {
             let doubleTime = Double(cookingTime) * 60
             view.recipeCardView.recipeInfoView.recipeTimeStackView.isHidden = !(doubleTime > 0)
-            let time = doubleTime.asString(style: .abbreviated)
+            let time = doubleTime.convertToString(style: .abbreviated)
             view.recipeCardView.recipeInfoView.recipeTimeLabel.text = time
         }
         view.recipeCardView.recipeIngredientsLabel.text = Text.detailViewIngredientTitle

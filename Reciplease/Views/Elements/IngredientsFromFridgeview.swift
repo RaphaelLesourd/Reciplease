@@ -43,7 +43,7 @@ class IngredientsFromFridgeView: UIView {
     }()
 
     let addIngredientButton: CustomButton = {
-        let button = CustomButton(color: .mainTintColor, title: Text.add)
+        let button = CustomButton(color: .appTintColor, title: Text.add)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.widthAnchor.constraint(equalToConstant: 50).isActive = true
         return button

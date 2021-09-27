@@ -79,22 +79,45 @@ class RecipeServiceTestCase: XCTestCase {
             case .success(let recipe):
                 XCTAssertNil(recipe)
             case .failure(let error):
-                XCTAssertEqual(error as! ApiError, ApiError.noData)
+                XCTAssertEqual(error, ApiError.noImputData)
             }
             expectation.fulfill()
         }
         wait(for: [expectation], timeout: 1.0)
     }
-
-    func test_givenNoIngredients_whenRequestionRecipes_thenError() {
+    
+    func test_givenListIngredients_whenRequestionRecipes_thenNoRecipeFoundError() {
         let expectation = XCTestExpectation(description: "Wait for queue change.")
+        MockURLProtocol.requestHandler = { request in
+            let response = HTTPURLResponse(url: self.url, statusCode: 200, httpVersion: nil, headerFields: nil)!
+            return (response, FakeData.emptyRecipeCorrectData)
+        }
 
-        sut.getRecipes(for: nil) { (result) in
+        sut.getRecipes(for: ["lemon, peach, almond, avocado, wine"]) { (result) in
             switch result {
             case .success(let recipe):
                 XCTAssertNil(recipe)
             case .failure(let error):
-                XCTAssertEqual(error as! ApiError, ApiError.noInputData)
+                XCTAssertEqual(error, ApiError.noData)
+            }
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 1.0)
+    }
+    
+    func test_givenListIngredients_whenRequestionRecipes_thenNonOkStatusCodeIsReturned() {
+        let expectation = XCTestExpectation(description: "Wait for queue change.")
+        MockURLProtocol.requestHandler = { request in
+            let response = HTTPURLResponse(url: self.url, statusCode: 409, httpVersion: nil, headerFields: nil)!
+            return (response, FakeData.recipeCorrectData)
+        }
+
+        sut.getRecipes(for: ["lemon, peach, almond"]) { (result) in
+            switch result {
+            case .success(let recipe):
+                XCTAssertNil(recipe)
+            case .failure(let error):
+                XCTAssertEqual(error, ApiError.afError(.responseValidationFailed(reason: .unacceptableStatusCode(code: 409))))
             }
             expectation.fulfill()
         }

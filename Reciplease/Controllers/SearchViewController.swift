@@ -88,7 +88,7 @@ class SearchViewController: UIViewController {
                     guard let recipes = recipeList.hits else { return }
                     self.navigateToRecipeList(with: recipes)
             case .failure(let error):
-                self.presentMessageAlert(with: error.localizedDescription)
+                self.presentMessageAlert(with: error.description)
             }
         }
         

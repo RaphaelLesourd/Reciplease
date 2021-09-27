@@ -11,16 +11,30 @@ import UserNotifications
 extension UIViewController {
 
     // MARK: - Alerts
+    /// Present a simple message alert wit ha dismiss button.
+    /// - Parameters:
+    ///   - type: Alert message, Error by default.
+    ///   - message: Message to display.
     func presentMessageAlert(type: AlertType = .error, with message: String) {
         let alert = UIAlertController(title: type.rawValue, message: message, preferredStyle: .alert)
         let dismissAction = UIAlertAction(title: "Dismiss", style: .default, handler: nil)
         alert.addAction(dismissAction)
         present(alert, animated: true, completion: nil)
     }
-
+    
+    /// Present an alert with a completion handler, with option to include a textfield and to user the textField value.
+    /// - Parameters:
+    ///   - title: Alert title..
+    ///   - subtitle: Alert subtitle.
+    ///   - actionTitle: Agree button title, Ok by default.
+    ///   - withTextField: Bool vlaue if a textfield should be displayed , false by default.
+    ///   - inputText: TextField value.
+    ///   - inputPlaceholder: TextField placeholder message.
+    ///   - inputKeyboardType: Default by default.
+    ///   - actionHandler: Action triggered when Ok button tapped.
     func presentUserQueryAlert(title: String? = nil,
                                subtitle: String? = nil,
-                               actionTitle: String?,
+                               actionTitle: String? = "Ok",
                                withTextField: Bool = false,
                                inputText: String? = nil,
                                inputPlaceholder: String? = nil,
