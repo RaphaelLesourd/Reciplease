@@ -45,10 +45,6 @@ class RecipeDetailViewController: UIViewController {
         toggleFavoriteButtonImage()
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-    }
-
     // MARK: - Setup
     private func configureNavigationItem() {
         addToFavoriteButton = UIBarButtonItem(image: Icons.notFavorite,

@@ -259,8 +259,8 @@
 		8134687126E86B5000A2DDCA /* TableViewHeaders */ = {
 			isa = PBXGroup;
 			children = (
-				8134686026E56B3D00A2DDCA /* RecipeDetailTableViewHeader.swift */,
 				8134685926E518EB00A2DDCA /* RecipeTableViewHeader.swift */,
+				8134686026E56B3D00A2DDCA /* RecipeDetailTableViewHeader.swift */,
 			);
 			path = TableViewHeaders;
 			sourceTree = "<group>";
@@ -287,10 +287,10 @@
 			isa = PBXGroup;
 			children = (
 				8134686F26E72B1900A2DDCA /* Errors.swift */,
-				8134684E26E4E8C800A2DDCA /* IngredientsManager.swift */,
 				8134686C26E7165B00A2DDCA /* DataModel */,
 				8140C83326F4A85B00E00DEE /* Network */,
 				8134688F26ECAF2400A2DDCA /* CoreData */,
+				8134684E26E4E8C800A2DDCA /* IngredientsManager.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";

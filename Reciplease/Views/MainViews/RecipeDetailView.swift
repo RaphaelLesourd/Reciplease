@@ -26,6 +26,7 @@ class RecipeDetailView: UIView {
         let table = UITableView(frame: .zero, style: .insetGrouped)
         table.backgroundColor = .clear
         table.separatorStyle = .none
+        table.contentInsetAdjustmentBehavior = .never
         table.allowsSelection = false
         table.estimatedRowHeight = 50
         table.register(UITableViewCell.self, forCellReuseIdentifier: "cell")

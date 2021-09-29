@@ -67,5 +67,4 @@ extension SectionHeaderView {
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16)
         ])
     }
-
 }

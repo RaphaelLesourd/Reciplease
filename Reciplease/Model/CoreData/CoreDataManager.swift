@@ -54,11 +54,11 @@ extension CoreDataManager {
         do {
             let recipes = try managedObjectContext.fetch(request)
             recipes.forEach { favoriteRecipes.append(RecipeClass(label: $0.label,
-                                                                        image: $0.image,
-                                                                        url: $0.url,
-                                                                        yield: Int($0.yield),
-                                                                        ingredientLines: $0.ingredientLines,
-                                                                        totalTime: Int($0.totalTime)))}
+                                                                 image: $0.image,
+                                                                 url: $0.url,
+                                                                 yield: Int($0.yield),
+                                                                 ingredientLines: $0.ingredientLines,
+                                                                 totalTime: Int($0.totalTime)))}
         } catch { throw error }
         return favoriteRecipes
     }
