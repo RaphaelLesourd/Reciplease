@@ -60,9 +60,9 @@ class SearchViewController: UIViewController {
         }
     }
     @objc private func clearIngredients() {
-            presentUserQueryAlert(title: "Clearing the ingredient list.",
-                                  subtitle: "Are you sure you want to clear the entire list?",
-                                  actionTitle: "Yes",
+        presentUserQueryAlert(title: AlertMessage.clearIngredientsAlertTitle,
+                              subtitle: AlertMessage.clearIngredientsAlertSubtitle,
+                              actionTitle: AlertButtonText.ok,
                                   withTextField: false,
                                   actionHandler: { [weak self] _ in
             guard let self = self else {return}
@@ -85,8 +85,9 @@ class SearchViewController: UIViewController {
             self.hideIndicator(self.activityIndicator)
             switch result {
             case .success(let recipeList):
-                    guard let recipes = recipeList.hits else { return }
-                    self.navigateToRecipeList(with: recipes)
+                guard let recipes = recipeList.hits else { return }
+                let recipeList = recipes.compactMap { $0.recipe }
+                self.navigateToRecipeList(with: recipeList)
             case .failure(let error):
                 self.presentMessageAlert(with: error.description)
             }
@@ -100,12 +101,12 @@ class SearchViewController: UIViewController {
 
     // MARK: - Ingredient Management
     private func editIngredientName(for ingredient: String, at indexPath: IndexPath) {
-        self.presentUserQueryAlert(title: "Edit ingredient",
-                                   subtitle: "You can change the name of the ingredient.",
-                                   actionTitle: "Change",
+        self.presentUserQueryAlert(title: AlertMessage.editIngredientAlertTitle,
+                                   subtitle: AlertMessage.editIngredientAlertSubtitle,
+                                   actionTitle: AlertButtonText.change,
                                    withTextField: true,
                                    inputText: ingredient,
-                                   inputPlaceholder: "Ingredient name") { newName in
+                                   inputPlaceholder: AlertMessage.editIngredientAlertPlaceholder) { newName in
             guard let newName = newName else { return }
             self.ingredientDatasource.ingredients[indexPath.row] = newName.capitalized
             self.searchView.tableView.reloadRows(at: [indexPath], with: .right)
@@ -122,7 +123,7 @@ class SearchViewController: UIViewController {
     /// Passes to the TableViewController the list of Recipes fetched from the API.
     /// Sets the list type as search to handle et configure the UI for this list type.
     /// - Parameter recipes: List of fetch recipes from API.
-    func navigateToRecipeList(with recipes: [Hit]) {
+    func navigateToRecipeList(with recipes: [RecipeClass]) {
         let recipeListVC = RecipeTableViewController(recipeListType: .search, recipes: recipes)
         navigationController?.pushViewController(recipeListVC, animated: true)
     }
@@ -142,7 +143,7 @@ extension SearchViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
+        let cell = UITableViewCell(style: .default, reuseIdentifier: SearchView.reusableIdentifier)
         cell.backgroundColor = .quaternarySystemFill
         cell.textLabel?.text = ingredientDatasource.ingredients[indexPath.row]
         return cell
@@ -162,7 +163,7 @@ extension SearchViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: SectionHeaderView.reuseIdentifier)
                 as? SectionHeaderView else { return nil }
-
+    
         view.deleteAllIngredientsButton.addTarget(self, action: #selector(clearIngredients), for: .touchUpInside)
         return ingredientDatasource.ingredients.isEmpty ? nil : view
     }

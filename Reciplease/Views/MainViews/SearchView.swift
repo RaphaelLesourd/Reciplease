@@ -21,11 +21,12 @@ class SearchView: UIView {
     let searchButton = CustomButton(title: Text.searchRecipeButton)
     let emptyStateView = RecipeTableViewEmptyStateView()
     let addIngredientView = IngredientsFromFridgeView()
+    static let reusableIdentifier = "cell"
 
     let tableView: UITableView = {
         let table = UITableView(frame: .zero, style: .insetGrouped)
         table.backgroundColor = .clear
-        table.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        table.register(UITableViewCell.self, forCellReuseIdentifier: SearchView.reusableIdentifier)
         table.register(SectionHeaderView.self, forHeaderFooterViewReuseIdentifier: SectionHeaderView.reuseIdentifier)
         table.translatesAutoresizingMaskIntoConstraints = false
         return table

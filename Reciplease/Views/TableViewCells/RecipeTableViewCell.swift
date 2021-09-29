@@ -73,7 +73,6 @@ class RecipeTableViewCell: UITableViewCell {
                                                    cacheKey: recipe.image,
                                                    placeholderImage: DefaultImages.recipe,
                                                    imageTransition: .noTransition,
-                                                   runImageTransitionIfCached: false,
                                                    completion: nil)
         }
     }

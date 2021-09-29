@@ -25,22 +25,21 @@ class RecipeTableViewController: UITableViewController {
             fetchFavoriteRecipes()
         }
     }
-    private var unfilteredRecipes: [Hit] = []
-    private var recipes: [Hit] {
+    private var originalRecipeList: [RecipeClass] = []
+    private var recipes: [RecipeClass] {
         didSet {
             tableView.reloadData()
         }
     }
-
     // MARK: - Initializers
     /// Intialize the controller with a list of recipes and type of recipes
     /// - Parameters:
     ///   - recipeListType: Type of recipes, by default .favorite
     ///   - recipes: List of recepies received from the SearchViewController
-    init(recipeListType: RecipeListType, recipes: [Hit]) {
+    init(recipeListType: RecipeListType, recipes: [RecipeClass]) {
         self.recipeListType = recipeListType
         self.recipes = recipes
-        self.unfilteredRecipes = recipes
+        self.originalRecipeList = recipes
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -160,14 +159,14 @@ extension RecipeTableViewController {
         guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: cellIndentifier,
                 for: indexPath) as? RecipeTableViewCell else { return UITableViewCell() }
-        let recipe = recipes[indexPath.row].recipe
+        let recipe = recipes[indexPath.row]
         cell.configure(with: recipe)
         return cell
     }
 
     // MARK: - TableView Delegate
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let selectedRecipe = recipes[indexPath.row].recipe else {return}
+        let selectedRecipe = recipes[indexPath.row]
         guard let cell = self.tableView.cellForRow(at: indexPath) as? RecipeTableViewCell else {return}
         guard let recipeImage = cell.recipeCardView.recipeImage.image else {return}
 
@@ -178,7 +177,7 @@ extension RecipeTableViewController {
     override func tableView(_ tableView: UITableView,
                             trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         // Checks if recipe exits in coredata
-        guard let recipe = recipes[indexPath.row].recipe else {return nil}
+        let recipe = recipes[indexPath.row]
         let isRecipeFavorite = coreDataManager.verifyRecipeExist(for: recipe)
 
         let action = self.contextMenuAction(isFavorite: isRecipeFavorite, forRowAtIndexPath: indexPath)
@@ -195,7 +194,7 @@ extension RecipeTableViewController {
         let actionTitle = isFavorite ? Text.deleteFavorite : Text.addToFavorite
         let action = UIContextualAction(style: .normal, title: actionTitle) { [weak self] (_, _, completion) in
             guard let self = self else {return}
-            guard let recipe = self.recipes[indexPath.row].recipe else {return}
+            let recipe = self.recipes[indexPath.row]
             if isFavorite {
                 self.removeFavorite(recipe, at: indexPath)
             } else {
@@ -230,10 +229,10 @@ extension RecipeTableViewController: UISearchResultsUpdating {
     /// - Parameter searchText: Pass in the text used to filter recipes.
     private func filterSearchedRecipes(for searchText: String) {
         if searchText.isEmpty {
-            recipes = unfilteredRecipes
+            recipes = originalRecipeList
         } else {
-            recipes = unfilteredRecipes.filter({
-                guard let recipeName = $0.recipe?.label else { return false }
+            recipes = originalRecipeList.filter({
+                guard let recipeName = $0.label else { return false }
                 return recipeName.contains(searchText)
             })
         }

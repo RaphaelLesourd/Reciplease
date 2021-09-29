@@ -39,6 +39,8 @@ class RecipeServiceTestCase: XCTestCase {
        sut.getRecipes(for: ["lemon, peach, almond"]) { (result) in
             switch result {
             case .success(let recipe):
+                XCTAssertNotNil(recipe)
+                XCTAssertEqual(recipe.hits?.first?.recipe?.url, "https://food52.com/recipes/83356-peach-almond-cake")
                 XCTAssertEqual(recipe.hits?.first?.recipe?.label, "Peach almond cake")
             case .failure(let error):
                 XCTAssertNil(error)

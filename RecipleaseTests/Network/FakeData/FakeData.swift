@@ -22,7 +22,6 @@ class FakeData {
         return try? Data(contentsOf: url)
     }
 
-
     static let recipeIncorrectData = "incorrectData".data(using: .utf8)!
     
     class ApiError: Error {}

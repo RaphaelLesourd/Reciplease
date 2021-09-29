@@ -45,7 +45,6 @@
 		813F8B7726F8D3A40028D6F4 /* FakeEmptyRecipe.json in Resources */ = {isa = PBXBuildFile; fileRef = 813F8B7626F8D3A40028D6F4 /* FakeEmptyRecipe.json */; };
 		8140C82826F1D8CA00E00DEE /* TestCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8140C82726F1D8CA00E00DEE /* TestCoreDataStack.swift */; };
 		8140C82D26F1DBE500E00DEE /* CoreDataTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8140C82C26F1DBE500E00DEE /* CoreDataTestCase.swift */; };
-		8140C83226F25B0B00E00DEE /* RecipeFavorite+CoreDataObectModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8140C83026F25AB500E00DEE /* RecipeFavorite+CoreDataObectModel.swift */; };
 		818D760926EF486100EBA491 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818D760826EF486100EBA491 /* CoreDataManager.swift */; };
 		81AA6F0826FF64BB00E7CE4C /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AA6F0726FF64BB00E7CE4C /* UIColor+Extension.swift */; };
 		81CFA1B926F93605003289F6 /* ApiKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CFA1B826F93605003289F6 /* ApiKeys.swift */; };
@@ -112,7 +111,6 @@
 		813F8B7626F8D3A40028D6F4 /* FakeEmptyRecipe.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = FakeEmptyRecipe.json; sourceTree = "<group>"; };
 		8140C82726F1D8CA00E00DEE /* TestCoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestCoreDataStack.swift; sourceTree = "<group>"; };
 		8140C82C26F1DBE500E00DEE /* CoreDataTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataTestCase.swift; sourceTree = "<group>"; };
-		8140C83026F25AB500E00DEE /* RecipeFavorite+CoreDataObectModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "RecipeFavorite+CoreDataObectModel.swift"; sourceTree = "<group>"; };
 		818D760826EF486100EBA491 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		81AA6F0726FF64BB00E7CE4C /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		81CFA1B826F93605003289F6 /* ApiKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiKeys.swift; sourceTree = "<group>"; };
@@ -279,7 +277,6 @@
 			isa = PBXGroup;
 			children = (
 				8127E87726E3E8E5004B1684 /* Reciplease.xcdatamodeld */,
-				8140C83026F25AB500E00DEE /* RecipeFavorite+CoreDataObectModel.swift */,
 				8134688D26ECAF1F00A2DDCA /* RecipeFavorite+CoreData.swift */,
 				818D760826EF486100EBA491 /* CoreDataManager.swift */,
 			);
@@ -574,7 +571,6 @@
 				8134683E26E4846F00A2DDCA /* UIView+Extension.swift in Sources */,
 				81AA6F0826FF64BB00E7CE4C /* UIColor+Extension.swift in Sources */,
 				8122DF9E26FB652500084E2A /* AlamofireRouter.swift in Sources */,
-				8140C83226F25B0B00E00DEE /* RecipeFavorite+CoreDataObectModel.swift in Sources */,
 				8134684F26E4E8C800A2DDCA /* IngredientsManager.swift in Sources */,
 				818D760926EF486100EBA491 /* CoreDataManager.swift in Sources */,
 				8127E87326E3E8E5004B1684 /* SearchViewController.swift in Sources */,

@@ -11,7 +11,7 @@ import XCTest
 class CoreDataTestCase: XCTestCase {
 
     var sut: CoreDataManager!
-    var coreDataStack: AppDelegate!
+    var testCoreDataStack: TestCoreDataStack!
     private let recipe = RecipeClass(label: "Chicken stew",
                                      image: "",
                                      url: "recipe url",
@@ -21,14 +21,14 @@ class CoreDataTestCase: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        coreDataStack = TestCoreDataStack()
-        sut = CoreDataManager(managedObjectContext: coreDataStack.persistentContainer.viewContext)
+        testCoreDataStack = TestCoreDataStack()
+        sut = CoreDataManager(managedObjectContext: testCoreDataStack.persistentContainer.viewContext)
     }
 
     override func tearDown() {
         super.tearDown()
         sut = nil
-        coreDataStack = nil
+        testCoreDataStack = nil
     }
 
     // MARK: - Tests
@@ -47,8 +47,8 @@ class CoreDataTestCase: XCTestCase {
         do {
             let favoriteRecipes = try sut.getRecipes()
             XCTAssertNotNil(favoriteRecipes)
-         //   XCTAssertTrue(favoriteRecipes.count == 1)
-            XCTAssertTrue(recipe.label == favoriteRecipes.first?.recipe?.label)
+            XCTAssertTrue(favoriteRecipes.count == 1)
+            XCTAssertTrue(recipe.label == favoriteRecipes.first?.label)
         } catch {
             XCTAssertNotNil(error)
         }
@@ -61,8 +61,8 @@ class CoreDataTestCase: XCTestCase {
         do {
             let favoriteRecipes = try sut.getRecipes(with: "Chicken")
             XCTAssertNotNil(favoriteRecipes)
-        //    XCTAssertTrue(favoriteRecipes.count == 1)
-            XCTAssertTrue(recipe.label == favoriteRecipes.first?.recipe?.label)
+            XCTAssertTrue(favoriteRecipes.count == 1)
+            XCTAssertTrue(recipe.label == favoriteRecipes.first?.label)
         } catch {
             XCTAssertNotNil(error)
         }
@@ -74,8 +74,8 @@ class CoreDataTestCase: XCTestCase {
         do {
             let favoriteRecipes = try sut.getRecipes()
             XCTAssertNotNil(favoriteRecipes)
-         //   XCTAssertTrue(favoriteRecipes.count == 1)
-            XCTAssertTrue(recipe.label == favoriteRecipes.first?.recipe?.label)
+            XCTAssertTrue(favoriteRecipes.count == 1)
+            XCTAssertTrue(recipe.label == favoriteRecipes.first?.label)
         } catch {
             XCTAssertNotNil(error)
         }
@@ -91,20 +91,20 @@ class CoreDataTestCase: XCTestCase {
         do {
             let favoriteRecipes = try sut.getRecipes()
             XCTAssertNotNil(favoriteRecipes)
-            //XCTAssertTrue(favoriteRecipes.count == 0)
+            XCTAssertTrue(favoriteRecipes.count == 0)
         } catch {
             XCTAssertNotNil(error)
         }
     }
 
-    func test_deleteRecipe_whenNoREcipePassed() {
+    func test_deleteRecipe_whenNoRecipePassed() {
         // Given
         sut.add(recipe: recipe)
         do {
             let favoriteRecipes = try sut.getRecipes()
             XCTAssertNotNil(favoriteRecipes)
-         //   XCTAssertTrue(favoriteRecipes.count == 1)
-            XCTAssertTrue(recipe.label == favoriteRecipes.first?.recipe?.label)
+            XCTAssertTrue(favoriteRecipes.count == 1)
+            XCTAssertTrue(recipe.label == favoriteRecipes.first?.label)
         } catch {
             XCTAssertNotNil(error)
         }
@@ -142,7 +142,7 @@ class CoreDataTestCase: XCTestCase {
         do {
             let favoriteRecipes = try sut.getRecipes()
             XCTAssertNotNil(favoriteRecipes)
-       //     XCTAssertTrue(favoriteRecipes.count == 0)
+            XCTAssertTrue(favoriteRecipes.count == 0)
         } catch {
             XCTAssertNotNil(error)
         }

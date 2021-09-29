@@ -33,7 +33,6 @@ enum ApiError: Error, Equatable {
         return lhs.description == rhs.description
     }
 }
-
 extension ApiError: LocalizedError {
     var description: String {
         switch self {

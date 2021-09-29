@@ -31,10 +31,26 @@ enum EditActionType: String {
         }
     }
 }
-// MARK: - Recipelist types
+// MARK: - Alert types
 enum AlertType: String {
     case success = "Success"
     case error = "Error !"
+}
+      
+enum AlertMessage {
+    static let clearIngredientsAlertTitle = "Clearing the ingredient list."
+    static let clearIngredientsAlertSubtitle = "Are you sure you want to clear the entire list?"
+    static let editIngredientAlertTitle = "Edit ingredient"
+    static let editIngredientAlertSubtitle = "You can change the name of the ingredient."
+    static let editIngredientAlertPlaceholder = "Ingredient name"
+}
+
+enum AlertButtonText {
+    static let cancel = "Cancel"
+    static let ok = "Ok"
+    static let yes = "Yes"
+    static let dismiss = "Dismiss"
+    static let change = "Change"
 }
 // MARK: - Images
 enum DefaultImages {

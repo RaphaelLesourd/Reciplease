@@ -42,7 +42,7 @@ extension CoreDataManager {
     ///   - ascending: Boolean to set wether if recipes are shown in ascending or descending order.
     /// - Throws: An error of type NSError.
     /// - Returns: Array of recipes of type Hit.
-    public func getRecipes(with name: String = "", ascending: Bool = false) throws -> [Hit] {
+    public func getRecipes(with name: String = "", ascending: Bool = false) throws -> [RecipeClass] {
         let request: NSFetchRequest<RecipeFavorite> = RecipeFavorite.fetchRequest()
         if name != "" {
             request.predicate = NSPredicate(format: "label CONTAINS[cd] %@", name)
@@ -50,15 +50,15 @@ extension CoreDataManager {
         request.sortDescriptors = [
             NSSortDescriptor(key: "timestamp", ascending: ascending)
         ]
-        var favoriteRecipes: [Hit] = []
+        var favoriteRecipes: [RecipeClass] = []
         do {
             let recipes = try managedObjectContext.fetch(request)
-            recipes.forEach { favoriteRecipes.append(Hit(recipe: RecipeClass(label: $0.label,
-                                                                             image: $0.image,
-                                                                             url: $0.url,
-                                                                             yield: Int($0.yield),
-                                                                             ingredientLines: $0.ingredientLines,
-                                                                             totalTime: Int($0.totalTime))))}
+            recipes.forEach { favoriteRecipes.append(RecipeClass(label: $0.label,
+                                                                        image: $0.image,
+                                                                        url: $0.url,
+                                                                        yield: Int($0.yield),
+                                                                        ingredientLines: $0.ingredientLines,
+                                                                        totalTime: Int($0.totalTime)))}
         } catch { throw error }
         return favoriteRecipes
     }
