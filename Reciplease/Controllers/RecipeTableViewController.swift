@@ -13,6 +13,7 @@ class RecipeTableViewController: UITableViewController {
     private lazy var coreDataManager = CoreDataManager(managedObjectContext: AppDelegate.context)
     private let emptyStateView = RecipeTableViewEmptyStateView()
     private let refresherControl = UIRefreshControl()
+    private let activityIndicator = UIActivityIndicatorView(style: .medium)
     private let cellIndentifier = RecipeTableViewCell.reuseIdentifier
     private let recipeListEmptyStateView = RecipeTableViewEmptyStateView()
     private let searchController = UISearchController(searchResultsController: nil)
@@ -100,17 +101,21 @@ class RecipeTableViewController: UITableViewController {
                                                    target: self,
                                                    action: #selector(sortFavoriteRecipes))
         favoriteRecipeSortButton?.tintColor = .label
-        navigationItem.rightBarButtonItem = favoriteRecipeSortButton
+        navigationItem.leftBarButtonItem = favoriteRecipeSortButton
     }
 
     // MARK: - CoreData
     @objc func fetchFavoriteRecipes() {
         if recipeListType == .favorite {
+            showIndicator(activityIndicator)
+            activityIndicator.hidesWhenStopped = true
             do {
                 self.recipes = try coreDataManager.getRecipes(with: searchText, ascending: isAscending)
+                
             } catch let error {
                 self.presentMessageAlert(with: error.localizedDescription)
             }
+            hideIndicator(activityIndicator)
             self.refresherControl.endRefreshing()
         }
     }
@@ -134,7 +139,7 @@ class RecipeTableViewController: UITableViewController {
         isAscending.toggle()
     }
 
-    // MARK: Navigation
+    // MARK: - Navigation
     private func navigateToDetailViewController(with selectedRecipe: RecipeClass, and recipeImage: UIImage) {
         let isRecipeFavorite = recipeListType == .favorite
         let recipeDetailVC = RecipeDetailViewController(recipe: selectedRecipe,
@@ -144,8 +149,10 @@ class RecipeTableViewController: UITableViewController {
     }
 }
 
+// MARK: - TableView Datasource & Delegate
 extension RecipeTableViewController {
-    // MARK: - TableView Datasource
+    
+    // Datasource
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -164,7 +171,7 @@ extension RecipeTableViewController {
         return cell
     }
 
-    // MARK: - TableView Delegate
+    // Delegate
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedRecipe = recipes[indexPath.row]
         guard let cell = self.tableView.cellForRow(at: indexPath) as? RecipeTableViewCell else {return}
@@ -243,10 +250,10 @@ extension RecipeTableViewController {
 
     private func setEmptyStateViewConstraints() {
         emptyStateView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(emptyStateView)
+        tableView.addSubview(emptyStateView)
         NSLayoutConstraint.activate([
-            emptyStateView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 100),
-            emptyStateView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+            emptyStateView.topAnchor.constraint(equalTo: tableView.topAnchor, constant: 150),
+            emptyStateView.centerXAnchor.constraint(equalTo: tableView.centerXAnchor)
         ])
     }
 }

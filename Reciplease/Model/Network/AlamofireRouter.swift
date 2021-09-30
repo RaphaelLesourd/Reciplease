@@ -13,6 +13,7 @@ import Alamofire
 enum AlamofireRouter: URLRequestConvertible {
     // cases
     case ingredients([String])
+    
     // Http methods
     private var method: HTTPMethod {
         switch self {
@@ -20,13 +21,12 @@ enum AlamofireRouter: URLRequestConvertible {
             return .get
         }
     }
-    private  var path: String {
+    private var path: String {
         switch self {
         case .ingredients:
-          return ""
+            return ""
         }
-      }
-      
+    }
     // Parameters
     private var parameters: [String: Any] {
         switch self {

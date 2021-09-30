@@ -79,8 +79,9 @@ extension UIViewController {
     }
 
     func hideIndicator(_ indicator: UIActivityIndicatorView) {
-        indicator.stopAnimating()
-        navigationItem.setRightBarButton(nil, animated: true)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            indicator.stopAnimating()
+            self.navigationItem.setRightBarButton(nil, animated: true)
+        }
     }
-
 }

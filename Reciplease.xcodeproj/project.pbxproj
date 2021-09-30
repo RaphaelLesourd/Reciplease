@@ -14,7 +14,7 @@
 		8127E86F26E3E8E5004B1684 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8127E86E26E3E8E5004B1684 /* AppDelegate.swift */; };
 		8127E87126E3E8E5004B1684 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8127E87026E3E8E5004B1684 /* SceneDelegate.swift */; };
 		8127E87326E3E8E5004B1684 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8127E87226E3E8E5004B1684 /* SearchViewController.swift */; };
-		8127E87926E3E8E5004B1684 /* Reciplease.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8127E87726E3E8E5004B1684 /* Reciplease.xcdatamodeld */; };
+		8127E87926E3E8E5004B1684 /* RecipeFavoriteDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8127E87726E3E8E5004B1684 /* RecipeFavoriteDataModel.xcdatamodeld */; };
 		8127E87B26E3E8E8004B1684 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8127E87A26E3E8E8004B1684 /* Assets.xcassets */; };
 		8127E87E26E3E8E8004B1684 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8127E87C26E3E8E8004B1684 /* LaunchScreen.storyboard */; };
 		8134683526E47A5F00A2DDCA /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8134683426E47A5F00A2DDCA /* TabBarViewController.swift */; };
@@ -276,7 +276,7 @@
 		8134688F26ECAF2400A2DDCA /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
-				8127E87726E3E8E5004B1684 /* Reciplease.xcdatamodeld */,
+				8127E87726E3E8E5004B1684 /* RecipeFavoriteDataModel.xcdatamodeld */,
 				8134688D26ECAF1F00A2DDCA /* RecipeFavorite+CoreData.swift */,
 				818D760826EF486100EBA491 /* CoreDataManager.swift */,
 			);
@@ -564,7 +564,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8127E87926E3E8E5004B1684 /* Reciplease.xcdatamodeld in Sources */,
+				8127E87926E3E8E5004B1684 /* RecipeFavoriteDataModel.xcdatamodeld in Sources */,
 				8134686126E56B3D00A2DDCA /* RecipeDetailTableViewHeader.swift in Sources */,
 				8134683726E47ADD00A2DDCA /* RecipeTableViewController.swift in Sources */,
 				8134683926E47E4300A2DDCA /* RecipeDetailViewController.swift in Sources */,
@@ -874,13 +874,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		8127E87726E3E8E5004B1684 /* Reciplease.xcdatamodeld */ = {
+		8127E87726E3E8E5004B1684 /* RecipeFavoriteDataModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
 				8127E87826E3E8E5004B1684 /* Reciplease.xcdatamodel */,
 			);
 			currentVersion = 8127E87826E3E8E5004B1684 /* Reciplease.xcdatamodel */;
-			path = Reciplease.xcdatamodeld;
+			path = RecipeFavoriteDataModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
