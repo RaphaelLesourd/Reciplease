@@ -29,7 +29,9 @@ class RecipeTableViewController: UITableViewController {
     private var originalRecipeList: [RecipeClass] = []
     private var recipes: [RecipeClass] {
         didSet {
-            tableView.reloadData()
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
         }
     }
     // MARK: - Initializers

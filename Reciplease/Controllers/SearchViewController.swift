@@ -53,7 +53,7 @@ class SearchViewController: UIViewController {
                 if let error = error {
                     return presentMessageAlert(with: error.description)
                 }
-                searchView.tableView.reloadData()
+                tableViewReloadData()
                 searchView.addIngredientView.textField.text = nil
                 dismissKeyboard()
             }
@@ -67,7 +67,7 @@ class SearchViewController: UIViewController {
                                   actionHandler: { [weak self] _ in
             guard let self = self else {return}
             self.ingredientDatasource.clearIngredientList()
-            self.searchView.tableView.reloadData()
+            self.tableViewReloadData()
         })
     }
 
@@ -98,6 +98,12 @@ class SearchViewController: UIViewController {
     func stopActivityIndicator() {
         hideIndicator(activityIndicator)
     }
+    
+    private func tableViewReloadData() {
+        DispatchQueue.main.async {
+            self.searchView.tableView.reloadData()
+        }
+    }
 
     // MARK: - Ingredient Management
     private func editIngredientName(for ingredient: String, at indexPath: IndexPath) {
@@ -116,7 +122,7 @@ class SearchViewController: UIViewController {
     private func deleteIngredient(for ingredient: String, at indexPath: IndexPath) {
         self.ingredientDatasource.deleteIngredient(with:ingredient)
         self.searchView.tableView.deleteRows(at: [indexPath], with: .fade)
-        self.searchView.tableView.reloadData()
+        self.tableViewReloadData()
     }
 
     // MARK: - Navigation
