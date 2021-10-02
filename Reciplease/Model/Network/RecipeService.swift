@@ -30,20 +30,25 @@ class RecipeService {
             completion(.failure(.noImputData))
             return
         }
+        // Create a background queue to fetch data.
+        let queue = DispatchQueue(label: "com.response-queue", qos: .utility, attributes: [.concurrent])
+        // Pass the background queue to the response.
+        // AlamoFire's framework completion handler is run on the main thread by default.
         session.request(AlamofireRouter.ingredients(ingredients))
             .validate()
-            .responseDecodable(of: RecipeData.self) { response in
-                DispatchQueue.main.async {
-                    switch response.result {
-                    case .success(let jsonData):
-                        guard let recipeList = jsonData.hits, !recipeList.isEmpty else {
-                            completion(.failure(.noData))
-                            return
-                        }
-                        completion(.success(jsonData))
-                    case .failure(let error):
-                        completion(.failure(.afError(error)))
+            .responseDecodable(of: RecipeData.self, queue: queue) { response in
+                switch response.result {
+                case .success(let jsonData):
+                    guard let recipeList = jsonData.hits, !recipeList.isEmpty else {
+                        completion(.failure(.noData))
+                        return
                     }
+                    // Return to the main queue to update the UI.
+                    DispatchQueue.main.async {
+                        completion(.success(jsonData))
+                    }
+                case .failure(let error):
+                    completion(.failure(.afError(error)))
                 }
             }
     }

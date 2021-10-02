@@ -17,8 +17,7 @@ class TestCoreDataStack: AppDelegate {
         let persistentStoreDescription = NSPersistentStoreDescription()
         persistentStoreDescription.type = NSInMemoryStoreType
         
-        
-        let container = NSPersistentContainer(name: "RecipeFavoriteDataModel")
+        let container = NSPersistentContainer(name: "Reciplease")
         container.persistentStoreDescriptions = [persistentStoreDescription]
         container.loadPersistentStores { _, error in
             if let error = error as NSError? {
