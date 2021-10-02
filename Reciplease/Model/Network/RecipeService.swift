@@ -33,17 +33,17 @@ class RecipeService {
         session.request(AlamofireRouter.ingredients(ingredients))
             .validate()
             .responseDecodable(of: RecipeData.self) { response in
-                switch response.result {
-                case .success(let jsonData):
-                    guard let recipeList = jsonData.hits, !recipeList.isEmpty else {
-                        completion(.failure(.noData))
-                        return
-                    }
-                    DispatchQueue.main.async {
+                DispatchQueue.main.async {
+                    switch response.result {
+                    case .success(let jsonData):
+                        guard let recipeList = jsonData.hits, !recipeList.isEmpty else {
+                            completion(.failure(.noData))
+                            return
+                        }
                         completion(.success(jsonData))
+                    case .failure(let error):
+                        completion(.failure(.afError(error)))
                     }
-                case .failure(let error):
-                    completion(.failure(.afError(error)))
                 }
             }
     }
